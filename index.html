@@ -1941,7 +1941,7 @@ const PLINKO = {
             
             portfolio.balance += winAmount;
             updatePortfolioDisplays();
-            showSuccessMessage(`Won ${formatCurrency(winAmount)}!`);
+            showPlinkoWin(winAmount, multiplier, zoneIndex);
 
             // Check if this is the last ball
             if (this.balls.length === 0 || !this.balls.some(b => b.active)) {
@@ -2220,8 +2220,7 @@ const DRAGON = {
             
             portfolio.balance += winAmount;
             updatePortfolioDisplays();
-            showSuccessMessage(`Reached the top! Won ${formatCurrency(winAmount)}!`);
-            
+            showWinCelebration(winAmount, this.currentMultiplier);
         } catch (error) {
             console.error('Error processing win:', error);
             showErrorMessage('Error processing win');
@@ -2587,8 +2586,7 @@ animateWheel(targetAngle) {
                 
                 portfolio.balance += totalWin;
                 updatePortfolioDisplays();
-                showSuccessMessage(`Won ${formatCurrency(totalWin)}!`);
-                
+                showWinCelebration(totalWin);
             } catch (error) {
                 console.error('Error processing win:', error);
                 showErrorMessage('Error processing win');
@@ -2635,6 +2633,7 @@ const BLACKJACK = {
     isDoubleBet: false,
     splitHands: [],
     currentSplitHand: 0,
+    isProcessing: false,
 
     init() {
         this.deck = [];
@@ -2679,11 +2678,7 @@ const BLACKJACK = {
             showErrorMessage('Please sign in to play');
             return;
         }
-        this.checkSpecialOptions();
-        
-        if (this.calculateScore(this.playerHand) === 21) {
-            await this.dramaticDealerReveal();
-        }
+
         const betAmount = parseFloat(document.getElementById('blackjack-bet').value);
         if (betAmount > portfolio.balance) {
             showErrorMessage('Insufficient funds');
@@ -2708,7 +2703,8 @@ const BLACKJACK = {
             this.betAmount = betAmount;
             updatePortfolioDisplays();
 
-            // Deal initial cards
+            // Reset game state
+            this.isProcessing = false;
             this.playerHand = [this.drawCard(), this.drawCard()];
             this.dealerHand = [this.drawCard(), this.drawCard()];
             this.gameInProgress = true;
@@ -2725,20 +2721,23 @@ const BLACKJACK = {
             showErrorMessage(error.message);
         }
     },
-    
-    checkSpecialOptions() {
-        // Can double down on 9, 10, or 11
-        const score = this.calculateScore(this.playerHand);
-        this.canDoubleDown = (score >= 9 && score <= 11);
 
-        // Can split identical cards
-        this.canSplit = (this.playerHand.length === 2 && 
-                        this.calculateCardValue(this.playerHand[0]) === 
-                        this.calculateCardValue(this.playerHand[1]));
+    checkSpecialOptions() {
+        const score = this.calculateScore(this.playerHand);
+        
+        // Can only double down on 9, 10, or 11
+        this.canDoubleDown = (score >= 9 && score <= 11 && this.playerHand.length === 2);
+
+        // Can only split on pairs
+        this.canSplit = (
+            this.playerHand.length === 2 && 
+            this.getCardValue(this.playerHand[0]) === this.getCardValue(this.playerHand[1]) &&
+            portfolio.balance >= this.betAmount // Need enough money to split
+        );
 
         this.updateButtons();
-    },
-
+    },    
+    
     async doubleDown() {
     if (!this.canDoubleDown) return;
 
@@ -2826,42 +2825,61 @@ const BLACKJACK = {
     },
 
     async hit() {
+        if (this.isProcessing) return;
+        
         this.playerHand.push(this.drawCard());
         this.updateUI();
         
+        // Reset special options after hitting
+        this.canDoubleDown = false;
+        this.canSplit = false;
+        this.updateButtons();
+        
         const playerScore = this.calculateScore(this.playerHand);
         if (playerScore > 21) {
-            await this.endGame('bust');
+            await this.endGame('lose', this.playerHand);
         }
     },
-
+    
     async stand() {
-        if (this.splitHands.length > 0) {
-            this.currentSplitHand++;
-            if (this.currentSplitHand < this.splitHands.length) {
-                this.updateSplitUI();
-                return;
+        if (this.isProcessing) return; // Prevent multiple calls
+        this.isProcessing = true;
+        
+        try {
+            if (this.splitHands.length > 0) {
+                this.currentSplitHand++;
+                if (this.currentSplitHand < this.splitHands.length) {
+                    this.updateSplitUI();
+                    return;
+                }
             }
-        }
 
-        // Dramatic dealer reveal
-        await this.dramaticDealerReveal();
+            // Disable all action buttons
+            const hitBtn = document.getElementById('hit-button');
+            const standBtn = document.getElementById('stand-button');
+            const doubleBtn = document.getElementById('double-button');
+            if (hitBtn) hitBtn.disabled = true;
+            if (standBtn) standBtn.disabled = true;
+            if (doubleBtn) doubleBtn.disabled = true;
 
-        // Dealer draws with dramatic pauses
-        while (this.calculateScore(this.dealerHand) < 17) {
-            await new Promise(resolve => setTimeout(resolve, 800));
-            const card = this.drawCard();
-            this.dealerHand.push(card);
-            this.updateUI(true);
-        }
+            await this.dramaticDealerReveal();
 
-        // Determine winner(s)
-        if (this.splitHands.length > 0) {
-            for (let hand of this.splitHands) {
-                await this.determineWinner(hand);
+            while (this.calculateScore(this.dealerHand) < 17) {
+                await new Promise(resolve => setTimeout(resolve, 800));
+                const card = this.drawCard();
+                this.dealerHand.push(card);
+                this.updateUI(true);
             }
-        } else {
-            await this.determineWinner(this.playerHand);
+
+            if (this.splitHands.length > 0) {
+                for (let hand of this.splitHands) {
+                    await this.determineWinner(hand);
+                }
+            } else {
+                await this.determineWinner(this.playerHand);
+            }
+        } finally {
+            this.isProcessing = false;
         }
     },
 
@@ -2870,8 +2888,13 @@ const BLACKJACK = {
         const dealerScore = this.calculateScore(this.dealerHand);
         
         let result;
-        // Player wins all "ties" when they didn't bust
-        if (playerScore <= 21 && (dealerScore > 21 || playerScore >= dealerScore)) {
+        if (playerScore > 21) {
+            result = 'lose';
+        } else if (dealerScore > 21) {
+            result = 'win';
+        } else if (playerScore === dealerScore) {
+            result = 'push';
+        } else if (playerScore > dealerScore) {
             result = 'win';
         } else {
             result = 'lose';
@@ -2879,20 +2902,25 @@ const BLACKJACK = {
         
         await this.endGame(result, playerHand);
     },
-
-    async endGame(result) {
+    
+    async endGame(result, playerHand) {
         this.gameInProgress = false;
+        this.isProcessing = false;
         this.updateUI(true);
         
         let winAmount = 0;
         if (result === 'win') {
-            winAmount = this.betAmount * 2;
-            if (this.playerHand.length === 2 && this.calculateScore(this.playerHand) === 21) {
-                winAmount = this.betAmount * 2.5; // Blackjack pays 3:2
+            // Natural blackjack pays 3:2
+            if (playerHand.length === 2 && this.calculateScore(playerHand) === 21) {
+                winAmount = this.betAmount * 2.5;
+            } else {
+                winAmount = this.betAmount * 2;
             }
         } else if (result === 'push') {
+            // On push, return original bet only
             winAmount = this.betAmount;
         }
+        // On lose, winAmount stays 0
 
         if (winAmount > 0) {
             try {
@@ -2903,31 +2931,37 @@ const BLACKJACK = {
                         funbucks: firebase.firestore.FieldValue.increment(winAmount)
                     });
 
-                    transaction.set(db.collection('gameHistory').doc(), {
-                        userId: auth.currentUser.uid,
-                        username: currentUser.username,
-                        gameType: 'blackjack',
-                        betAmount: this.betAmount,
-                        winAmount: winAmount,
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                    });
+                    if (result !== 'push') { // Only record non-push games in history
+                        transaction.set(db.collection('gameHistory').doc(), {
+                            userId: auth.currentUser.uid,
+                            username: currentUser.username,
+                            gameType: 'blackjack',
+                            betAmount: this.betAmount,
+                            winAmount: result === 'win' ? winAmount - this.betAmount : -this.betAmount,
+                            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    }
                 });
 
                 portfolio.balance += winAmount;
-                updatePortfolioDisplays();
-                
-           showWinAnimation(winAmount);
-           } catch (error) {
-               console.error('Error processing win:', error);
-               showErrorMessage('Error processing win');
-           }
-       } else {
-           showErrorMessage('Better luck next time!');
-       }
+        updatePortfolioDisplays();
+        
+                if (result === 'push') {
+                    showSuccessMessage('Push - bet returned');
+                } else {
+                    showWinCelebration(winAmount - this.betAmount);
+                }
+            } catch (error) {
+                console.error('Error processing game result:', error);
+                showErrorMessage('Error processing game result');
+            }
+        } else {
+            showErrorMessage('Better luck next time!');
+        }
 
-       this.updateButtons();
-   },
-   
+        this.updateButtons();
+    },
+    
    calculateScore(hand) {
         let score = 0;
         let aces = 0;
@@ -2976,7 +3010,7 @@ const BLACKJACK = {
             document.getElementById('dealer-score').textContent = `Score: ${this.calculateCardValue(this.dealerHand[0])}`;
         }},
    
-        createCardElement(card, animated = false) {
+    createCardElement(card, animated = false) {
     const isRed = ['♥', '♦'].includes(card.suit);
     const color = isRed ? 'text-red-600' : 'text-black';
     return `
@@ -2993,22 +3027,41 @@ const BLACKJACK = {
        if (['K', 'Q', 'J'].includes(card.value)) return 10;
        return parseInt(card.value);
    },
-
-   updateButtons() {
+   getCardValue(card) {
+        if (card.value === 'A') return 11;
+        if (['K', 'Q', 'J'].includes(card.value)) return 10;
+        return parseInt(card.value);
+    },
+   
+    updateButtons() {
         const dealBtn = document.getElementById('deal-button');
         const hitBtn = document.getElementById('hit-button');
         const standBtn = document.getElementById('stand-button');
         const doubleBtn = document.getElementById('double-button');
         const splitBtn = document.getElementById('split-button');
         
-        if (this.gameInProgress) {
+        if (this.gameInProgress && !this.isProcessing) {
             dealBtn.classList.add('hidden');
             hitBtn.classList.remove('hidden');
+            hitBtn.disabled = false;
             standBtn.classList.remove('hidden');
+            standBtn.disabled = false;
             
-            // Show/hide special buttons
-            doubleBtn.classList.toggle('hidden', !this.canDoubleDown);
-            splitBtn.classList.toggle('hidden', !this.canSplit);
+            // Double down button
+            if (this.canDoubleDown) {
+                doubleBtn.classList.remove('hidden');
+                doubleBtn.disabled = false;
+            } else {
+                doubleBtn.classList.add('hidden');
+            }
+            
+            // Split button
+            if (this.canSplit) {
+                splitBtn.classList.remove('hidden');
+                splitBtn.disabled = false;
+            } else {
+                splitBtn.classList.add('hidden');
+            }
         } else {
             dealBtn.classList.remove('hidden');
             hitBtn.classList.add('hidden');
@@ -3017,7 +3070,7 @@ const BLACKJACK = {
             splitBtn.classList.add('hidden');
         }
     },
-
+   
    changeBet(action) {
        const input = document.getElementById('blackjack-bet');
        const currentBet = parseFloat(input.value);
@@ -3029,7 +3082,6 @@ const BLACKJACK = {
        }
    }
 };
-
 function showBlackjack() {
     document.getElementById('blackjack-container').classList.remove('hidden');
     BLACKJACK.init();
@@ -3037,61 +3089,63 @@ function showBlackjack() {
 function closeBlackjack() {
    document.getElementById('blackjack-container').classList.add('hidden');
 }
-
 const MINES = {
-   grid: [],
-   mineLocations: [],
-   revealedCells: [],
-   gameInProgress: false,
-   mineCount: 3,
-   currentMultiplier: 1.0,
-   betAmount: 0,
+    grid: [],
+    mineLocations: [],
+    revealedCells: [], 
+    gameInProgress: false,
+    mineCount: 3,
+    currentMultiplier: 1.0,
+    betAmount: 0,
+    clickLock: false,
+
    
-   async startGame() {
-       if (!auth.currentUser) {
-           showErrorMessage('Please sign in to play');
-           return;
-       }
+    async startGame() {
+        if (!auth.currentUser) {
+            showErrorMessage('Please sign in to play');
+            return;
+        }
 
-       const betAmount = parseFloat(document.getElementById('mines-bet').value);
-       if (betAmount > portfolio.balance) {
-           showErrorMessage('Insufficient funds');
-           return;
-       }
+        const betAmount = parseFloat(document.getElementById('mines-bet').value);
+        if (betAmount > portfolio.balance) {
+            showErrorMessage('Insufficient funds');
+            return;
+        }
 
-       try {
-           await db.runTransaction(async (transaction) => {
-               const userRef = db.collection('users').doc(auth.currentUser.uid);
-               const userDoc = await transaction.get(userRef);
-               
-               if (userDoc.data().funbucks < betAmount) {
-                   throw new Error('Insufficient funds');
-               }
-               
-               transaction.update(userRef, {
-                   funbucks: firebase.firestore.FieldValue.increment(-betAmount)
-               });
-           });
+        try {
+            await db.runTransaction(async (transaction) => {
+                const userRef = db.collection('users').doc(auth.currentUser.uid);
+                const userDoc = await transaction.get(userRef);
+                
+                if (userDoc.data().funbucks < betAmount) {
+                    throw new Error('Insufficient funds');
+                }
+                
+                transaction.update(userRef, {
+                    funbucks: firebase.firestore.FieldValue.increment(-betAmount)
+                });
+            });
 
-           portfolio.balance -= betAmount;
-           updatePortfolioDisplays();
-           
-           this.betAmount = betAmount;
-           this.gameInProgress = true;
-           this.revealedCells = [];
-           this.currentMultiplier = 1.0;
-           this.generateGrid();
-           this.updateUI();
-           
-           document.getElementById('mines-start-btn').classList.add('hidden');
-           document.getElementById('mines-cashout-btn').classList.remove('hidden');
-           
-       } catch (error) {
-           console.error('Error starting game:', error);
-           showErrorMessage(error.message);
-       }
-   },
-
+            portfolio.balance -= betAmount;
+            updatePortfolioDisplays();
+            
+            this.betAmount = betAmount;
+            this.gameInProgress = true;
+            this.revealedCells = []; // Reset revealed cells
+            this.clickLock = false;
+            this.currentMultiplier = 1.0;
+            this.generateGrid();
+            this.updateUI();
+            
+            document.getElementById('mines-start-btn').classList.add('hidden');
+            document.getElementById('mines-cashout-btn').classList.remove('hidden');
+            
+        } catch (error) {
+            console.error('Error starting game:', error);
+            showErrorMessage(error.message);
+        }
+    },
+    
    generateGrid() {
     this.mineLocations = [];
     while (this.mineLocations.length < this.mineCount) {
@@ -3135,56 +3189,60 @@ const MINES = {
    },
 
    async revealCell(index) {
-        if (!this.gameInProgress || this.revealedCells.includes(index)) return;
+        if (!this.gameInProgress || 
+            this.clickLock || 
+            this.revealedCells.includes(index)) return;
         
-        const cell = document.getElementById('mines-grid').children[index];
+        this.clickLock = true;
         
-        // Add suspense animation before reveal
-        cell.classList.add('animate__animated', 'animate__pulse');
-        await new Promise(resolve => setTimeout(resolve, 500));
-        
-        if (this.mineLocations.includes(index)) {
-            // Dramatic mine reveal
-            cell.innerHTML = `
-                <div class="relative w-full h-full flex items-center justify-center">
-                    <div class="absolute inset-0 bg-red-500 opacity-0 animate-ping"></div>
-                    <div class="relative transform scale-0 animate-grow-bounce">💣</div>
-                </div>
-            `;
-            cell.classList.remove('bg-gray-700', 'hover:bg-gray-600');
-            cell.classList.add('bg-red-600');
+        try {
+            const cell = document.getElementById('mines-grid').children[index];
             
-            // Shake effect
-            document.getElementById('mines-grid').classList.add('animate__animated', 'animate__shakeX');
+            cell.classList.add('animate__animated', 'animate__pulse');
+            await new Promise(resolve => setTimeout(resolve, 500));
             
-            // Small delay before explosion
-            await new Promise(resolve => setTimeout(resolve, 300));
-            
-            // Reveal all other mines with cascade effect
-            this.revealAllMines(index);
-            
-            await this.endGame(false);
-        } else {
-            // Dramatic gem reveal
-            cell.innerHTML = `
-                <div class="relative w-full h-full flex items-center justify-center">
-                    <div class="absolute inset-0 bg-green-500 opacity-0 animate-pulse"></div>
-                    <div class="relative transform scale-0 animate-grow-bounce">💎</div>
-                </div>
-            `;
-            cell.classList.remove('bg-gray-700', 'hover:bg-gray-600');
-            cell.classList.add('bg-green-600');
-            
-            // Sparkle effect
-            cell.classList.add('sparkle');
-            
-            this.revealedCells.push(index);
-            this.currentMultiplier = this.calculateMultiplier(this.revealedCells.length);
-            this.updateUI();
-            
-            if (this.revealedCells.length === 25 - this.mineCount) {
-                await this.cashout();
+            if (this.mineLocations.includes(index)) {
+                if (!this.revealedCells.includes(index)) {
+                    this.revealedCells.push(index);
+                    cell.innerHTML = `
+                        <div class="relative w-full h-full flex items-center justify-center">
+                            <div class="absolute inset-0 bg-red-500 opacity-0 animate-ping"></div>
+                            <div class="relative transform scale-0 animate-grow-bounce">💣</div>
+                        </div>
+                    `;
+                    cell.classList.remove('bg-gray-700', 'hover:bg-gray-600');
+                    cell.classList.add('bg-red-600');
+                    
+                    document.getElementById('mines-grid').classList.add('animate__animated', 'animate__shakeX');
+                    
+                    await new Promise(resolve => setTimeout(resolve, 300));
+                    await this.revealAllMines(index);
+                    await this.endGame(false);
+                }
+            } else {
+                if (!this.revealedCells.includes(index)) {
+                    this.revealedCells.push(index);
+                    cell.innerHTML = `
+                        <div class="relative w-full h-full flex items-center justify-center">
+                            <div class="absolute inset-0 bg-green-500 opacity-0 animate-pulse"></div>
+                            <div class="relative transform scale-0 animate-grow-bounce">💎</div>
+                        </div>
+                    `;
+                    cell.classList.remove('bg-gray-700', 'hover:bg-gray-600');
+                    cell.classList.add('bg-green-600');
+                    
+                    cell.classList.add('sparkle');
+                    
+                    this.currentMultiplier = this.calculateMultiplier(this.revealedCells.length);
+                    this.updateUI();
+                    
+                    if (this.revealedCells.length === 25 - this.mineCount) {
+                        await this.cashout();
+                    }
+                }
             }
+        } finally {
+            this.clickLock = false;
         }
     },
    
@@ -3236,7 +3294,7 @@ const MINES = {
            
            portfolio.balance += winAmount;
            updatePortfolioDisplays();
-           showWinAnimation(winAmount);
+           showWinCelebration(winAmount, this.currentMultiplier);
            
            await this.endGame(true);
            
@@ -3305,16 +3363,13 @@ const MINES = {
        }
    }
 };
-
 function showMines() {
    document.getElementById('mines-container').classList.remove('hidden');
    MINES.setMines(3);
 }
-
 function closeMines() {
    document.getElementById('mines-container').classList.add('hidden');
 }
-
 function showRoulette() {
     document.getElementById('roulette-container').classList.remove('hidden');
     if (!ROULETTE.initialized) {
@@ -3328,7 +3383,6 @@ function closeRoulette() {
         cancelAnimationFrame(ROULETTE.spinAnimation);
     }
 }
-
 const CRASH = {
     canvas: null,
     ctx: null,
@@ -3882,14 +3936,12 @@ const CRASH = {
         }
     }
 };
-
 function showCrash() {
     document.getElementById('crash-container').classList.remove('hidden');
     if (!CRASH.initialized) {
         CRASH.init();
     }
 }
-
 function closeCrash() {
     document.getElementById('crash-container').classList.add('hidden');
     if (CRASH.timerInterval) {
@@ -3900,21 +3952,18 @@ function closeCrash() {
     }
     CRASH.initialized = false;
 }
-
 function showCrash() {
     document.getElementById('crash-container').classList.remove('hidden');
     if (!CRASH.initialized) {
         CRASH.init();
     }
 }
-
 function closeCrash() {
     document.getElementById('crash-container').classList.add('hidden');
     if (CRASH.animationFrame) {
         cancelAnimationFrame(CRASH.animationFrame);
     }
 }
-
 async function showRoulette() {
     document.getElementById('roulette-container').classList.remove('hidden');
     if (!ROULETTE.initialized) {
@@ -3936,127 +3985,242 @@ async function showRoulette() {
     }
 }
 }
-
 function closeRoulette() {
     document.getElementById('roulette-container').classList.add('hidden');
     if (ROULETTE.spinAnimation) {
         cancelAnimationFrame(ROULETTE.spinAnimation);
     }
 }
-
 function showDragonTower() {
     document.getElementById('dragon-tower-container').classList.remove('hidden');
     DRAGON.init();
 }
-
 function closeDragonTower() {
     document.getElementById('dragon-tower-container').classList.add('hidden');
 }
 
-async function showWinCelebration(amount, multiplier) {
-    // Create container for the celebration
+function showWinCelebration(amount, multiplier = null) {
+    const styleId = 'win-animation-style';
+    if (!document.getElementById(styleId)) {
+        const style = document.createElement('style');
+        style.id = styleId;
+        style.textContent = `
+            @keyframes float-coin {
+                0% { 
+                    transform: translate(0, 0) rotate(0deg); 
+                    opacity: 0;
+                }
+                10% {
+                    opacity: 1;
+                }
+                100% { 
+                    transform: translate(var(--tx), var(--ty)) rotate(720deg);
+                    opacity: 0;
+                }
+            }
+
+            @keyframes pulse-glow {
+                0%, 100% { filter: brightness(1) drop-shadow(0 0 15px rgba(59, 130, 246, 0.5)); }
+                50% { filter: brightness(1.2) drop-shadow(0 0 25px rgba(59, 130, 246, 0.8)); }
+            }
+
+            @keyframes celebrate-pop {
+                0% { transform: scale(0) rotate(-12deg); }
+                30% { transform: scale(1.2) rotate(8deg); }
+                60% { transform: scale(0.9) rotate(-4deg); }
+                80% { transform: scale(1.1) rotate(2deg); }
+                100% { transform: scale(1) rotate(0); }
+            }
+
+            @keyframes number-pop {
+                0% { transform: scale(0.3); opacity: 0; }
+                50% { transform: scale(1.4); opacity: 0.7; }
+                100% { transform: scale(1); opacity: 1; }
+            }
+
+            .coin-particle {
+                position: absolute;
+                animation: float-coin 3s ease-out forwards;
+                z-index: 70;
+            }
+
+            .celebrate-container {
+                animation: celebrate-pop 0.7s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            }
+
+            .winner-text {
+                animation: number-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            }
+
+            .pulse-glow {
+                animation: pulse-glow 2s ease-in-out infinite;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
     const container = document.createElement('div');
     container.className = 'fixed inset-0 pointer-events-none flex items-center justify-center z-[60]';
+    
     container.innerHTML = `
-        <div class="relative">
-            <!-- Large wave background -->
-            <svg class="absolute animate-wave" width="300" height="300" viewBox="0 0 300 300">
-                <path class="fill-blue-500/30" d="M0,100 Q75,80 150,100 Q225,120 300,100 L300,300 L0,300 Z">
-                    <animate attributeName="d" 
-                            dur="2s"
-                            repeatCount="indefinite"
-                            values="M0,100 Q75,80 150,100 Q225,120 300,100 L300,300 L0,300 Z;
-                                    M0,110 Q75,130 150,110 Q225,90 300,110 L300,300 L0,300 Z;
-                                    M0,100 Q75,80 150,100 Q225,120 300,100 L300,300 L0,300 Z"/>
-                </path>
-            </svg>
-
-            <!-- Win amount display -->
-            <div class="relative animate-float bg-gradient-to-r from-blue-600 to-blue-400 
-                        rounded-xl p-8 shadow-lg transform scale-0 animate-grow-bounce">
-                <div class="absolute -top-4 -left-4 w-12 h-12 bg-yellow-400 rounded-full 
-                           flex items-center justify-center animate-spin-slow">
-                    <span class="text-2xl">💰</span>
+        <div class="celebrate-container">
+            <div class="relative bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl p-8 shadow-2xl
+                        border-2 border-blue-400 min-w-[320px] pulse-glow">
+                <!-- Money bag with glow effect -->
+                <div class="absolute -top-6 -left-6 w-16 h-16 bg-gradient-to-br from-yellow-400 to-yellow-500 
+                           rounded-full flex items-center justify-center transform hover:scale-110 transition-transform
+                           shadow-[0_0_20px_8px_rgba(251,191,36,0.3)]">
+                    <span class="text-3xl">💰</span>
                 </div>
                 
-                <div class="text-center">
-                    <div class="text-white text-4xl font-bold mb-2">
+                <!-- Main content -->
+                <div class="relative text-center z-10 py-4">
+                    <div class="winner-text text-white text-5xl font-bold mb-3 opacity-0">
                         +${formatCurrency(amount)}
                     </div>
-                    <div class="text-blue-100 text-xl">
-                        Cashed out at ${multiplier.toFixed(2)}×
-                    </div>
-                </div>
-
-                <!-- Floating coins -->
-                <div class="absolute inset-0 pointer-events-none">
-                    ${Array.from({length: 15}, () => `
-                        <div class="absolute animate-float-coin" 
-                             style="left: ${Math.random() * 100}%; 
-                                    top: ${Math.random() * 100}%; 
-                                    animation-delay: ${Math.random()}s">
-                            <span class="text-2xl">🪙</span>
+                    ${multiplier ? `
+                        <div class="text-blue-100 text-2xl mt-2 winner-text opacity-0" style="animation-delay: 0.2s">
+                            ${multiplier.toFixed(2)}×
                         </div>
-                    `).join('')}
+                    ` : ''}
                 </div>
             </div>
         </div>
     `;
 
-    // Add styles for the animations
+    document.body.appendChild(container);
+
+    // Create floating coins that can go outside the container
+    const createCoins = () => {
+        for (let i = 0; i < 30; i++) {
+            setTimeout(() => {
+                const coin = document.createElement('div');
+                coin.className = 'coin-particle';
+                
+                // Random starting position near the center
+                const startX = window.innerWidth / 2 + (Math.random() - 0.5) * 100;
+                const startY = window.innerHeight / 2 + (Math.random() - 0.5) * 100;
+                
+                // Random ending position spreading outward
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 300 + Math.random() * 200;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+                
+                coin.style.cssText = `
+                    left: ${startX}px;
+                    top: ${startY}px;
+                    --tx: ${tx}px;
+                    --ty: ${ty}px;
+                    animation-delay: ${Math.random() * 0.5}s;
+                `;
+                
+                coin.innerHTML = `
+                    <span class="text-3xl transform -rotate-12">
+                        ${Math.random() > 0.5 ? '🪙' : '💰'}
+                    </span>
+                `;
+                
+                document.body.appendChild(coin);
+                setTimeout(() => coin.remove(), 3000);
+            }, i * 100);
+        }
+    };
+
+    createCoins();
+    
+    // Create new coins every second
+    const coinInterval = setInterval(createCoins, 1000);
+
+    // Cleanup
+    setTimeout(() => {
+        clearInterval(coinInterval);
+        container.remove();
+        const styles = document.getElementById(styleId);
+        if (styles) styles.remove();
+    }, 5000);
+}
+
+function showPlinkoWin(amount, multiplier, landingPosition) {
+    // Calculate a position on either side of the game board
+    // Game board is assumed to be in the middle 60% of the screen
+    const leftSide = Math.random() * 20; // 0-20% of screen width
+    const rightSide = 80 + (Math.random() * 20); // 80-100% of screen width
+    const xPos = Math.random() < 0.5 ? leftSide : rightSide;
+    const yPos = 30 + (Math.random() * 40); // 30-70% of screen height
+
+    const container = document.createElement('div');
+    container.className = 'fixed inset-0 pointer-events-none z-[60]';
+
+    container.innerHTML = `
+        <div class="absolute transform -translate-x-1/2 -translate-y-1/2"
+             style="left: ${xPos}%; top: ${yPos}%">
+            <div class="relative bg-gradient-to-br from-blue-600 to-blue-500 
+                        rounded-xl px-6 py-3 shadow-lg animate-win-pop">
+                <!-- Glowing border effect -->
+                <div class="absolute inset-0 bg-blue-400 rounded-xl opacity-20 animate-pulse"></div>
+                
+                <!-- Star particles -->
+                ${Array.from({length: 6}, () => `
+                    <div class="absolute animate-star-float"
+                         style="left: ${Math.random() * 100}%;
+                                top: ${Math.random() * 100}%;
+                                animation-delay: ${Math.random() * 0.5}s;">
+                        ✨
+                    </div>
+                `).join('')}
+                
+                <div class="relative text-center z-10">
+                    <div class="text-white text-2xl font-bold animate-bounce-soft">
+                        +${formatCurrency(amount)}
+                    </div>
+                    <div class="text-white text-sm mt-1 animate-fade-in">
+                        ${multiplier.toFixed(2)}×
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
     const style = document.createElement('style');
     style.textContent = `
-        @keyframes wave {
-            0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(-20px); }
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-        
-        @keyframes grow-bounce {
-            0% { transform: scale(0); }
-            50% { transform: scale(1.1); }
-            75% { transform: scale(0.95); }
-            100% { transform: scale(1); }
-        }
-        
-        @keyframes spin-slow {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        
-        @keyframes float-coin {
-            0% { 
-                transform: translateY(0) rotate(0); 
-                opacity: 1;
-            }
-            100% { 
-                transform: translateY(-100px) rotate(360deg); 
-                opacity: 0;
-            }
+        @keyframes win-pop {
+            0% { transform: scale(0) rotate(-10deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+            100% { transform: scale(1) rotate(0); }
         }
 
-        .animate-wave {
-            animation: wave 3s ease-in-out infinite;
+        @keyframes star-float {
+            0% { transform: translate(0, 0) scale(0); opacity: 0; }
+            20% { transform: translate(-10px, -10px) scale(1); opacity: 1; }
+            100% { transform: translate(-20px, -20px) scale(0); opacity: 0; }
         }
-        
-        .animate-float {
-            animation: float 3s ease-in-out infinite;
+
+        @keyframes bounce-soft {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
         }
-        
-        .animate-grow-bounce {
-            animation: grow-bounce 0.6s ease-out forwards;
+
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        
-        .animate-spin-slow {
-            animation: spin-slow 3s linear infinite;
+
+        .animate-win-pop {
+            animation: win-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
-        
-        .animate-float-coin {
-            animation: float-coin 2s ease-out forwards;
+
+        .animate-star-float {
+            animation: star-float 1.5s ease-out forwards;
+        }
+
+        .animate-bounce-soft {
+            animation: bounce-soft 1s ease-in-out infinite;
+        }
+
+        .animate-fade-in {
+            animation: fade-in 0.3s ease-out forwards;
+            animation-delay: 0.2s;
             opacity: 0;
         }
     `;
@@ -4064,36 +4228,14 @@ async function showWinCelebration(amount, multiplier) {
     document.head.appendChild(style);
     document.body.appendChild(container);
 
-    // Add splash sound effect
-    const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2/2.wav');
-    audio.volume = 0.5;
-    audio.play().catch(() => {}); // Catch and ignore autoplay restrictions
-
-    // Remove celebration after animation
+    // Remove after animation
     setTimeout(() => {
-        container.classList.add('animate-fadeOut');
+        container.classList.add('animate-fade-out');
         setTimeout(() => {
             container.remove();
             style.remove();
-        }, 500);
-    }, 3000);
-}
-
-function showWinAnimation(amount) {
-    const container = document.createElement('div');
-    container.className = 'fixed inset-0 pointer-events-none flex items-center justify-center z-50';
-    container.innerHTML = `
-        <div class="text-6xl font-bold text-green-400 animate__animated animate__bounceIn">
-            +${formatCurrency(amount)}
-        </div>
-    `;
-    document.body.appendChild(container);
-    
-    setTimeout(() => {
-        container.querySelector('div').classList.remove('animate__bounceIn');
-        container.querySelector('div').classList.add('animate__bounceOut');
-        setTimeout(() => container.remove(), 1000);
-    }, 2000);
+        }, 300);
+    }, 1700);
 }
 
 document.querySelector('[data-tab="live-games"]')?.addEventListener('click', () => {
