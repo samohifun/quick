@@ -1033,7 +1033,7 @@
                         </div>
             
                         <!-- Roulette -->
-                        <div class="bg-gray-800/80 backdrop-blur p-6 rounded-xl border border-blue-900/30 hover:border-blue-500 transition-all cursor-pointer shadow-lg hover:transform hover:scale-105" onclick="showRoulette()">
+<!--                         <div class="bg-gray-800/80 backdrop-blur p-6 rounded-xl border border-blue-900/30 hover:border-blue-500 transition-all cursor-pointer shadow-lg hover:transform hover:scale-105" onclick="showRoulette()">
                             <div class="flex items-center gap-4 mb-4">
                                 <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-700 rounded-xl flex items-center justify-center shadow-lg">
                                     <svg class="w-10 h-10 text-white" viewBox="0 0 24 24">
@@ -1050,10 +1050,10 @@
                                 The wheel is not properly landing on the correct number! Even more of a gamble! So much fun to be had!
                             </p>
                             <div class="text-sm text-blue-300">Max Win: 35x</div>
-                        </div>
+                        </div> -->
             
                         <!-- Crash -->
-                        <div class="bg-gray-800/80 backdrop-blur p-6 rounded-xl border border-blue-900/30 hover:border-blue-500 transition-all cursor-pointer shadow-lg hover:transform hover:scale-105" onclick="showCrash()">
+                       <!-- <div class="bg-gray-800/80 backdrop-blur p-6 rounded-xl border border-blue-900/30 hover:border-blue-500 transition-all cursor-pointer shadow-lg hover:transform hover:scale-105" onclick="showCrash()">
                             <div class="flex items-center gap-4 mb-4">
                                 <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg">
                                     <svg class="w-10 h-10 text-white" viewBox="0 0 24 24">
@@ -1069,7 +1069,7 @@
                                 Watch the multiplier soar and test your nerves! Cash out at the perfect moment for massive wins.
                             </p>
                             <div class="text-sm text-blue-300">Unlimited Potential!</div>
-                        </div>
+                        </div> -->
             
                         <!-- Blackjack -->
                         <div class="bg-gray-800/80 backdrop-blur p-6 rounded-xl border border-blue-900/30 hover:border-blue-500 transition-all cursor-pointer shadow-lg hover:transform hover:scale-105" onclick="showBlackjack()">
@@ -1091,7 +1091,7 @@
                         </div>
             
                         <!-- Mines -->
-                        <div class="bg-gray-800/80 backdrop-blur p-6 rounded-xl border border-blue-900/30 hover:border-blue-500 transition-all cursor-pointer shadow-lg hover:transform hover:scale-105" onclick="showMines()">
+                         <div class="bg-gray-800/80 backdrop-blur p-6 rounded-xl border border-blue-900/30 hover:border-blue-500 transition-all cursor-pointer shadow-lg hover:transform hover:scale-105" onclick="showMines()">
                             <div class="flex items-center gap-4 mb-4">
                                 <div class="w-16 h-16 bg-gradient-to-br from-red-600 to-purple-700 rounded-xl flex items-center justify-center shadow-lg">
                                     <svg class="w-10 h-10 text-white" viewBox="0 0 24 24">
@@ -1502,17 +1502,17 @@
                                 <div class="bg-gray-800 p-4 rounded-xl">
                                     <div class="text-sm text-gray-400 mb-2">Mines Count</div>
                                     <div class="grid grid-cols-3 gap-2">
-                                        <button onclick="MINES.setMines(5)" 
+                                        <button onclick="MINES.setMines(3)" 
                                                 class="p-2 bg-blue-600 hover:bg-blue-700 rounded text-white text-sm mines-btn active">
+                                                3
+                                        </button>
+                                        <button onclick="MINES.setMines(5)" 
+                                                class="p-2 bg-blue-600 hover:bg-blue-700 rounded text-white text-sm mines-btn">
                                                 5
                                         </button>
                                         <button onclick="MINES.setMines(7)" 
                                                 class="p-2 bg-blue-600 hover:bg-blue-700 rounded text-white text-sm mines-btn">
                                                 7
-                                        </button>
-                                        <button onclick="MINES.setMines(9)" 
-                                                class="p-2 bg-blue-600 hover:bg-blue-700 rounded text-white text-sm mines-btn">
-                                                9
                                         </button>
                                     </div>
                                 </div>
@@ -1837,6 +1837,11 @@ const firebaseConfig = {
     appId: "1:33888100969:web:9f58fb4f8fcdcc110d38f8",
     measurementId: "G-RYC5DLG9DN"
 };
+    
+function validateBetAmount(amount) {
+    const betAmount = Number(amount);
+    return !isNaN(betAmount) && betAmount > 0 && isFinite(betAmount);
+}
 const DEFAULT_PROFILE_PIC = "https://polymarket.com/_next/image?url=https%3A%2F%2Fpolymarket-upload.s3.us-east-2.amazonaws.com%2F31669764_829bfb7d-c27d-4c9a-8b78-dd9135282938_1730892972459.png&w=256&q=100";
 const app = firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
@@ -1924,7 +1929,7 @@ const PLINKO = {
         },
         high: {
             name: "High Risk",
-            multipliers: [4.0, 2.0, 0.3, 0.2, 0.1, 0.2, 0.3, 2.0, 4.0],
+            multipliers: [4000.0, 2.0, 0.3, 0.2, 0.1, 0.2, 0.3, 2.0, 4000.0],
             centerBias: 0.8,
             colors: ['#DC2626', '#EF4444', '#F87171', '#FCA5A5', '#FEE2E2', '#FCA5A5', '#F87171', '#EF4444', '#DC2626']
         }
@@ -2062,6 +2067,10 @@ const PLINKO = {
         }
 
         const betAmount = parseFloat(document.getElementById('plinko-bet').value);
+        if (!validateBetAmount(betAmount)) {
+            showErrorMessage('Please enter a valid positive bet amount');
+            return;
+        }
         if (betAmount > portfolio.balance) {
             showErrorMessage('Insufficient funds');
             return;
@@ -2385,7 +2394,15 @@ const DRAGON = {
             return;
         }
         
-        const betAmount = parseFloat(document.getElementById('tower-bet').value);
+        const betAmount = parseFloat(document.getElementById('mines-bet').value);
+        if (!validateBetAmount(betAmount)) {
+            showErrorMessage('Please enter a valid positive bet amount');
+            return;
+        }
+        if (!validateBetAmount(betAmount)) {
+            showErrorMessage('Please enter a valid positive bet amount');
+            return;
+        }
         if (betAmount > portfolio.balance) {
             showErrorMessage('Insufficient funds');
             return;
@@ -3383,7 +3400,7 @@ const MINES = {
     mineLocations: [],
     revealedCells: [], 
     gameInProgress: false,
-    mineCount: 3,
+    mineCount: 1,
     currentMultiplier: 1.0,
     betAmount: 0,
     clickLock: false,
@@ -3473,7 +3490,7 @@ const MINES = {
         multiplier *= (safeSpots - i) / (25 - i);
     }
     
-    return 0.6 / multiplier;
+    return 0.3 / multiplier;
 },
 
    async revealCell(index) {
@@ -3666,6 +3683,7 @@ function closeMines() {
         container.classList.add('hidden');
     }
 }
+
 function showRoulette() {
     const container = document.getElementById('roulette-container');
     if (container) {
@@ -10678,7 +10696,36 @@ document.getElementById('save-profile-picture')?.addEventListener('click', async
         alert('Error updating profile picture');
     }
 });
+document.addEventListener('DOMContentLoaded', function() {
+    const betInputs = [
+        'plinko-bet',
+        'tower-bet',
+        'blackjack-bet',
+        'mines-bet'
+    ];
 
+    betInputs.forEach(inputId => {
+        const input = document.getElementById(inputId);
+        if (input) {
+            input.addEventListener('input', function() {
+                if (this.value < 0) {
+                    this.value = Math.abs(this.value);
+                }
+            });
+
+            input.setAttribute('min', '1');
+            
+            input.addEventListener('change', function() {
+                if (this.value < 0) {
+                    this.value = Math.abs(this.value);
+                }
+                if (this.value === '0') {
+                    this.value = '1';
+                }
+            });
+        }
+    });
+});
 document.addEventListener('DOMContentLoaded', () => {
     const gameContainers = [
         'mines-container',
