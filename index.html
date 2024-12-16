@@ -1096,25 +1096,25 @@
                         </div>
                         
                         <div class="flex gap-4">
-                            <!-- Left Side - Large Wheel -->
+                            
                             <div class="w-[750px] flex flex-col bg-gray-800 rounded-xl p-4">
-                                <!-- Larger wheel canvas -->
+                                
                                 <div class="relative">
                                     <canvas id="roulette-wheel" class="w-[850px] h-[850px] rounded-lg"></canvas>
                                     <div id="roulette-result" 
                                          class="absolute top-4 right-4 text-6xl font-bold transition-all duration-300"></div>
                                 </div>
-                                <!-- History strip below wheel -->
+                                
                                 <div class="mt-4 flex gap-2 overflow-x-auto py-2">
                                     <div id="roulette-history" class="flex gap-2">
-                                        <!-- Will be populated by JavaScript -->
+                                        
                                     </div>
                                 </div>
                             </div>
                 
-                            <!-- Right Side - Betting Controls -->
+                            
                             <div class="flex-1 flex flex-col gap-4">
-                                <!-- Bet Amount -->
+                                
                                 <div class="bg-gray-800 rounded-xl p-4">
                                     <div class="text-sm text-gray-400 mb-2">Bet Amount</div>
                                     <div class="flex gap-2">
@@ -1127,9 +1127,9 @@
                                     </div>
                                 </div>
                 
-                                <!-- Betting Options -->
+                                
                                 <div class="bg-gray-800 rounded-xl p-4 flex-1">
-                                    <!-- Quick Bets -->
+                                    
                                     <div class="grid grid-cols-2 gap-3 mb-4">
                                         <button onclick="ROULETTE.placeBet('red')" 
                                                 class="p-4 bg-red-600 hover:bg-red-700 text-white rounded font-bold">
@@ -1149,7 +1149,7 @@
                                         </button>
                                     </div>
                 
-                                    <!-- Dozens -->
+                                    
                                     <div class="grid grid-cols-3 gap-3 mb-4">
                                         <button onclick="ROULETTE.placeBet('1st12')" 
                                                 class="p-3 bg-purple-600 hover:bg-purple-700 text-white rounded font-bold">
@@ -1165,21 +1165,21 @@
                                         </button>
                                     </div>
                 
-                                    <!-- Number Grid -->
+                                    
                                     <div class="grid grid-cols-6 gap-1 mb-4" id="number-grid">
-                                        <!-- Will be populated by JavaScript -->
+                                        
                                     </div>
                 
-                                    <!-- Current Bets Display -->
+                                    
                                     <div class="mt-4 bg-gray-700 rounded-lg p-3">
                                         <div class="text-sm text-gray-400 mb-2">Current Bets</div>
                                         <div id="current-bets" class="flex flex-wrap gap-2">
-                                            <!-- Will be populated by JavaScript -->
+                                            
                                         </div>
                                     </div>
                                 </div>
                 
-                                <!-- Spin Button -->
+                                
                                 <button onclick="ROULETTE.spin()" 
                                         class="w-full p-4 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold text-xl">
                                     SPIN (${formatCurrency(ROULETTE.getTotalBetAmount())})
@@ -1190,7 +1190,7 @@
                 </div>
                 <div id="crash-container" class="fixed inset-0 bg-black/90 flex items-center justify-center hidden z-50">
                     <div class="bg-gray-900 rounded-xl p-4 w-[1200px] h-[800px]">
-                        <!-- Game Header -->
+                        
                         <div class="flex justify-between items-center mb-4">
                             <h2 class="text-2xl font-bold text-blue-300">Crash</h2>
                             <div id="round-timer" class="text-xl font-bold text-white mb-4">Next round in: 30s</div>
@@ -1198,9 +1198,9 @@
                         </div>
                         
                         <div class="flex gap-4 h-[calc(100%-4rem)]">
-                            <!-- Left Side - Game Area -->
+                            
                             <div class="flex-1 flex flex-col">
-                                <!-- Graph Area -->
+                                
                                 <div class="relative flex-1 bg-gray-800 rounded-xl p-4">
                                     <canvas id="crash-canvas"></canvas>
                                     <div id="crash-multiplier" 
@@ -1209,10 +1209,10 @@
                                     </div>
                                 </div>
                 
-                                <!-- Betting Controls -->
+                                
                                 <div class="mt-4 p-4 bg-gray-800 rounded-xl">
                                     <div class="flex gap-4">
-                                        <!-- Manual Bet -->
+                                        
                                         <div class="flex-1">
                                             <div class="text-sm text-gray-400 mb-2">Bet Amount</div>
                                             <div class="flex gap-2">
@@ -1224,7 +1224,7 @@
                                                         class="px-4 bg-blue-600 hover:bg-blue-700 rounded text-white">2×</button>
                                             </div>
                                         </div>
-                                        <!-- Auto Cashout -->
+                                        
                                         <div class="flex-1">
                                             <div class="text-sm text-gray-400 mb-2">Auto Cashout At</div>
                                             <div class="flex gap-2 items-center">
@@ -1238,7 +1238,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- Bet Button -->
+                                    
                                     <div class="mt-4">
                                         <button id="crash-bet-btn" onclick="CRASH.placeBet()" 
                                                 class="w-full p-3 bg-green-600 hover:bg-green-700 text-white rounded font-bold">
@@ -1252,21 +1252,21 @@
                                 </div>
                             </div>
                 
-                            <!-- Right Side - Players & History -->
+                            
                             <div class="w-80 flex flex-col gap-4">
-                                <!-- Active Players -->
+                                
                                 <div class="flex-1 bg-gray-800 rounded-xl p-4">
                                     <div class="text-sm text-gray-400 mb-2">Players This Round</div>
                                     <div id="active-players" class="h-[calc(100%-2rem)] overflow-y-auto">
-                                        <!-- Will be populated by JavaScript -->
+                                        
                                     </div>
                                 </div>
                 
-                                <!-- Game History -->
+                                
                                 <div class="h-48 bg-gray-800 rounded-xl p-4">
                                     <div class="text-sm text-gray-400 mb-2">Previous Crashes</div>
                                     <div id="crash-history" class="grid grid-cols-4 gap-2">
-                                        <!-- Will be populated by JavaScript -->
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -1282,14 +1282,14 @@
                         
                         <div class="flex gap-6">
                             <div class="flex-1 bg-green-900/30 rounded-xl p-4">
-                                <!-- Dealer's cards -->
+                                
                                 <div class="mb-8">
                                     <div class="text-lg text-gray-300 mb-2">Dealer's Hand</div>
                                     <div id="dealer-cards" class="flex gap-2 min-h-[140px]"></div>
                                     <div id="dealer-score" class="text-xl font-bold text-white mt-2">Score: 0</div>
                                 </div>
                                 
-                                <!-- Player's cards -->
+                                
                                 <div>
                                     <div class="text-lg text-gray-300 mb-2">Your Hand</div>
                                     <div id="player-cards" class="flex gap-2 min-h-[140px]"></div>
@@ -1348,7 +1348,7 @@
                         <div class="flex gap-6">
                             <div class="flex-1 bg-gray-800 p-6 rounded-xl">
                                 <div id="mines-grid" class="grid grid-cols-5 gap-3">
-                                    <!-- Grid will be populated by JavaScript -->
+                                    
                                 </div>
                             </div>
                             
@@ -1430,7 +1430,7 @@
                         </svg>
                     </div>
                 
-                    <!-- Category filters -->
+                    
                     <div class="flex gap-3 justify-center flex-wrap" id="category-filters">
                         <button class="filter-btn px-4 py-2 rounded-full text-sm bg-gray-800/50 border border-gray-700 hover:border-blue-500 transition-all active" data-category="all">All</button>
                         <button class="filter-btn px-4 py-2 rounded-full text-sm bg-gray-800/50 border border-gray-700 hover:border-blue-500 transition-all" data-category="ASB">ASB</button>
@@ -1781,7 +1781,7 @@ const PLINKO = {
     },
 
     setDifficulty(difficulty) {
-        if (this.ballsInPlay) return; // Prevent changing difficulty while any balls are in play
+        if (this.ballsInPlay) return;
         
         this.currentDifficulty = difficulty;
         this.multipliers = this.difficulties[difficulty].multipliers;
@@ -1873,22 +1873,19 @@ const PLINKO = {
         ball.vx *= this.friction;
         ball.vy *= this.friction;
         
-        // Force center tendency
         const centerX = this.width / 2;
         const distanceFromCenter = centerX - ball.x;
-        ball.vx += distanceFromCenter * 0.03;  // Strong center pull
+        ball.vx += distanceFromCenter * 0.03;
         
-        // Limit horizontal movement
         const maxHorizontalDistance = 100;
         if (Math.abs(ball.x - centerX) > maxHorizontalDistance) {
             ball.x = centerX + (Math.sign(ball.x - centerX) * maxHorizontalDistance);
-            ball.vx = -ball.vx * 0.5;  // Bounce back toward center
+            ball.vx = -ball.vx * 0.5;
         }
         
         ball.x += ball.vx;
         ball.y += ball.vy;
         
-        // Rest of the existing update logic...
     });
 },
 
@@ -1921,10 +1918,8 @@ const PLINKO = {
             portfolio.balance -= betAmount;
             updatePortfolioDisplays();
             
-            // Set ballsInPlay to true when first ball is dropped
             if (!this.ballsInPlay) {
                 this.ballsInPlay = true;
-                // Disable difficulty buttons while balls are in play
                 document.querySelectorAll('.difficulty-btn').forEach(btn => {
                     btn.disabled = true;
                     btn.classList.add('opacity-50', 'cursor-not-allowed');
@@ -2088,10 +2083,8 @@ const PLINKO = {
             updatePortfolioDisplays();
             showPlinkoWin(winAmount, multiplier, zoneIndex);
 
-            // Check if this is the last ball
             if (this.balls.length === 0 || !this.balls.some(b => b.active)) {
                 this.ballsInPlay = false;
-                // Re-enable difficulty buttons
                 document.querySelectorAll('.difficulty-btn').forEach(btn => {
                     btn.disabled = false;
                     btn.classList.remove('opacity-50', 'cursor-not-allowed');
@@ -2189,7 +2182,7 @@ const DRAGON = {
     },
 
     setDifficulty(difficulty) {
-    if (this.gameInProgress) return; // Prevent changing difficulty during game
+    if (this.gameInProgress) return;
     
     this.currentDifficulty = difficulty;
     document.querySelectorAll('.difficulty-btn').forEach(btn => {
@@ -2461,7 +2454,7 @@ const ROULETTE = {
     init() {
         this.canvas = document.getElementById('roulette-wheel');
         this.ctx = this.canvas.getContext('2d');
-        this.canvas.width = 600;  // Slightly smaller wheel
+        this.canvas.width = 600;
     this.canvas.height = 600;
         this.generateNumberGrid();
         this.drawWheel();
@@ -2476,7 +2469,6 @@ const ROULETTE = {
 
         ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // Draw segments
         this.numbers.forEach((number, i) => {
             const startAngle = i * segmentAngle + this.rotationAngle;
             const endAngle = startAngle + segmentAngle;
@@ -2493,7 +2485,6 @@ const ROULETTE = {
             ctx.lineWidth = 1;
             ctx.stroke();
 
-            // Draw numbers
             ctx.save();
             ctx.translate(centerX, centerY);
             ctx.rotate(startAngle + segmentAngle / 2);
@@ -2505,7 +2496,6 @@ const ROULETTE = {
             ctx.restore();
         });
 
-        // Draw center circle
         ctx.beginPath();
         ctx.arc(centerX, centerY, radius * 0.1, 0, Math.PI * 2);
         ctx.fillStyle = '#1F2937';
@@ -2514,7 +2504,6 @@ const ROULETTE = {
         ctx.lineWidth = 2;
         ctx.stroke();
 
-        // Draw pointer
         ctx.beginPath();
         ctx.moveTo(centerX, 20);
         ctx.lineTo(centerX - 10, 0);
@@ -2531,14 +2520,12 @@ const ROULETTE = {
         const grid = document.getElementById('number-grid');
         grid.innerHTML = '';
         
-        // Add 0
         const zeroBtn = document.createElement('button');
         zeroBtn.className = 'p-3 bg-green-600 hover:bg-green-700 text-white rounded font-bold col-span-6';
         zeroBtn.textContent = '0 (35×)';
         zeroBtn.onclick = () => this.placeBet(0);
         grid.appendChild(zeroBtn);
 
-        // Add 1-36
         for (let i = 1; i <= 36; i++) {
             const btn = document.createElement('button');
             const color = this.numbers.find(n => n.number === i).color;
@@ -2624,16 +2611,13 @@ try {
     this.spinning = true;
     const result = Math.floor(Math.random() * 37);
     
-    // Calculate exact rotation needed for the result
     const targetIndex = this.numbers.findIndex(n => n.number === result);
     const segmentAngle = (2 * Math.PI) / this.numbers.length;
     
-    // Calculate precise ending angle that aligns the pointer with the result
     const targetAngle = -(targetIndex * segmentAngle) + Math.PI / 2;
     const spins = 5;
     const totalAngle = (spins * 2 * Math.PI) + targetAngle;
     
-    // Animate to exact position
     await this.animateWheel(totalAngle);
     await this.processWinnings(result);
     
@@ -2648,16 +2632,14 @@ animateWheel(targetAngle) {
             const startRotation = this.rotationAngle;
             const duration = 5000;
             const startTime = Date.now();
-            const totalRotations = 8; // Number of complete rotations
+            const totalRotations = 8;
 
             const animate = () => {
                 const elapsed = Date.now() - startTime;
                 const progress = Math.min(1, elapsed / duration);
 
-                // Improved easing function for more realistic spin
                 const easeOut = t => t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
                 
-                // Calculate current rotation including complete spins
                 const currentRotation = startRotation + 
                     (totalRotations * Math.PI * 2 * easeOut(progress)) + 
                     (targetAngle * easeOut(progress));
@@ -2685,21 +2667,17 @@ animateWheel(targetAngle) {
         this.currentBets.forEach((amount, bet) => {
             let winAmount = 0;
 
-            // Single number (35x)
             if (parseInt(bet) === number) {
                 winAmount = amount * 36;
             }
-            // Color bets (2x)
             else if ((bet === 'red' && result.color === 'red') ||
                      (bet === 'black' && result.color === 'black')) {
                 winAmount = amount * 2;
             }
-            // Even/Odd (2x)
             else if ((bet === 'even' && number % 2 === 0 && number !== 0) ||
                      (bet === 'odd' && number % 2 === 1)) {
                 winAmount = amount * 2;
             }
-            // Dozens (3x)
             else if ((bet === '1st12' && number >= 1 && number <= 12) ||
                      (bet === '2nd12' && number >= 13 && number <= 24) ||
                      (bet === '3rd12' && number >= 25 && number <= 36)) {
@@ -2848,7 +2826,6 @@ const BLACKJACK = {
             this.betAmount = betAmount;
             updatePortfolioDisplays();
 
-            // Reset game state
             this.isProcessing = false;
             this.playerHand = [this.drawCard(), this.drawCard()];
             this.dealerHand = [this.drawCard(), this.drawCard()];
@@ -2857,7 +2834,6 @@ const BLACKJACK = {
             this.updateUI();
             this.updateButtons();
 
-            // Check for natural blackjack
             if (this.calculateScore(this.playerHand) === 21) {
                 await this.stand();
             }
@@ -2870,14 +2846,12 @@ const BLACKJACK = {
     checkSpecialOptions() {
         const score = this.calculateScore(this.playerHand);
         
-        // Can only double down on 9, 10, or 11
         this.canDoubleDown = (score >= 9 && score <= 11 && this.playerHand.length === 2);
 
-        // Can only split on pairs
         this.canSplit = (
             this.playerHand.length === 2 && 
             this.getCardValue(this.playerHand[0]) === this.getCardValue(this.playerHand[1]) &&
-            portfolio.balance >= this.betAmount // Need enough money to split
+            portfolio.balance >= this.betAmount
         );
 
         this.updateButtons();
@@ -2907,7 +2881,6 @@ const BLACKJACK = {
         this.isDoubleBet = true;
         updatePortfolioDisplays();
 
-        // Deal one card and stand
         await this.dramaticCardDeal(this.playerHand);
         await this.stand();
     } catch (error) {
@@ -2919,14 +2892,12 @@ const BLACKJACK = {
     async split() {
         if (!this.canSplit) return;
 
-        // Create two new hands
         this.splitHands = [
             [this.playerHand[0], this.drawCard()],
             [this.playerHand[1], this.drawCard()]
         ];
         this.currentSplitHand = 0;
 
-        // Deduct additional bet
         await this.deductFromBalance(this.betAmount);
 
         this.updateSplitUI();
@@ -2935,23 +2906,17 @@ const BLACKJACK = {
     async dramaticDealerReveal() {
         const dealerCardsEl = document.getElementById('dealer-cards');
         
-        // Dramatic pause
         await new Promise(resolve => setTimeout(resolve, 1000));
 
-        // Flip animation for each card
         for (let i = 1; i < this.dealerHand.length; i++) {
             const card = this.dealerHand[i];
             
-            // Add flip animation
             dealerCardsEl.children[i].classList.add('animate__animated', 'animate__flipInY');
             
-            // Replace hidden card with actual card
             dealerCardsEl.children[i].outerHTML = this.createCardElement(card, true);
             
-            // Dramatic pause between cards
             await new Promise(resolve => setTimeout(resolve, 800));
 
-            // Update score with dramatic effect
             const score = this.calculateScore(this.dealerHand.slice(0, i + 1));
             const scoreEl = document.getElementById('dealer-score');
             scoreEl.classList.add('text-blue-400', 'animate__animated', 'animate__pulse');
@@ -2975,7 +2940,6 @@ const BLACKJACK = {
         this.playerHand.push(this.drawCard());
         this.updateUI();
         
-        // Reset special options after hitting
         this.canDoubleDown = false;
         this.canSplit = false;
         this.updateButtons();
@@ -2987,7 +2951,7 @@ const BLACKJACK = {
     },
     
     async stand() {
-        if (this.isProcessing) return; // Prevent multiple calls
+        if (this.isProcessing) return;
         this.isProcessing = true;
         
         try {
@@ -2999,7 +2963,6 @@ const BLACKJACK = {
                 }
             }
 
-            // Disable all action buttons
             const hitBtn = document.getElementById('hit-button');
             const standBtn = document.getElementById('stand-button');
             const doubleBtn = document.getElementById('double-button');
@@ -3055,17 +3018,14 @@ const BLACKJACK = {
         
         let winAmount = 0;
         if (result === 'win') {
-            // Natural blackjack pays 3:2
             if (playerHand.length === 2 && this.calculateScore(playerHand) === 21) {
                 winAmount = this.betAmount * 2.5;
             } else {
                 winAmount = this.betAmount * 2;
             }
         } else if (result === 'push') {
-            // On push, return original bet only
             winAmount = this.betAmount;
         }
-        // On lose, winAmount stays 0
 
         if (winAmount > 0) {
             try {
@@ -3076,7 +3036,7 @@ const BLACKJACK = {
                         funbucks: firebase.firestore.FieldValue.increment(winAmount)
                     });
 
-                    if (result !== 'push') { // Only record non-push games in history
+                    if (result !== 'push') {
                         transaction.set(db.collection('gameHistory').doc(), {
                             userId: auth.currentUser.uid,
                             username: currentUser.username,
@@ -3122,7 +3082,6 @@ const BLACKJACK = {
             }
         }
         
-        // Dealer gets advantage on soft hands
         if (this.isDealerHand && aces > 0 && score > 17 && score <= 21) {
             return score;
         }
@@ -3139,11 +3098,9 @@ const BLACKJACK = {
         const playerCardsEl = document.getElementById('player-cards');
         const dealerCardsEl = document.getElementById('dealer-cards');
         
-        // Update player's cards
         playerCardsEl.innerHTML = this.playerHand.map(card => this.createCardElement(card)).join('');
         document.getElementById('player-score').textContent = `Score: ${this.calculateScore(this.playerHand)}`;
         
-        // Update dealer's cards
         if (showAll) {
             dealerCardsEl.innerHTML = this.dealerHand.map(card => this.createCardElement(card)).join('');
             document.getElementById('dealer-score').textContent = `Score: ${this.calculateScore(this.dealerHand)}`;
@@ -3192,7 +3149,6 @@ const BLACKJACK = {
             standBtn.classList.remove('hidden');
             standBtn.disabled = false;
             
-            // Double down button
             if (this.canDoubleDown) {
                 doubleBtn.classList.remove('hidden');
                 doubleBtn.disabled = false;
@@ -3200,7 +3156,6 @@ const BLACKJACK = {
                 doubleBtn.classList.add('hidden');
             }
             
-            // Split button
             if (this.canSplit) {
                 splitBtn.classList.remove('hidden');
                 splitBtn.disabled = false;
@@ -3276,7 +3231,7 @@ const MINES = {
             
             this.betAmount = betAmount;
             this.gameInProgress = true;
-            this.revealedCells = []; // Reset revealed cells
+            this.revealedCells = [];
             this.clickLock = false;
             this.currentMultiplier = 1.0;
             this.generateGrid();
@@ -3306,7 +3261,7 @@ const MINES = {
     for (let i = 0; i < 25; i++) {
         const cell = document.createElement('div');
         cell.className = 'aspect-square bg-gray-700 hover:bg-gray-600 rounded-lg cursor-pointer transition-all flex items-center justify-center text-4xl';
-        cell.style.minHeight = '60px'; // Ensure minimum height
+        cell.style.minHeight = '60px';
         cell.onclick = () => this.revealCell(i);
         container.appendChild(cell);
     }
@@ -3396,7 +3351,6 @@ calculateMultiplier(revealedCount) {
             if (index !== excludeIndex && !this.revealedCells.includes(index)) {
                 const cell = document.getElementById('mines-grid').children[index];
                 
-                // Add delay for cascade effect
                 await new Promise(resolve => setTimeout(resolve, 150));
                 
                 cell.innerHTML = `
@@ -3450,8 +3404,6 @@ calculateMultiplier(revealedCount) {
 
    async endGame(won) {
     this.gameInProgress = false;
-    
-    // Reveal all mines with a cascade effect
     const grid = document.getElementById('mines-grid');
     for (let i = 0; i < this.mineLocations.length; i++) {
         const index = this.mineLocations[i];
@@ -3574,18 +3526,15 @@ const CRASH = {
     try {
         const roundsRef = db.collection('crashRounds');
         
-        // First check for any active rounds
         const activeRoundsQuery = await roundsRef
             .where('status', 'in', ['waiting', 'in_progress'])
             .limit(1)
             .get();
 
         if (!activeRoundsQuery.empty) {
-            // Use existing active round
             this.roundRef = activeRoundsQuery.docs[0].ref;
             const roundData = activeRoundsQuery.docs[0].data();
             
-            // Use existing crash point
             this.crashPoint = roundData.crashPoint;
             this.gameState = roundData.status;
             this.multiplier = roundData.multiplier || 1.00;
@@ -3604,11 +3553,7 @@ const CRASH = {
                 this.startGameLoop(roundData.startTime.toMillis());
             }
         } else {
-            // Generate crash point for new round
             const crashPoint = this.generateCrashPoint();
-            console.log('New round crash point:', crashPoint); // For debugging
-            
-            // Create new round with generated crash point
             this.roundRef = await roundsRef.add({
                 status: 'waiting',
                 startTime: firebase.firestore.FieldValue.serverTimestamp(),
@@ -3622,7 +3567,6 @@ const CRASH = {
             this.startCountdown();
         }
 
-        // Set up listeners
         this.setupListeners();
 
     } catch (error) {
@@ -3659,7 +3603,6 @@ const CRASH = {
     },
 
     setupListeners() {
-    // Round listener
     this.roundListener = this.roundRef.onSnapshot(async (doc) => {
         const roundData = doc.data();
         if (!roundData) return;
@@ -3668,7 +3611,6 @@ const CRASH = {
         this.multiplier = roundData.multiplier || 1.00;
         this.countdown = roundData.countdown || 30;
 
-        // Handle auto-cashouts
         if (this.gameState === 'in_progress' && 
             this.autoCashoutEnabled && 
             auth.currentUser) {
@@ -3685,7 +3627,6 @@ const CRASH = {
         this.updateUI(roundData);
     });
 
-    // Players listener
     this.playersListener = this.roundRef.collection('players').onSnapshot(snapshot => {
         const container = document.getElementById('active-players');
         if (!container) return;
@@ -3724,7 +3665,6 @@ const CRASH = {
                 multiplier: newMultiplier
             });
 
-            // Get fresh data to ensure consistent crash point
             const roundData = (await this.roundRef.get()).data();
             if (newMultiplier >= roundData.crashPoint) {
                 clearInterval(this.gameLoop);
@@ -3756,10 +3696,9 @@ generateCrashPoint() {
         await this.roundRef.update({
             status: 'crashed',
             endTime: firebase.firestore.FieldValue.serverTimestamp(),
-            isActive: false // Mark round as inactive
+            isActive: false 
         });
 
-        // Process remaining bets as losses
         const playersSnapshot = await this.roundRef.collection('players').get();
         const batch = db.batch();
         
@@ -3775,12 +3714,10 @@ generateCrashPoint() {
 
         await batch.commit();
 
-        // Update history and start new round after delay
         this.history.unshift(this.crashPoint);
         this.history = this.history.slice(0, 10);
         this.updateHistory();
 
-        // Give a short delay before starting new round
         setTimeout(() => {
             this.initializeServerSync();
         }, 3000);
@@ -3827,7 +3764,6 @@ generateCrashPoint() {
                     throw new Error('Insufficient funds');
                 }
                 
-                // Check if player already has a bet
                 const playerRef = this.roundRef.collection('players').doc(auth.currentUser.uid);
                 const playerDoc = await transaction.get(playerRef);
                 
@@ -3835,7 +3771,6 @@ generateCrashPoint() {
                     throw new Error('You already have a bet in this round');
                 }
 
-                // Place bet
                 transaction.update(userRef, {
                     funbucks: firebase.firestore.FieldValue.increment(-betAmount)
                 });
@@ -3853,7 +3788,6 @@ generateCrashPoint() {
             portfolio.balance -= betAmount;
             updatePortfolioDisplays();
             
-            // Update UI
             document.getElementById('crash-bet-btn').classList.add('hidden');
             document.getElementById('crash-cashout-btn').classList.remove('hidden');
 
@@ -3980,7 +3914,6 @@ generateCrashPoint() {
         const betBtn = document.getElementById('crash-bet-btn');
         const cashoutBtn = document.getElementById('crash-cashout-btn');
 
-        // Reset text color
         multiplierDisplay.classList.remove('text-red-500');
         multiplierDisplay.classList.add('text-white');
 
@@ -4029,14 +3962,12 @@ generateCrashPoint() {
         const ctx = this.ctx;
         ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // Draw ocean background
         const gradient = ctx.createLinearGradient(0, 0, 0, this.canvas.height);
-        gradient.addColorStop(0, '#1e40af'); // Deep blue
-        gradient.addColorStop(1, '#3b82f6'); // Lighter blue
+        gradient.addColorStop(0, '#1e40af');
+        gradient.addColorStop(1, '#3b82f6');
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // Draw waves
         ctx.beginPath();
         for (let x = 0; x < this.canvas.width; x += 30) {
             const y = this.canvas.height * 0.7 + Math.sin(x/50 + Date.now()/1000) * 10;
@@ -4047,7 +3978,6 @@ generateCrashPoint() {
         ctx.fillStyle = '#60a5fa80';
         ctx.fill();
 
-        // Draw ship if game is running
         if (this.gameState === 'in_progress' && !this.crashed) {
             this.shipX = (this.multiplier - 1) * (this.canvas.width * 0.15);
             const shipY = this.canvas.height * 0.5 + Math.sin(Date.now()/500) * 10;
@@ -4059,12 +3989,9 @@ generateCrashPoint() {
             ctx.restore();
         }
 
-        // Draw crash effect
         if (this.crashed) {
-            ctx.fillStyle = 'rgba(239, 68, 68, 0.5)';  // Red overlay
+            ctx.fillStyle = 'rgba(239, 68, 68, 0.5)';
             ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-            
-            // Add explosion particles or effects here
             for (let i = 0; i < 20; i++) {
                 const x = this.shipX + (Math.random() - 0.5) * 100;
                 const y = this.canvas.height * 0.5 + (Math.random() - 0.5) * 100;
@@ -4088,7 +4015,6 @@ generateCrashPoint() {
         if (this.countdownInterval) clearInterval(this.countdownInterval);
         if (this.gameLoop) clearInterval(this.gameLoop);
         
-        // Clear animations
         if (this.animationFrame) {
             cancelAnimationFrame(this.animationFrame);
         }
@@ -4224,14 +4150,14 @@ function showWinCelebration(amount, multiplier = null) {
         <div class="celebrate-container">
             <div class="relative bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl p-8 shadow-2xl
                         border-2 border-blue-400 min-w-[320px] pulse-glow">
-                <!-- Money bag with glow effect -->
+                
                 <div class="absolute -top-6 -left-6 w-16 h-16 bg-gradient-to-br from-yellow-400 to-yellow-500 
                            rounded-full flex items-center justify-center transform hover:scale-110 transition-transform
                            shadow-[0_0_20px_8px_rgba(251,191,36,0.3)]">
                     <span class="text-3xl">💰</span>
                 </div>
                 
-                <!-- Main content -->
+                
                 <div class="relative text-center z-10 py-4">
                     <div class="winner-text text-white text-5xl font-bold mb-3 opacity-0">
                         +${formatCurrency(amount)}
@@ -4248,18 +4174,15 @@ function showWinCelebration(amount, multiplier = null) {
 
     document.body.appendChild(container);
 
-    // Create floating coins that can go outside the container
     const createCoins = () => {
         for (let i = 0; i < 30; i++) {
             setTimeout(() => {
                 const coin = document.createElement('div');
                 coin.className = 'coin-particle';
                 
-                // Random starting position near the center
                 const startX = window.innerWidth / 2 + (Math.random() - 0.5) * 100;
                 const startY = window.innerHeight / 2 + (Math.random() - 0.5) * 100;
                 
-                // Random ending position spreading outward
                 const angle = Math.random() * Math.PI * 2;
                 const distance = 300 + Math.random() * 200;
                 const tx = Math.cos(angle) * distance;
@@ -4287,10 +4210,8 @@ function showWinCelebration(amount, multiplier = null) {
 
     createCoins();
     
-    // Create new coins every second
     const coinInterval = setInterval(createCoins, 1000);
 
-    // Cleanup
     setTimeout(() => {
         clearInterval(coinInterval);
         container.remove();
@@ -4300,12 +4221,10 @@ function showWinCelebration(amount, multiplier = null) {
 }
 
 function showPlinkoWin(amount, multiplier, landingPosition) {
-    // Calculate a position on either side of the game board
-    // Game board is assumed to be in the middle 60% of the screen
-    const leftSide = Math.random() * 20; // 0-20% of screen width
-    const rightSide = 80 + (Math.random() * 20); // 80-100% of screen width
+    const leftSide = Math.random() * 20;
+    const rightSide = 80 + (Math.random() * 20);
     const xPos = Math.random() < 0.5 ? leftSide : rightSide;
-    const yPos = 30 + (Math.random() * 40); // 30-70% of screen height
+    const yPos = 30 + (Math.random() * 40);
 
     const container = document.createElement('div');
     container.className = 'fixed inset-0 pointer-events-none z-[60]';
@@ -4315,10 +4234,10 @@ function showPlinkoWin(amount, multiplier, landingPosition) {
              style="left: ${xPos}%; top: ${yPos}%">
             <div class="relative bg-gradient-to-br from-blue-600 to-blue-500 
                         rounded-xl px-6 py-3 shadow-lg animate-win-pop">
-                <!-- Glowing border effect -->
+                
                 <div class="absolute inset-0 bg-blue-400 rounded-xl opacity-20 animate-pulse"></div>
                 
-                <!-- Star particles -->
+                
                 ${Array.from({length: 6}, () => `
                     <div class="absolute animate-star-float"
                          style="left: ${Math.random() * 100}%;
@@ -4386,7 +4305,6 @@ function showPlinkoWin(amount, multiplier, landingPosition) {
     document.head.appendChild(style);
     document.body.appendChild(container);
 
-    // Remove after animation
     setTimeout(() => {
         container.classList.add('animate-fade-out');
         setTimeout(() => {
@@ -4453,7 +4371,7 @@ const TITLES = {
         description: 'Join during the first week of launch',
         icon: '🐦',
         check: (userData) => {
-            const launchDate = new Date('2024-02-14').getTime(); // Set your launch date
+            const launchDate = new Date('2024-02-14').getTime();
             const userCreatedAt = userData.createdAt?.toDate?.()?.getTime() || 
                                 userData.createdAt?.seconds * 1000 || 
                                 null;
@@ -4480,7 +4398,7 @@ const TITLES = {
         name: 'Clooner',
         description: 'A distinguished member of the community',
         icon: '🤙',
-        isAdmin: true  // Can only be granted by admins
+        isAdmin: true 
     },
     suggester: {
         name: 'Suggester',
@@ -4496,14 +4414,12 @@ async function updateTitles(userId) {
     const userData = (await userRef.get()).data();
     const unlockedTitles = new Set(userData.titles || []);
     
-    // Check for newly unlocked titles
     Object.values(TITLES).forEach(title => {
         if (!title.isAdmin && title.check && title.check(userData)) {
             unlockedTitles.add(title.id);
         }
     });
     
-    // Update user's titles in database
     await userRef.update({
         titles: Array.from(unlockedTitles)
     });
@@ -4571,7 +4487,7 @@ function calculateYesVolume(userData) {
 }
 
 function isEarlyUser(userData) {
-    const launchDate = new Date('2024-02-14'); // Set your actual launch date
+    const launchDate = new Date('2024-02-14');
     const userJoinDate = userData.createdAt?.toDate();
     return userJoinDate && (userJoinDate - launchDate) < 7 * 24 * 60 * 60 * 1000;
 }
@@ -4587,7 +4503,6 @@ function hasDiamondHands(userData) {
         return false;
     }
 
-    // Check completed bets for profitable holds over 24 hours
     return completedBets.some(bet => {
         const holdTime = new Date(bet.sellTimestamp) - new Date(bet.timestamp);
         const profit = bet.sellAmount - bet.amount;
@@ -4737,7 +4652,7 @@ async function initializeUser(result, referralCode) {
         const initialData = {
             username: result.user.displayName,
             email: result.user.email,
-            profilePicture: result.user.photoURL, // Add Google profile picture
+            profilePicture: result.user.photoURL,
             funbucks: 500,
             bets: [],
             history: [{
@@ -5080,15 +4995,12 @@ function showPlinko() {
 }
 
 function showMarkets(type) {
-    // Remove active class from all buttons
     document.querySelectorAll('.market-btn').forEach(btn => {
         btn.classList.remove('active');
     });
     
-    // Add active class to clicked button
     document.querySelector(`.market-btn[onclick*="${type}"]`)?.classList.add('active');
     
-    // Filter and show markets
     const marketsContainer = document.getElementById('markets-container');
     if (!marketsContainer) return;
 
@@ -6041,7 +5953,7 @@ async function viewUserDetails(userId) {
                         </div>
                     </div>
 
-                    <!-- Titles Section -->
+                    
                     <div class="bg-gray-800 p-4 rounded-lg">
                         <h4 class="text-lg font-bold text-white mb-2">Titles</h4>
                         <div class="flex items-center gap-2 mb-4">
@@ -6082,7 +5994,7 @@ async function viewUserDetails(userId) {
                         </div>
                     </div>
 
-                    <!-- Rest of user details -->
+                    
                     <div class="grid grid-cols-2 gap-4">
                         <div class="bg-gray-800 p-4 rounded-lg">
                             <div class="text-gray-400">Balance</div>
@@ -6579,7 +6491,7 @@ const coinAdminControls = {
 const kingOfHill = {
     async initialize() {
         await this.updateKingDisplay();
-        setInterval(() => this.updateKingDisplay(), 60000); // Update every minute
+        setInterval(() => this.updateKingDisplay(), 60000);
     },
 
     async updateKingDisplay() {
@@ -8110,7 +8022,6 @@ function showQuickPriceUpdate(marketId, currentPrice) {
     `;
     document.body.appendChild(modal);
 
-    // Add slider functionality
     const slider = document.getElementById('price-slider');
     const display = document.getElementById('price-display');
     slider.addEventListener('input', () => {
@@ -8512,7 +8423,6 @@ async function handleMarketSuggestion(suggestion) {
     try {
         const userRef = db.collection('users').doc(auth.currentUser.uid);
         
-        // When a suggestion is approved and added to the site:
         await userRef.update({
             hasSuccessfulSuggestion: true,
             titles: firebase.firestore.FieldValue.arrayUnion('suggester')
@@ -8820,7 +8730,6 @@ function updateMarketChart(market, period) {
     const chartId = `chart-${market.id}`;
     const ctx = document.getElementById(chartId).getContext('2d');
     
-    // Filter price history based on period
     const now = new Date();
     const filteredHistory = market.priceHistory.filter(p => {
         const date = new Date(p.date);
@@ -8959,7 +8868,7 @@ document.querySelectorAll('[data-tab]').forEach(button => {
             switch(tabName) {
                 case 'home':
                     await updateMarkets();
-                    await updateRecentActivity(); // Add this line
+                    await updateRecentActivity();
                     break;
                 case 'portfolio':
                     await updatePortfolioDisplays();
@@ -9467,7 +9376,6 @@ function createMarketCard(market) {
 
     card.innerHTML = baseContent;
 
-    // Add event listeners for non-resolved markets
     if (!market.resolved) {
         const yesButton = card.querySelector('.bet-yes');
         const noButton = card.querySelector('.bet-no');
@@ -10299,7 +10207,6 @@ function updatePortfolioBets() {
 }
 
 async function sellBet(betIndex) {
-    // Get references to all open modals
     const allModals = document.querySelectorAll('.fixed');
     
     try {
@@ -10331,13 +10238,10 @@ async function sellBet(betIndex) {
         portfolio.balance += sellValue;
         portfolio.bets.splice(betIndex, 1);
 
-        // Remove all open modals
         allModals.forEach(modal => modal.remove());
         
-        // Show success message
         await showSellSuccess(sellValue, profit);
         
-        // Update UI
         await updatePortfolioDisplays();
         await updateRecentActivity();
         await loadUserTitles();
@@ -10441,7 +10345,6 @@ function showSellConfirmation(betIndex) {
 
     document.body.appendChild(modal);
 
-    // Add event listener for real-time value updates
     const sharesInput = document.getElementById('sell-shares-input');
     sharesInput.addEventListener('input', () => {
         const shares = parseFloat(sharesInput.value);
@@ -10454,7 +10357,6 @@ function setSellAmount(maxShares, percentage) {
     const newAmount = maxShares * percentage;
     sharesInput.value = newAmount.toFixed(2);
     
-    // Trigger input event to update preview
     sharesInput.dispatchEvent(new Event('input'));
 }
 
@@ -10478,14 +10380,12 @@ async function sellPartialPosition(betIndex) {
             const userRef = db.collection('users').doc(auth.currentUser.uid);
             
             if (remainingShares > 0) {
-                // Update existing bet with remaining shares
                 bet.shares = remainingShares;
                 transaction.update(userRef, {
                     funbucks: firebase.firestore.FieldValue.increment(sellValue),
                     bets: portfolio.bets
                 });
             } else {
-                // Remove bet completely if selling all shares
                 transaction.update(userRef, {
                     funbucks: firebase.firestore.FieldValue.increment(sellValue),
                     bets: portfolio.bets.filter((_, idx) => idx !== betIndex)
@@ -10493,13 +10393,10 @@ async function sellPartialPosition(betIndex) {
             }
         });
 
-        // Remove all modals
         document.querySelectorAll('.fixed').forEach(modal => modal.remove());
         
-        // Show success message
         await showSellSuccess(sellValue, sellValue - (sharesToSell * bet.entryPrice));
         
-        // Update UI
         await updatePortfolioDisplays();
         await updateRecentActivity();
         await updateUserProgress(auth.currentUser.uid);
@@ -10696,7 +10593,6 @@ async function grantOGTitle(userId) {
         });
         showSuccessMessage('OG title granted successfully');
         
-        // Refresh the user details modal
         const modal = document.querySelector('.fixed');
         if (modal) {
             modal.remove();
@@ -10717,7 +10613,6 @@ async function removeOGTitle(userId) {
         });
         showSuccessMessage('OG title removed successfully');
         
-        // Refresh the user details modal
         const modal = document.querySelector('.fixed');
         if (modal) {
             modal.remove();
@@ -11184,7 +11079,7 @@ function loadProfileData() {
             <div class="mt-8">
                 <h3 class="text-xl font-semibold text-blue-300 mb-4">Titles</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="titles-container">
-                    <!-- Title cards will be populated here -->
+                    
                 </div>
                 <h3 class="text-xl font-semibold text-blue-300 mb-4">Referral Program</h3>
                 <div class="bg-gray-800/50 p-4 rounded-lg">
@@ -11288,7 +11183,7 @@ async function equipTitle(titleId) {
             activeTitle: titleId
         });
         showSuccessMessage('Title equipped!');
-        await loadUserTitles(); // Refresh the display
+        await loadUserTitles();
     } catch (error) {
         console.error('Error equipping title:', error);
         showErrorMessage('Failed to equip title');
@@ -11303,7 +11198,7 @@ async function unequipTitle() {
             activeTitle: null
         });
         showSuccessMessage('Title unequipped');
-        await loadUserTitles(); // Refresh the display
+        await loadUserTitles();
     } catch (error) {
         console.error('Error unequipping title:', error);
         showErrorMessage('Failed to unequip title');
