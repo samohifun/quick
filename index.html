@@ -27,9 +27,25 @@
     
     <style>
         body {
-            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             color: #e2e8f0;
             min-height: 100vh;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(17, 24, 39, 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(59, 130, 246, 0.5);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(59, 130, 246, 0.7);
         }
         @media screen and (max-width: 1024px) {
             .max-w-8xl {
@@ -46,6 +62,14 @@
                 flex-wrap: wrap;
                 justify-content: center;
             }
+            .animate-hover {
+                transition: all 0.3s ease;
+            }
+
+            .animate-hover:hover {
+                transform: translateY(-2px);
+            }
+
 
             .market-card {
                 width: 100%;
@@ -212,6 +236,7 @@
                 height: 200px !important;
                 
             }
+            
             #recent-buys-list::-webkit-scrollbar,
 #recent-sells-list::-webkit-scrollbar {
     width: 0.375rem;
@@ -373,14 +398,17 @@
             margin-left: 10px;
         }
         .market-card {
+            background: rgba(17, 24, 39, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            box-shadow: 0 8px 32px rgba(2, 8, 20, 0.1);
             transition: all 0.3s ease;
-            background: linear-gradient(145deg, #2d3748, #1a202c);
-            border: 1px solid rgba(45, 55, 72, 0.5);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
+        
         .market-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            transform: translateY(-2px);
+            border-color: rgba(59, 130, 246, 0.4);
+            box-shadow: 0 12px 40px rgba(2, 8, 20, 0.15);
         }
         .canvas-container { 
             width: 100%; 
@@ -404,11 +432,13 @@
             height: 1.75rem;
         }
         .tab-button:hover {
-            background: rgba(66, 153, 225, 0.5);
+            background: rgba(37, 99, 235, 0.8);
+            border-color: rgba(59, 130, 246, 0.4);
         }
         .tab-button.selected {
-            background: #4299E1;
-            color: white;
+            background: rgba(37, 99, 235, 0.9);
+            border-color: rgba(59, 130, 246, 0.6);
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.3);
         }
         .modal-content {
             background: linear-gradient(145deg, #2d3748, #1a202c);
@@ -607,7 +637,7 @@
         border: 1px solid rgba(59, 130, 246, 0.2);
         border-radius: 1rem;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        z-index: 9999;
+        z-index: 1000000000;
         display: flex;
         flex-direction: column;
         transition: transform 0.3s ease-in-out;
@@ -841,10 +871,17 @@
                     <span>Leaderboard</span>
                 </button>
                 <button class="tab-button" data-tab="live-games">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M13.293 3.293a1 1 0 011.414 0l2 2A1 1 0 0117 7v6a5 5 0 01-5 5H8a5 5 0 01-5-5V7a1 1 0 01.293-.707l2-2a1 1 0 011.414 0L9 6.586V4a1 1 0 011-1h2a1 1 0 011 1v2.586l1.293-1.293z"/>
-                    </svg>
-                    <span>Live Games</span>
+                    <div class="relative">
+                        <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/>
+                        </svg>
+                        <span class="absolute -top-1 -right-1 flex h-3 w-3">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
+                        </span>
+                    </div>
+                    <span class="ml-2">Live Games</span>
                 </button>
                 <button class="tab-button" data-tab="lottery">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 20 20" fill="currentColor">
@@ -862,105 +899,129 @@
             </div>
             <div id="live-games-tab" class="tab-content hidden">
                 <div class="market-card p-6 rounded-lg">
-                    <h2 class="text-2xl font-bold text-blue-300 mb-6">Live Games</h2>
+                    <div class="mb-8 text-center">
+                        <h2 class="text-3xl font-bold text-blue-300 mb-4">Live Games</h2>
+                        <p class="text-lg text-gray-400 max-w-2xl mx-auto">
+                            This category is meant to teach users on the realities of online casinos.
+                            Please never go on any of these casinos as it is a sure way to lose your money.
+                            This page is meant to mimic those casinos to show why you SHOULD NOT USE THEM!!!
+                        </p>
+                    </div>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        
-                        <div class="bg-gray-800 p-6 rounded-lg hover:bg-gray-750 transition-all cursor-pointer" onclick="showPlinko()">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Plinko -->
+                        <div class="bg-gray-800/80 backdrop-blur p-6 rounded-xl border border-blue-900/30 hover:border-blue-500 transition-all cursor-pointer shadow-lg hover:transform hover:scale-105" onclick="showPlinko()">
                             <div class="flex items-center gap-4 mb-4">
-                                <div class="w-16 h-16 bg-blue-600 rounded-lg flex items-center justify-center">
-                                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <circle cx="12" cy="12" r="10" stroke-width="2"/>
-                                        <path stroke-width="2" d="M12 8v8M8 12h8"/>
+                                <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center shadow-lg">
+                                    <svg class="w-10 h-10 text-white" viewBox="0 0 24 24">
+                                        <path fill="currentColor" d="M12 3L2 19h20L12 3zm0 3l6.6 11H5.4L12 6z"/>
                                     </svg>
                                 </div>
                                 <div>
                                     <h3 class="text-xl font-bold text-white">Plinko</h3>
-                                    <p class="text-gray-400">Drop the ball and win big!</p>
+                                    <p class="text-gray-400">High-Stakes Bouncing Action</p>
                                 </div>
                             </div>
-                            <div class="text-sm text-gray-400">
-                                Win up to 160x your bet
-                            </div>
+                            <p class="text-sm text-gray-300 mb-2">
+                                Watch your fortunes multiply as you drop your way to massive 130x payouts. Our most popular game!
+                            </p>
+                            <div class="text-sm text-blue-300">Max Win: 130x</div>
                         </div>
             
-                        
-                        <div class="bg-gray-800 p-6 rounded-lg hover:bg-gray-750 transition-all cursor-pointer" onclick="showDragonTower()">
+                        <!-- Dragon Tower -->
+                        <div class="bg-gray-800/80 backdrop-blur p-6 rounded-xl border border-blue-900/30 hover:border-blue-500 transition-all cursor-pointer shadow-lg hover:transform hover:scale-105" onclick="showDragonTower()">
                             <div class="flex items-center gap-4 mb-4">
-                                <div class="w-16 h-16 bg-red-600 rounded-lg flex items-center justify-center">
-                                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 20h16M4 4h16M12 4v16"/>
+                                <div class="w-16 h-16 bg-gradient-to-br from-red-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg">
+                                    <svg class="w-10 h-10 text-white" viewBox="0 0 24 24">
+                                        <path fill="currentColor" d="M12 2L2 22l10-6.5L22 22l-10-20z"/>
                                     </svg>
                                 </div>
                                 <div>
                                     <h3 class="text-xl font-bold text-white">Dragon Tower</h3>
-                                    <p class="text-gray-400">Climb the tower for rewards!</p>
+                                    <p class="text-gray-400">Epic Climbing Adventure</p>
                                 </div>
                             </div>
-                            <div class="text-sm text-gray-400">
-                                Win up to 40x your bet
-                            </div>
+                            <p class="text-sm text-gray-300 mb-2">
+                                Scale the mythical tower and face the dragon for legendary 40x rewards. Every step increases your fortune!
+                            </p>
+                            <div class="text-sm text-blue-300">Max Win: 40x</div>
                         </div>
-                        <div class="bg-gray-800 p-6 rounded-lg hover:bg-gray-750 transition-all cursor-pointer" onclick="showRoulette()">
+            
+                        <!-- Roulette -->
+                        <div class="bg-gray-800/80 backdrop-blur p-6 rounded-xl border border-blue-900/30 hover:border-blue-500 transition-all cursor-pointer shadow-lg hover:transform hover:scale-105" onclick="showRoulette()">
                             <div class="flex items-center gap-4 mb-4">
-                                <div class="w-16 h-16 bg-red-600 rounded-lg flex items-center justify-center">
-                                    <svg class="w-10 h-10 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                        <circle cx="12" cy="12" r="10" stroke-width="2"/>
-                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+                                <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-700 rounded-xl flex items-center justify-center shadow-lg">
+                                    <svg class="w-10 h-10 text-white" viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+                                        <path fill="currentColor" d="M12 2v4m0 12v4M4 12h4m8 0h4"/>
                                     </svg>
                                 </div>
                                 <div>
                                     <h3 class="text-xl font-bold text-white">Roulette</h3>
-                                    <p class="text-gray-400">European style roulette with 36x max payout!</p>
+                                    <p class="text-gray-400">Premium Casino Experience</p>
                                 </div>
                             </div>
+                            <p class="text-sm text-gray-300 mb-2">
+                                European roulette with a modern twist. Multiple betting options and instant 35x wins on perfect picks!
+                            </p>
+                            <div class="text-sm text-blue-300">Max Win: 35x</div>
                         </div>
-                        <div class="bg-gray-800 p-6 rounded-lg hover:bg-gray-750 transition-all cursor-pointer" onclick="showCrash()">
+            
+                        <!-- Crash -->
+                        <div class="bg-gray-800/80 backdrop-blur p-6 rounded-xl border border-blue-900/30 hover:border-blue-500 transition-all cursor-pointer shadow-lg hover:transform hover:scale-105" onclick="showCrash()">
                             <div class="flex items-center gap-4 mb-4">
-                                <div class="w-16 h-16 bg-red-600 rounded-lg flex items-center justify-center">
-                                    <svg class="w-10 h-10 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17l5-5-5-5M6 17l5-5-5-5"/>
+                                <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg">
+                                    <svg class="w-10 h-10 text-white" viewBox="0 0 24 24">
+                                        <path fill="currentColor" d="M3 17h18l-9-15z"/>
                                     </svg>
                                 </div>
                                 <div>
                                     <h3 class="text-xl font-bold text-white">Crash</h3>
-                                    <p class="text-gray-400">Watch the multiplier rise and cash out before it crashes!</p>
+                                    <p class="text-gray-400">Ultimate Risk & Reward</p>
                                 </div>
                             </div>
+                            <p class="text-sm text-gray-300 mb-2">
+                                Watch the multiplier soar and test your nerves! Cash out at the perfect moment for massive wins.
+                            </p>
+                            <div class="text-sm text-blue-300">Unlimited Potential!</div>
                         </div>
-                        <div class="bg-gray-800 p-6 rounded-lg hover:bg-gray-750 transition-all cursor-pointer" onclick="showBlackjack()">
+            
+                        <!-- Blackjack -->
+                        <div class="bg-gray-800/80 backdrop-blur p-6 rounded-xl border border-blue-900/30 hover:border-blue-500 transition-all cursor-pointer shadow-lg hover:transform hover:scale-105" onclick="showBlackjack()">
                             <div class="flex items-center gap-4 mb-4">
-                                <div class="w-16 h-16 bg-green-600 rounded-lg flex items-center justify-center">
-                                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16M4 12h16m-7 5h7"/>
+                                <div class="w-16 h-16 bg-gradient-to-br from-yellow-500 to-yellow-700 rounded-xl flex items-center justify-center shadow-lg">
+                                    <svg class="w-10 h-10 text-white" viewBox="0 0 24 24">
+                                        <path fill="currentColor" d="M4 2h16a2 2 0 012 2v16a2 2 0 01-2 2H4a2 2 0 01-2-2V4a2 2 0 012-2zm8 4v12l6-6H8z"/>
                                     </svg>
                                 </div>
                                 <div>
                                     <h3 class="text-xl font-bold text-white">Blackjack</h3>
-                                    <p class="text-gray-400">Classic casino card game!</p>
+                                    <p class="text-gray-400">Strategic Card Mastery</p>
                                 </div>
                             </div>
-                            <div class="text-sm text-gray-400">
-                                Win up to 2.5x your bet
-                            </div>
+                            <p class="text-sm text-gray-300 mb-2">
+                                Beat the dealer with perfect strategy! Double down and split for enhanced winning opportunities.
+                            </p>
+                            <div class="text-sm text-blue-300">2.5x on Natural Blackjack!</div>
                         </div>
-                        
-                        <div class="bg-gray-800 p-6 rounded-lg hover:bg-gray-750 transition-all cursor-pointer" onclick="showMines()">
+            
+                        <!-- Mines -->
+                        <div class="bg-gray-800/80 backdrop-blur p-6 rounded-xl border border-blue-900/30 hover:border-blue-500 transition-all cursor-pointer shadow-lg hover:transform hover:scale-105" onclick="showMines()">
                             <div class="flex items-center gap-4 mb-4">
-                                <div class="w-16 h-16 bg-red-600 rounded-lg flex items-center justify-center">
-                                    <svg class="w-10 h-10 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                        <circle cx="12" cy="12" r="10" stroke-width="2"/>
-                                        <path d="M12 8v8M8 12h8" stroke-width="2"/>
+                                <div class="w-16 h-16 bg-gradient-to-br from-red-600 to-purple-700 rounded-xl flex items-center justify-center shadow-lg">
+                                    <svg class="w-10 h-10 text-white" viewBox="0 0 24 24">
+                                        <path fill="currentColor" d="M12 2a10 10 0 1010 10A10 10 0 0012 2zm0 18a8 8 0 118-8 8 8 0 01-8 8z"/>
                                     </svg>
                                 </div>
                                 <div>
                                     <h3 class="text-xl font-bold text-white">Mines</h3>
-                                    <p class="text-gray-400">Avoid the mines and win big!</p>
+                                    <p class="text-gray-400">Explosive Multiplier Hunt</p>
                                 </div>
                             </div>
-                            <div class="text-sm text-gray-400">
-                                Win up to 100x your bet
-                            </div>
+                            <p class="text-sm text-gray-300 mb-2">
+                                Navigate through the minefield to uncover massive multipliers. Each safe tile increases your potential win!
+                            </p>
+                            <div class="text-sm text-blue-300">Progressive Multiplier to 100x!</div>
                         </div>
                     </div>
                 </div>
@@ -1356,9 +1417,18 @@
                                 <div class="bg-gray-800 p-4 rounded-xl">
                                     <div class="text-sm text-gray-400 mb-2">Mines Count</div>
                                     <div class="grid grid-cols-3 gap-2">
-                                        <button onclick="MINES.setMines(3)" class="p-2 bg-blue-600 hover:bg-blue-700 rounded text-white text-sm mines-btn active">3</button>
-                                        <button onclick="MINES.setMines(5)" class="p-2 bg-blue-600 hover:bg-blue-700 rounded text-white text-sm mines-btn">5</button>
-                                        <button onclick="MINES.setMines(7)" class="p-2 bg-blue-600 hover:bg-blue-700 rounded text-white text-sm mines-btn">7</button>
+                                        <button onclick="MINES.setMines(5)" 
+                                                class="p-2 bg-blue-600 hover:bg-blue-700 rounded text-white text-sm mines-btn active">
+                                                5
+                                        </button>
+                                        <button onclick="MINES.setMines(7)" 
+                                                class="p-2 bg-blue-600 hover:bg-blue-700 rounded text-white text-sm mines-btn">
+                                                7
+                                        </button>
+                                        <button onclick="MINES.setMines(9)" 
+                                                class="p-2 bg-blue-600 hover:bg-blue-700 rounded text-white text-sm mines-btn">
+                                                9
+                                        </button>
                                     </div>
                                 </div>
                 
@@ -1746,19 +1816,19 @@ const PLINKO = {
     difficulties: {
         low: {
             name: "Low Risk",
-            multipliers: [3.0, 1.5, 1.1, 0.9, 0.5, 0.9, 1.1, 1.5, 3.0],
+            multipliers: [2.0, 1.3, 1.0, 0.75, 0.5, 0.75, 1.0, 1.3, 2.0],
             centerBias: 0.9,
             colors: ['#059669', '#10B981', '#34D399', '#6EE7B7', '#A7F3D0', '#6EE7B7', '#34D399', '#10B981', '#059669']
         },
         medium: {
             name: "Medium Risk",
-            multipliers: [4.0, 1.4, 0.8, 0.6, 0.3, 0.6, 0.8, 1.4, 4.0],
+            multipliers: [3.0, 1.7, 0.6, 0.4, 0.2, 0.4, 0.6, 1.7, 3.0],
             centerBias: 0.85,
             colors: ['#D97706', '#F59E0B', '#FBBF24', '#FCD34D', '#FDE68A', '#FCD34D', '#FBBF24', '#F59E0B', '#D97706']
         },
         high: {
             name: "High Risk",
-            multipliers: [10.0, 3.0, 0.4, 0.3, 0.2, 0.3, 0.4, 3.0, 10.0],
+            multipliers: [4.0, 2.0, 0.3, 0.2, 0.1, 0.2, 0.3, 2.0, 4.0],
             centerBias: 0.8,
             colors: ['#DC2626', '#EF4444', '#F87171', '#FCA5A5', '#FEE2E2', '#FCA5A5', '#F87171', '#EF4444', '#DC2626']
         }
@@ -2455,7 +2525,7 @@ const ROULETTE = {
         this.canvas = document.getElementById('roulette-wheel');
         this.ctx = this.canvas.getContext('2d');
         this.canvas.width = 600;
-    this.canvas.height = 600;
+        this.canvas.height = 600;
         this.generateNumberGrid();
         this.drawWheel();
     },
@@ -2745,6 +2815,7 @@ animateWheel(targetAngle) {
         }
     }
 };
+
 const BLACKJACK = {
     deck: [],
     playerHand: [],
