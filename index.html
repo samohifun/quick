@@ -3,7 +3,7 @@
 <head>
     <link rel="icon" type="image/png" href="https://www.smmusd.org/cms/lib/CA50000164/Centricity/Domain/2940/Square%20.gif">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>samohi.fun</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/10.8.0/firebase-app-compat.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/10.8.0/firebase-auth-compat.min.js"></script>
@@ -75,8 +75,74 @@
                 width: 100%;
             }
         }
+        
+        @media (max-width: 768px) {
+    body {
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
 
+    #markets-container {
+        padding: 10px;
+        grid-template-columns: 1fr !important;
+        gap: 10px;
+    }
+
+    .market-card {
+        margin: 0;
+        width: 100%;
+    }
+
+    .canvas-container {
+        height: 200px !important;
+    }
+
+    /* Game containers mobile fixes */
+    .game-container {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(8px);
+            z-index: 50;
+        }
+
+    .game-container > div {
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        margin: 0;
+        padding: 1rem;
+    }
+
+    /* Fix mobile scrolling to bottom */
+    #app-container {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    main {
+        flex: 1;
+    }
+
+    /* Better mobile game layout */
+    #plinko-canvas,
+    #crash-canvas,
+    #roulette-wheel {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .game-controls {
+        width: 100%;
+        padding: 10px;
+    }
+}
         @media screen and (max-width: 768px) {
+            
             header .max-w-8xl {
                 padding: 0.5rem;
             }
@@ -703,6 +769,25 @@
 
     #markets-container {
         margin-right: 340px;
+    }
+}
+@media (max-width: 768px) {
+    .game-container > div {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .game-controls {
+        flex-shrink: 0;
+    }
+
+    .canvas-wrapper {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }
     </style>
@@ -1645,7 +1730,7 @@
             
                     
                     <div class="flex-1 px-4">
-                        <div id="markets-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div id="markets-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4 md:px-8">
                             
                         </div>
                     </div>
@@ -1780,14 +1865,26 @@ const PLINKO = {
     gameInProgress: false,
     dropping: false,
     ballsInPlay: false,
-
+    config: {
+        width: 800,
+        height: 600,
+        pins: [],
+        pinRadius: 4,
+        ballRadius: 6,
+        gravity: 0.2,
+        bounce: 0.7,
+        friction: 0.99,
+        rowSpacing: 40,
+        startOffset: 100
+    },
 
     init() {
         this.canvas = document.getElementById('plinko-canvas');
-        this.ctx = this.canvas.getContext('2d');
+        if (!this.canvas) return;
         
-        this.canvas.width = this.width;
-        this.canvas.height = this.height;
+        this.ctx = this.canvas.getContext('2d');
+        this.canvas.width = this.config.width;
+        this.canvas.height = this.config.height;
         
         this.generatePins();
         this.animate();
@@ -2173,8 +2270,12 @@ const PLINKO = {
     }
 };
 function showPlinko() {
-    document.getElementById('plinko-container').classList.remove('hidden');
-    PLINKO.init();
+    const container = document.getElementById('plinko-container');
+    if (container) {
+        container.style.display = 'flex';
+        container.classList.remove('hidden');
+        PLINKO.init();
+    }
 }
 function closePlinko() {
     document.getElementById('plinko-container').classList.add('hidden');
@@ -2192,14 +2293,14 @@ const DRAGON = {
             name: "Medium Risk",
             tiles: 3,
             rows: 8,
-            multipliers: [1.20, 1.44, 1.73, 2.08, 2.50, 3.00, 3.60, 4.32],
+            multipliers: [1.10, 1.24, 1.43, 1.78, 1.90, 2.50, 3.60, 4.32],
             safeRatio: 0.4
         },
         high: {
             name: "High Risk",
             tiles: 3,
             rows: 8,
-            multipliers: [1.40, 1.96, 2.75, 3.85, 5.39, 7.55, 10.57, 14.80],
+            multipliers: [1.20, 1.5, 1.75, 2.85, 4.39, 6.55, 10.57, 14.80],
             safeRatio: 0.3
         }
     },
@@ -2210,12 +2311,19 @@ const DRAGON = {
     currentMultiplier: 1,
     revealedTiles: new Set(),
 
+    config: {
+        rows: 8,
+        columns: 3,
+        baseMultiplier: 1.2
+    },
+
     init() {
-        this.setDifficulty(this.currentDifficulty);
+        const grid = document.getElementById('tower-grid');
+        if (!grid) return;
+        
         this.generateGrid();
         this.updateUI();
     },
-
     generateGrid() {
         const grid = document.getElementById('tower-grid');
         grid.innerHTML = '';
@@ -3255,11 +3363,20 @@ const BLACKJACK = {
    }
 };
 function showBlackjack() {
-    document.getElementById('blackjack-container').classList.remove('hidden');
-    BLACKJACK.init();
+    const container = document.getElementById('blackjack-container');
+    if (container) {
+        container.style.display = 'flex';
+        container.classList.remove('hidden');
+        BLACKJACK.init();
+    }
 }
+
 function closeBlackjack() {
-   document.getElementById('blackjack-container').classList.add('hidden');
+    const container = document.getElementById('blackjack-container');
+    if (container) {
+        container.style.display = 'none';
+        container.classList.add('hidden');
+    }
 }
 const MINES = {
     grid: [],
@@ -3345,7 +3462,7 @@ const MINES = {
         }
 },
    
-calculateMultiplier(revealedCount) {
+    calculateMultiplier(revealedCount) {
     const safeSpots = 25 - this.mineCount;
     const remaining = safeSpots - revealedCount;
     
@@ -3418,6 +3535,9 @@ calculateMultiplier(revealedCount) {
     },
    
     async revealAllMines(excludeIndex) {
+        
+        document.getElementById('mines-start-btn').classList.remove('hidden');
+            document.getElementById('mines-cashout-btn').classList.add('hidden');
         for (let i = 0; i < this.mineLocations.length; i++) {
             const index = this.mineLocations[i];
             if (index !== excludeIndex && !this.revealedCells.includes(index)) {
@@ -3532,29 +3652,36 @@ calculateMultiplier(revealedCount) {
    }
 };
 function showMines() {
-    const minesContainer = document.getElementById('mines-container');
-    if (minesContainer) {
-        minesContainer.classList.remove('hidden');
-        MINES.setMines(3);
+    const container = document.getElementById('mines-container');
+    if (container) {
+        container.style.display = 'flex';
+        container.classList.remove('hidden');
+        MINES.setMines(5);
     }
 }
 function closeMines() {
-    const minesContainer = document.getElementById('mines-container');
-    if (minesContainer) {
-        minesContainer.classList.add('hidden');
+    const container = document.getElementById('mines-container');
+    if (container) {
+        container.style.display = 'none';
+        container.classList.add('hidden');
     }
 }
 function showRoulette() {
-    document.getElementById('roulette-container').classList.remove('hidden');
-    if (!ROULETTE.initialized) {
-        ROULETTE.init();
-        ROULETTE.initialized = true;
+    const container = document.getElementById('roulette-container');
+    if (container) {
+        container.style.display = 'flex';
+        container.classList.remove('hidden');
+        if (!ROULETTE.initialized) {
+            ROULETTE.init();
+            ROULETTE.initialized = true;
+        }
     }
 }
-function closeRoulette() {
-    document.getElementById('roulette-container').classList.add('hidden');
-    if (ROULETTE.spinAnimation) {
-        cancelAnimationFrame(ROULETTE.spinAnimation);
+function closePlinko() {
+    const container = document.getElementById('plinko-container');
+    if (container) {
+        container.style.display = 'none';
+        container.classList.add('hidden');
     }
 }
 const CRASH = {
@@ -4109,50 +4236,61 @@ function closeCrash() {
     CRASH.initialized = false;
 }
 function showCrash() {
-    document.getElementById('crash-container').classList.remove('hidden');
-    if (!CRASH.initialized) {
-        CRASH.init();
+    const container = document.getElementById('crash-container');
+    if (container) {
+        container.style.display = 'flex';
+        container.classList.remove('hidden');
+        if (!CRASH.initialized) {
+            CRASH.init();
+            CRASH.initialized = true;
+        }
     }
 }
 function closeCrash() {
-    document.getElementById('crash-container').classList.add('hidden');
-    if (CRASH.animationFrame) {
-        cancelAnimationFrame(CRASH.animationFrame);
+    const container = document.getElementById('crash-container');
+    if (container) {
+        container.style.display = 'none';
+        container.classList.add('hidden');
+        if (CRASH.cleanup) {
+            CRASH.cleanup();
+        }
     }
 }
-async function showRoulette() {
-    document.getElementById('roulette-container').classList.remove('hidden');
-    if (!ROULETTE.initialized) {
-        await ROULETTE.init();
-        ROULETTE.initialized = true;
+function showRoulette() {
+    const container = document.getElementById('roulette-container');
+    if (container) {
+        container.style.display = 'flex';
+        container.classList.remove('hidden');
+        if (!ROULETTE.initialized) {
+            ROULETTE.init();
+            ROULETTE.initialized = true;
+        }
     }
-    generateNumberGrid(); {
-    const grid = document.getElementById('number-grid');
-    if (!grid) return;
-    
-    grid.innerHTML = '';
-    for (let i = 1; i <= 36; i++) {
-        const button = document.createElement('button');
-        const number = this.numbers.find(n => n.number === i);
-        button.className = `w-full h-full ${number.color === 'red' ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-800 hover:bg-gray-900'} text-white rounded text-xs font-medium`;
-        button.textContent = i;
-        button.onclick = () => this.placeBet(i);
-        grid.appendChild(button);
-    }
-}
 }
 function closeRoulette() {
-    document.getElementById('roulette-container').classList.add('hidden');
-    if (ROULETTE.spinAnimation) {
-        cancelAnimationFrame(ROULETTE.spinAnimation);
+    const container = document.getElementById('roulette-container');
+    if (container) {
+        container.style.display = 'none';
+        container.classList.add('hidden');
+        if (ROULETTE.spinAnimation) {
+            cancelAnimationFrame(ROULETTE.spinAnimation);
+        }
     }
 }
 function showDragonTower() {
-    document.getElementById('dragon-tower-container').classList.remove('hidden');
-    DRAGON.init();
+    const container = document.getElementById('dragon-tower-container');
+    if (container) {
+        container.style.display = 'flex';
+        container.classList.remove('hidden');
+        DRAGON.init();
+    }
 }
 function closeDragonTower() {
-    document.getElementById('dragon-tower-container').classList.add('hidden');
+    const container = document.getElementById('dragon-tower-container');
+    if (container) {
+        container.style.display = 'none';
+        container.classList.add('hidden');
+    }
 }
 
 function showWinCelebration(amount, multiplier = null) {
@@ -5056,14 +5194,7 @@ function changePlinkoBet(action) {
     }
 }
 
-function closePlinko() {
-    document.getElementById('plinko-container').classList.add('hidden');
-}
 
-function showPlinko() {
-    document.getElementById('plinko-container').classList.remove('hidden');
-    initPlinko();
-}
 
 function showMarkets(type) {
     document.querySelectorAll('.market-btn').forEach(btn => {
@@ -5328,16 +5459,6 @@ function changeTowerBet(action) {
         input.value = Math.min(portfolio.balance, currentBet * 2);
     }
 }
-
-function showDragonTower() {
-    document.getElementById('dragon-tower-container').classList.remove('hidden');
-    initTowerGame();
-}
-
-function closeDragonTower() {
-    document.getElementById('dragon-tower-container').classList.add('hidden');
-}
-
 window.addEventListener('load', () => {
     showMarkets('all');
     const hash = window.location.hash.slice(1);
@@ -10559,10 +10680,22 @@ document.getElementById('save-profile-picture')?.addEventListener('click', async
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    const minesContainer = document.getElementById('mines-container');
-    if (minesContainer) {
-        minesContainer.classList.add('hidden');
-    }
+    const gameContainers = [
+        'mines-container',
+        'plinko-container',
+        'dragon-tower-container',
+        'roulette-container',
+        'crash-container',
+        'blackjack-container'
+    ];
+
+    gameContainers.forEach(containerId => {
+        const container = document.getElementById(containerId);
+        if (container) {
+            container.style.display = 'none';
+            container.classList.add('hidden');
+        }
+    });
     const panel = document.getElementById('activity-panel');
     
     const content = document.getElementById('activity-content');
