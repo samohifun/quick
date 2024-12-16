@@ -962,7 +962,7 @@
                                 </div>
                             </div>
                             <p class="text-sm text-gray-300 mb-2">
-                                European roulette with a modern twist. Multiple betting options and instant 35x wins on perfect picks!
+                                The wheel is not properly landing on the correct number! Even more of a gamble! So much fun to be had!
                             </p>
                             <div class="text-sm text-blue-300">Max Win: 35x</div>
                         </div>
@@ -1752,7 +1752,6 @@ const firebaseConfig = {
     appId: "1:33888100969:web:9f58fb4f8fcdcc110d38f8",
     measurementId: "G-RYC5DLG9DN"
 };
-
 const DEFAULT_PROFILE_PIC = "https://polymarket.com/_next/image?url=https%3A%2F%2Fpolymarket-upload.s3.us-east-2.amazonaws.com%2F31669764_829bfb7d-c27d-4c9a-8b78-dd9135282938_1730892972459.png&w=256&q=100";
 const app = firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
@@ -2657,77 +2656,79 @@ const ROULETTE = {
     },
 
     async spin() {
-        if (this.spinning || this.currentBets.size === 0) return;
+    if (this.spinning || this.currentBets.size === 0) return;
 
-const totalBet = this.getTotalBetAmount();
+    const totalBet = this.getTotalBetAmount();
 
-try {
-    await db.runTransaction(async (transaction) => {
-        const userRef = db.collection('users').doc(auth.currentUser.uid);
-        const userDoc = await transaction.get(userRef);
-        
-        if (userDoc.data().funbucks < totalBet) {
-            throw new Error('Insufficient funds');
-        }
-        
-        transaction.update(userRef, {
-            funbucks: firebase.firestore.FieldValue.increment(-totalBet)
+    try {
+        await db.runTransaction(async (transaction) => {
+            const userRef = db.collection('users').doc(auth.currentUser.uid);
+            const userDoc = await transaction.get(userRef);
+            
+            if (userDoc.data().funbucks < totalBet) {
+                throw new Error('Insufficient funds');
+            }
+            
+            transaction.update(userRef, {
+                funbucks: firebase.firestore.FieldValue.increment(-totalBet)
+            });
         });
-    });
-    
-    portfolio.balance -= totalBet;
-    updatePortfolioDisplays();
-    
-    this.spinning = true;
-    const result = Math.floor(Math.random() * 37);
-    
-    const targetIndex = this.numbers.findIndex(n => n.number === result);
-    const segmentAngle = (2 * Math.PI) / this.numbers.length;
-    
-    const targetAngle = -(targetIndex * segmentAngle) + Math.PI / 2;
-    const spins = 5;
-    const totalAngle = (spins * 2 * Math.PI) + targetAngle;
-    
-    await this.animateWheel(totalAngle);
-    await this.processWinnings(result);
-    
-} catch (error) {
-    console.error('Error spinning:', error);
-    showErrorMessage(error.message);
-}
+        
+        portfolio.balance -= totalBet;
+        updatePortfolioDisplays();
+        
+        this.spinning = true;
+        const result = Math.floor(Math.random() * 37);
+        
+        // Find the index of the result in the numbers array
+        const targetIndex = this.numbers.findIndex(n => n.number === result);
+        
+        // Calculate the exact angle needed
+        const segmentAngle = (2 * Math.PI) / this.numbers.length;
+        const targetAngle = (targetIndex * segmentAngle);
+        
+        await this.animateWheel(targetAngle);
+        await this.processWinnings(result);
+        
+    } catch (error) {
+        console.error('Error spinning:', error);
+        showErrorMessage(error.message);
+    }
 },
 
 animateWheel(targetAngle) {
-        return new Promise(resolve => {
-            const startRotation = this.rotationAngle;
-            const duration = 5000;
-            const startTime = Date.now();
-            const totalRotations = 8;
+    return new Promise(resolve => {
+        const startRotation = this.rotationAngle;
+        const duration = 5000;
+        const startTime = Date.now();
+        const totalRotations = 8;
 
-            const animate = () => {
-                const elapsed = Date.now() - startTime;
-                const progress = Math.min(1, elapsed / duration);
+        const animate = () => {
+            const elapsed = Date.now() - startTime;
+            const progress = Math.min(1, elapsed / duration);
+            
+            // Improved easing function
+            const easeOut = t => 1 - Math.pow(1 - t, 3);
+            
+            // Calculate rotation including complete spins
+            const currentRotation = startRotation + 
+                (totalRotations * Math.PI * 2 * easeOut(progress)) +
+                ((targetAngle - Math.PI / 2) * easeOut(progress)); // Adjusted angle calculation
 
-                const easeOut = t => t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
-                
-                const currentRotation = startRotation + 
-                    (totalRotations * Math.PI * 2 * easeOut(progress)) + 
-                    (targetAngle * easeOut(progress));
+            this.rotationAngle = currentRotation;
+            this.drawWheel();
 
-                this.rotationAngle = currentRotation;
-                this.drawWheel();
+            if (progress < 1) {
+                this.spinAnimation = requestAnimationFrame(animate);
+            } else {
+                this.spinning = false;
+                resolve();
+            }
+        };
 
-                if (progress < 1) {
-                    this.spinAnimation = requestAnimationFrame(animate);
-                } else {
-                    this.spinning = false;
-                    resolve();
-                }
-            };
-
-            animate();
-        });
-    },
+        animate();
+    });
+},
     
 
     async processWinnings(number) {
@@ -4468,8 +4469,7 @@ const TITLES = {
     clooner: {
         name: 'Clooner',
         description: 'A distinguished member of the community',
-        icon: '🤙',
-        isAdmin: true 
+        icon: '🤙'
     },
     suggester: {
         name: 'Suggester',
@@ -10559,11 +10559,12 @@ document.getElementById('save-profile-picture')?.addEventListener('click', async
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    const panel = document.getElementById('activity-panel');
     const minesContainer = document.getElementById('mines-container');
     if (minesContainer) {
         minesContainer.classList.add('hidden');
     }
+    const panel = document.getElementById('activity-panel');
+    
     const content = document.getElementById('activity-content');
     const minimizeBtn = document.getElementById('activity-minimize');
     const refreshBtn = document.getElementById('activity-refresh');
