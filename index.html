@@ -3962,6 +3962,28 @@ const CRASH = {
             input.value = Math.min(portfolio.balance, currentBet * 2);
         }
     },
+    update() {
+        if (!this.isRunning) return;
+    
+    const now = Date.now();
+    const elapsed = (now - this.startTime) / 1000;
+    this.multiplier = Math.pow(Math.E, 0.06 * elapsed);
+    
+    if (this.multiplier >= this.crashPoint) {
+        this.handleCrash();
+        return;
+    }
+    
+    // Handle auto-cashout
+    if (this.betPlaced && !this.hasCashedOut && this.autoCashoutEnabled) {
+        const autoCashoutValue = parseFloat(document.getElementById('crash-auto-cashout').value);
+        if (this.multiplier >= autoCashoutValue) {
+            this.cashout();
+        }
+    }
+    
+    this.updateUI();
+    },
 
     animate() {
         const ctx = this.ctx;
@@ -4007,28 +4029,7 @@ const CRASH = {
         requestAnimationFrame(() => this.animate());
     }
 };
-CRASH.update = function() {
-    if (!this.isRunning) return;
     
-    const now = Date.now();
-    const elapsed = (now - this.startTime) / 1000;
-    this.multiplier = Math.pow(Math.E, 0.06 * elapsed);
-    
-    if (this.multiplier >= this.crashPoint) {
-        this.handleCrash();
-        return;
-    }
-    
-    // Handle auto-cashout
-    if (this.betPlaced && !this.hasCashedOut && this.autoCashoutEnabled) {
-        const autoCashoutValue = parseFloat(document.getElementById('crash-auto-cashout').value);
-        if (this.multiplier >= autoCashoutValue) {
-            this.cashout();
-        }
-    }
-    
-    this.updateUI();
-};
 const DICE = {
     betAmount: 0,
     targetNumber: 50,
