@@ -3834,7 +3834,7 @@ const CRASH = {
     },
 
     async placeBet() {
-        if (!auth.currentUser || this.hasStarted || this.betPlaced) return;
+       if (!auth.currentUser || this.hasStarted || this.betPlaced) return;
 
     const betAmount = parseFloat(document.getElementById('crash-bet').value);
     if (!validateBet(betAmount)) return;
@@ -3859,8 +3859,8 @@ const CRASH = {
         });
 
         this.betAmount = betAmount;
-        this.betPlaced = true; // Add flag to prevent multiple bets
-        this.hasCashedOut = false; // Reset cashout status
+        this.betPlaced = true;
+        this.hasCashedOut = false;
         portfolio.balance -= betAmount;
         updatePortfolioDisplays();
 
@@ -3869,6 +3869,7 @@ const CRASH = {
     } catch (error) {
         console.error('Error placing bet:', error);
         showErrorMessage(error.message);
+    }
     },
 
     async cashout() {
