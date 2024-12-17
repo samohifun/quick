@@ -3812,51 +3812,78 @@ const CRASH = {
         this.gameState = 'crashed';
         this.gameHistory.unshift(this.crashPoint);
         if (this.gameHistory.length > 10) this.gameHistory.pop();
-        
+    
+        if (this.hasBet) {
+            this.betAmount = 0;
+            this.hasBet = false;
+            document.getElementById('crash-cashout-btn').classList.add('hidden');
+            document.getElementById('crash-bet-btn').classList.remove('hidden');
+        }
+    
         setTimeout(() => {
             this.startNewRound();
         }, 3000);
-        
+    
         this.updateUI();
     },
 
     async placeBet() {
         if (!auth.currentUser || this.hasStarted) return;
-    
-        const betAmount = document.getElementById('crash-bet').value;
+
+        const betAmount = parseFloat(document.getElementById('crash-bet').value);
         if (!validateBet(betAmount)) return;
-
-        const networth = calculateNetworth();
-        if (networth < 200) {
-            showErrorMessage('Minimum networth of 200 required to play');
-            return;
-        }
-
+    
         if (betAmount > portfolio.balance) {
             showErrorMessage('Insufficient funds');
             return;
         }
-
+    
         this.betAmount = betAmount;
         portfolio.balance -= betAmount;
         updatePortfolioDisplays();
-
+    
         document.getElementById('crash-bet-btn').classList.add('hidden');
         document.getElementById('crash-cashout-btn').classList.remove('hidden');
+        
+        this.hasBet = true;
     },
 
     async cashout() {
-        if (!this.isRunning || !this.hasStarted) return;
+        if (!this.isRunning || !this.hasStarted || !this.hasBet) return;
 
         const winAmount = this.betAmount * this.multiplier;
-        portfolio.balance += winAmount;
-        updatePortfolioDisplays();
-        showWinCelebration(winAmount);
-
-        document.getElementById('crash-bet-btn').classList.remove('hidden');
-        document.getElementById('crash-cashout-btn').classList.add('hidden');
-
-        this.betAmount = 0;
+    
+        try {
+            await db.runTransaction(async (transaction) => {
+                const userRef = db.collection('users').doc(auth.currentUser.uid);
+                transaction.update(userRef, {
+                    funbucks: firebase.firestore.FieldValue.increment(winAmount)
+                });
+    
+                transaction.set(db.collection('gameHistory').doc(), {
+                    userId: auth.currentUser.uid,
+                    username: currentUser.username,
+                    gameType: 'crash',
+                    betAmount: this.betAmount,
+                    winAmount: winAmount,
+                    multiplier: this.multiplier,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            });
+    
+            portfolio.balance += winAmount;
+            updatePortfolioDisplays();
+            showWinCelebration(winAmount);
+    
+            this.betAmount = 0;
+            this.hasBet = false;
+            document.getElementById('crash-bet-btn').classList.remove('hidden');
+            document.getElementById('crash-cashout-btn').classList.add('hidden');
+    
+        } catch (error) {
+            console.error('Error processing win:', error);
+            showErrorMessage('Error processing win');
+        }
     },
 
     updateUI() {
