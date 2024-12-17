@@ -5013,59 +5013,79 @@ const rainSystem = {
                 return;
             }
 
-            if (portfolio.balance < amount) {
+            // Check user's balance
+            const userRef = db.collection('users').doc(auth.currentUser.uid);
+            const userDoc = await userRef.get();
+            const userData = userDoc.data();
+
+            if (userData.funbucks < amount) {
                 this.showNotification('error', 'Insufficient funds');
                 return;
             }
 
-            // Check daily limit
-            const userDoc = await db.collection('users').doc(auth.currentUser.uid).get();
-            const userData = userDoc.data();
+            // Check daily rain limit
             const today = new Date().toISOString().split('T')[0];
-            const todayRain = userData.dailyRain?.[today] || 0;
+            const dailyRainToday = (userData.dailyRain?.[today] || 0) + amount;
             
-            if (todayRain + amount > 500) {
-                this.showNotification('error', `Daily rain limit exceeded. You can rain ${formatCurrency(500 - todayRain)} more today.`);
+            if (dailyRainToday > 500) {
+                this.showNotification('error', `Daily rain limit reached. You can rain ${formatCurrency(500 - (dailyRainToday - amount))} more today.`);
                 return;
             }
 
-            // Get all eligible users (excluding banned users)
+            // Get ALL non-banned users
             const usersSnapshot = await db.collection('users')
                 .where('banned', '==', false)
                 .get();
 
-            const activeUsers = usersSnapshot.docs;
-            if (activeUsers.length === 0) {
+            // Remove sender from recipients
+            const recipients = usersSnapshot.docs.filter(doc => doc.id !== auth.currentUser.uid);
+
+            if (recipients.length === 0) {
                 this.showNotification('error', 'No eligible users to receive rain');
                 return;
             }
 
-            // Calculate amount per user (rounded to 2 decimal places)
-            const amountPerUser = Math.floor((amount / activeUsers.length) * 100) / 100;
+            // Calculate exact amount per user (rounded to 2 decimal places)
+            const amountPerUser = Math.floor((amount / recipients.length) * 100) / 100;
 
             await db.runTransaction(async (transaction) => {
-                const senderRef = db.collection('users').doc(auth.currentUser.uid);
-                
-                transaction.update(senderRef, {
+                // Update sender's balance and daily rain amount
+                transaction.update(userRef, {
                     funbucks: firebase.firestore.FieldValue.increment(-amount),
-                    totalRainAmount: firebase.firestore.FieldValue.increment(amount),
-                    [`dailyRain.${today}`]: firebase.firestore.FieldValue.increment(amount)
+                    [`dailyRain.${today}`]: dailyRainToday,
+                    totalRainAmount: firebase.firestore.FieldValue.increment(amount)
                 });
 
-                // Distribute to all users
-                activeUsers.forEach(userDoc => {
-                    transaction.update(userDoc.ref, {
+                // If they've rained over 1000 total, give them the rainmaker title
+                if ((userData.totalRainAmount || 0) + amount >= 1000) {
+                    transaction.update(userRef, {
+                        titles: firebase.firestore.FieldValue.arrayUnion('rainmaker')
+                    });
+                }
+
+                // Distribute to ALL recipients
+                recipients.forEach(recipientDoc => {
+                    transaction.update(recipientDoc.ref, {
                         funbucks: firebase.firestore.FieldValue.increment(amountPerUser)
+                    });
+
+                    // Create notification for each recipient
+                    transaction.set(db.collection('notifications').doc(), {
+                        userId: recipientDoc.id,
+                        type: 'rain_received',
+                        message: `${userData.username} made it rain! You received ${formatCurrency(amountPerUser)}`,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                        read: false
                     });
                 });
 
                 // Log the rain event
                 transaction.set(db.collection('rain').doc(), {
                     senderId: auth.currentUser.uid,
-                    senderName: currentUser.username,
+                    senderName: userData.username,
                     totalAmount: amount,
-                    amountPerUser,
-                    recipientCount: activeUsers.length,
+                    amountPerUser: amountPerUser,
+                    recipientCount: recipients.length,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
             });
@@ -5074,7 +5094,15 @@ const rainSystem = {
             portfolio.balance -= amount;
             updatePortfolioDisplays();
 
-            this.showNotification('success', `Made it rain ${formatCurrency(amount)}!`);
+            this.showNotification('success', `Made it rain ${formatCurrency(amount)} to ${recipients.length} users!`);
+            
+            // If they just got the rainmaker title, show an achievement notification
+            if ((userData.totalRainAmount || 0) + amount >= 1000 && !userData.titles?.includes('rainmaker')) {
+                setTimeout(() => {
+                    this.showNotification('achievement', 'New Title Unlocked: Rainmaker! 🌧️');
+                }, 1500);
+            }
+
             document.querySelector('.fixed')?.remove();
             await updateRecentActivity();
 
@@ -5086,8 +5114,33 @@ const rainSystem = {
 
     showNotification(type, message) {
         const notification = document.createElement('div');
-        notification.className = `fixed bottom-4 right-4 ${type === 'error' ? 'bg-red-500' : 'bg-green-500'} text-white px-6 py-3 rounded-lg shadow-lg animate__animated animate__fadeInUp z-50`;
-        notification.textContent = message;
+        let bgColor, icon;
+
+        switch(type) {
+            case 'success':
+                bgColor = 'bg-green-500';
+                icon = '✅';
+                break;
+            case 'error':
+                bgColor = 'bg-red-500';
+                icon = '❌';
+                break;
+            case 'achievement':
+                bgColor = 'bg-purple-500';
+                icon = '🏆';
+                break;
+            default:
+                bgColor = 'bg-blue-500';
+                icon = '📢';
+        }
+
+        notification.className = `fixed bottom-4 right-4 ${bgColor} text-white px-6 py-3 rounded-lg shadow-lg animate__animated animate__fadeInUp z-50`;
+        notification.innerHTML = `
+            <div class="flex items-center gap-2">
+                <span>${icon}</span>
+                <span>${message}</span>
+            </div>
+        `;
         
         document.body.appendChild(notification);
         
