@@ -3764,7 +3764,7 @@ const CRASH = {
             crashPoint = 5.00 + ((r - 0.95) * 300);
         }
 
-        return Math.floor(crashPoint * 100) / 100;
+        return 100 + Math.floor(crashPoint * 100) / 100;
     },
 
     startNewRound() {
