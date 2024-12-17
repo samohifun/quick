@@ -83,9 +83,9 @@
     }
 
     #markets-container {
-        padding: 10px;
-        grid-template-columns: 1fr !important;
-        gap: 10px;
+        margin-right: 0 !important;
+        margin-left: 340px !important;
+        padding: 0 20px !important;
     }
 
     .market-card {
@@ -317,7 +317,10 @@
 }
 
 #markets-container {
-    margin-right: 288px; /* Adjust this value based on your sidebar width */
+    margin-left: auto !important;
+    margin-right: 340px !important;
+    padding: 0 20px !important;
+    max-width: calc(100% - 340px);
 }
 @keyframes reveal {
         0% { transform: rotateY(0deg); }
@@ -689,13 +692,18 @@
     }
     
     .activity-item {
-        animation: fade-in 0.3s ease-out;
-    }
+    animation: slideInLeft 0.3s ease-out;
+  }
+  @keyframes slideInLeft {
+    from { transform: translateX(-100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
     
     #activity-panel {
         position: fixed;
         top: 80px;
-        right: 20px;
+        right: 20px !important;
+        left: auto !important;
         width: 320px;
         max-height: calc(100vh - 100px);
         background: rgba(17, 24, 39, 0.95);
@@ -707,6 +715,22 @@
         display: flex;
         flex-direction: column;
         transition: transform 0.3s ease-in-out;
+        right: auto;
+    }
+    .game-requirements {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        background: rgba(239, 68, 68, 0.9);
+        padding: 12px 24px;
+        border-radius: 9999px;
+        color: white;
+        font-weight: 600;
+        z-index: 50;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        backdrop-filter: blur(8px);
     }
     #activity-content {
         flex: 1;
@@ -789,9 +813,44 @@
         align-items: center;
         justify-content: center;
     }
+    #markets-container {
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+        max-width: 100%;
+        padding: 10px !important;
+    }
+    #activity-panel {
+        bottom: 70px;
+        right: 10px !important;
+        left: 10px !important;
+        width: auto;
+    }
+}
+.tip-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(59, 130, 246, 0.9);
+    padding: 12px 24px;
+    border-radius: 9999px;
+    color: white;
+    font-weight: 600;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    backdrop-filter: blur(8px);
+}
+
+.tip-button:hover {
+    transform: translateY(-2px);
+    background: rgba(59, 130, 246, 1);
 }
     </style>
     
+
 </head>
 <meta name="description" content="An educational probabilty site.">
 <body>
@@ -1032,28 +1091,27 @@
                             <div class="text-sm text-blue-300">Max Win: 40x</div>
                         </div>
             
-                        <!-- Roulette -->
-<!--                         <div class="bg-gray-800/80 backdrop-blur p-6 rounded-xl border border-blue-900/30 hover:border-blue-500 transition-all cursor-pointer shadow-lg hover:transform hover:scale-105" onclick="showRoulette()">
-                            <div class="flex items-center gap-4 mb-4">
-                                <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-700 rounded-xl flex items-center justify-center shadow-lg">
+                        <!-- Dice -->
+                         <div class="bg-gray-800/80 backdrop-blur p-6 rounded-xl border border-blue-900/30 hover:border-blue-500 transition-all cursor-pointer shadow-lg hover:transform hover:scale-105" onclick="showDice()">
+                            <div class="flex items-center gap-4">
+                                <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-blue-700 rounded-xl flex items-center justify-center shadow-lg">
                                     <svg class="w-10 h-10 text-white" viewBox="0 0 24 24">
-                                        <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
-                                        <path fill="currentColor" d="M12 2v4m0 12v4M4 12h4m8 0h4"/>
+                                        <path fill="currentColor" d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2m7 7a2 2 0 0 0-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2Z"/>
                                     </svg>
                                 </div>
                                 <div>
-                                    <h3 class="text-xl font-bold text-white">Roulette</h3>
-                                    <p class="text-gray-400">Premium Casino Experience</p>
+                                    <h3 class="text-xl font-bold text-white">Dice</h3>
+                                    <p class="text-gray-400">Choose Your Odds</p>
                                 </div>
                             </div>
                             <p class="text-sm text-gray-300 mb-2">
-                                The wheel is not properly landing on the correct number! Even more of a gamble! So much fun to be had!
+                                Set your target number and multiply your winnings! Higher risk, higher reward.
                             </p>
-                            <div class="text-sm text-blue-300">Max Win: 35x</div>
-                        </div> -->
+                            <div class="text-sm text-blue-300">Max Win: 98x</div>
+                        </div>
             
                         <!-- Crash -->
-                       <!-- <div class="bg-gray-800/80 backdrop-blur p-6 rounded-xl border border-blue-900/30 hover:border-blue-500 transition-all cursor-pointer shadow-lg hover:transform hover:scale-105" onclick="showCrash()">
+                       <div class="bg-gray-800/80 backdrop-blur p-6 rounded-xl border border-blue-900/30 hover:border-blue-500 transition-all cursor-pointer shadow-lg hover:transform hover:scale-105" onclick="showCrash()">
                             <div class="flex items-center gap-4 mb-4">
                                 <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg">
                                     <svg class="w-10 h-10 text-white" viewBox="0 0 24 24">
@@ -1069,7 +1127,7 @@
                                 Watch the multiplier soar and test your nerves! Cash out at the perfect moment for massive wins.
                             </p>
                             <div class="text-sm text-blue-300">Unlimited Potential!</div>
-                        </div> -->
+                        </div>
             
                         <!-- Blackjack -->
                         <div class="bg-gray-800/80 backdrop-blur p-6 rounded-xl border border-blue-900/30 hover:border-blue-500 transition-all cursor-pointer shadow-lg hover:transform hover:scale-105" onclick="showBlackjack()">
@@ -1234,101 +1292,66 @@
                         </div>
                     </div>
                 </div>
-                <div id="roulette-container" class="fixed inset-0 bg-black/90 flex items-center justify-center hidden z-50">
-                    <div class="bg-gray-900 rounded-xl p-4 w-[1000px] h-[700px] overflow-auto">
-                        <div class="flex justify-between items-center mb-4">
-                            <h2 class="text-2xl font-bold text-blue-300">Roulette</h2>
-                            <button onclick="closeRoulette()" class="text-gray-400 hover:text-white text-2xl">&times;</button>
+                <div id="dice-container" class="fixed inset-0 bg-black/90 flex items-center justify-center hidden z-50">
+                    <div class="bg-gray-900 rounded-xl p-6 w-full max-w-4xl relative">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold text-blue-300">Dice</h2>
+                            <button onclick="closeDice()" class="text-gray-400 hover:text-white text-2xl">&times;</button>
                         </div>
                         
-                        <div class="flex gap-4">
-                            
-                            <div class="w-[750px] flex flex-col bg-gray-800 rounded-xl p-4">
-                                
-                                <div class="relative">
-                                    <canvas id="roulette-wheel" class="w-[850px] h-[850px] rounded-lg"></canvas>
-                                    <div id="roulette-result" 
-                                         class="absolute top-4 right-4 text-6xl font-bold transition-all duration-300"></div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Game Display -->
+                            <div class="bg-gray-800 p-6 rounded-xl">
+                                <div class="text-center mb-8">
+                                    <div id="dice-result" class="text-6xl font-bold text-white mb-4">--</div>
+                                    <div id="dice-target-display" class="text-xl text-gray-400"></div>
                                 </div>
                                 
-                                <div class="mt-4 flex gap-2 overflow-x-auto py-2">
-                                    <div id="roulette-history" class="flex gap-2">
-                                        
+                                <div class="space-y-6">
+                                    <div>
+                                        <label class="block text-gray-400 mb-2">Target Number (Higher wins)</label>
+                                        <input type="range" 
+                                               id="dice-target" 
+                                               min="2" 
+                                               max="98" 
+                                               value="50" 
+                                               class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                                        <div class="flex justify-between mt-2 text-sm text-gray-400">
+                                            <span>2</span>
+                                            <span>50</span>
+                                            <span>98</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-gray-400 mb-2">Multiplier</label>
+                                        <div id="dice-multiplier" class="text-2xl font-bold text-green-400">2.00x</div>
                                     </div>
                                 </div>
                             </div>
                 
-                            
-                            <div class="flex-1 flex flex-col gap-4">
-                                
-                                <div class="bg-gray-800 rounded-xl p-4">
+                            <!-- Controls -->
+                            <div class="space-y-4">
+                                <div class="bg-gray-800 p-4 rounded-xl">
                                     <div class="text-sm text-gray-400 mb-2">Bet Amount</div>
                                     <div class="flex gap-2">
-                                        <input type="number" id="roulette-bet" min="1" value="10" 
-                                               class="w-full p-3 bg-gray-700 rounded text-white border border-gray-600">
-                                        <button onclick="ROULETTE.changeBet('half')" 
-                                                class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded text-white">½</button>
-                                        <button onclick="ROULETTE.changeBet('double')" 
-                                                class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded text-white">2×</button>
+                                        <input type="number" id="dice-bet" min="1" value="10" 
+                                               class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600">
+                                        <button onclick="DICE.changeBet('half')" 
+                                                class="w-12 h-12 flex items-center justify-center bg-blue-600 hover:bg-blue-700 rounded-lg text-white text-sm">½</button>
+                                        <button onclick="DICE.changeBet('double')" 
+                                                class="w-12 h-12 flex items-center justify-center bg-blue-600 hover:bg-blue-700 rounded-lg text-white text-sm">2×</button>
                                     </div>
                                 </div>
                 
-                                
-                                <div class="bg-gray-800 rounded-xl p-4 flex-1">
-                                    
-                                    <div class="grid grid-cols-2 gap-3 mb-4">
-                                        <button onclick="ROULETTE.placeBet('red')" 
-                                                class="p-4 bg-red-600 hover:bg-red-700 text-white rounded font-bold">
-                                            Red (2×)
-                                        </button>
-                                        <button onclick="ROULETTE.placeBet('black')" 
-                                                class="p-4 bg-gray-900 hover:bg-black text-white rounded font-bold">
-                                            Black (2×)
-                                        </button>
-                                        <button onclick="ROULETTE.placeBet('even')" 
-                                                class="p-4 bg-blue-600 hover:bg-blue-700 text-white rounded font-bold">
-                                            Even (2×)
-                                        </button>
-                                        <button onclick="ROULETTE.placeBet('odd')" 
-                                                class="p-4 bg-blue-600 hover:bg-blue-700 text-white rounded font-bold">
-                                            Odd (2×)
-                                        </button>
-                                    </div>
-                
-                                    
-                                    <div class="grid grid-cols-3 gap-3 mb-4">
-                                        <button onclick="ROULETTE.placeBet('1st12')" 
-                                                class="p-3 bg-purple-600 hover:bg-purple-700 text-white rounded font-bold">
-                                            1-12 (3×)
-                                        </button>
-                                        <button onclick="ROULETTE.placeBet('2nd12')" 
-                                                class="p-3 bg-purple-600 hover:bg-purple-700 text-white rounded font-bold">
-                                            13-24 (3×)
-                                        </button>
-                                        <button onclick="ROULETTE.placeBet('3rd12')" 
-                                                class="p-3 bg-purple-600 hover:bg-purple-700 text-white rounded font-bold">
-                                            25-36 (3×)
-                                        </button>
-                                    </div>
-                
-                                    
-                                    <div class="grid grid-cols-6 gap-1 mb-4" id="number-grid">
-                                        
-                                    </div>
-                
-                                    
-                                    <div class="mt-4 bg-gray-700 rounded-lg p-3">
-                                        <div class="text-sm text-gray-400 mb-2">Current Bets</div>
-                                        <div id="current-bets" class="flex flex-wrap gap-2">
-                                            
-                                        </div>
-                                    </div>
+                                <div class="bg-gray-800 p-4 rounded-xl">
+                                    <div class="text-sm text-gray-400 mb-2">Potential Win</div>
+                                    <div id="dice-potential-win" class="text-xl font-bold text-green-400">$0.00</div>
                                 </div>
-                
                                 
-                                <button onclick="ROULETTE.spin()" 
-                                        class="w-full p-4 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold text-xl">
-                                    SPIN (${formatCurrency(ROULETTE.getTotalBetAmount())})
+                                <button onclick="DICE.roll()" 
+                                        class="w-full p-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-lg font-bold">
+                                    Roll Dice
                                 </button>
                             </div>
                         </div>
@@ -1757,7 +1780,7 @@
                             Admin Panel
                         </button>
                     </div>
-            
+                    
                     <div class="grid md:grid-cols-2 gap-8">
                         
                         <div class="space-y-6">
@@ -1842,6 +1865,33 @@ function validateBetAmount(amount) {
     const betAmount = Number(amount);
     return !isNaN(betAmount) && betAmount > 0 && isFinite(betAmount);
 }
+function validateBetInput(input) {
+    input.value = Math.abs(parseFloat(input.value)) || '';
+
+    if (input.value !== '' && parseFloat(input.value) < 1) {
+        input.value = '1';
+    }
+}
+function validateBet(amount) {
+    const networth = calculateNetworth();
+    if (networth < 200) {
+        showErrorMessage('Minimum networth of 200 FunBucks required to play');
+        return false;
+    }
+
+    amount = Math.abs(parseFloat(amount));
+    if (isNaN(amount) || amount <= 0) {
+        showErrorMessage('Please enter a valid bet amount');
+        return false;
+    }
+
+    if (amount > 500) {
+        showErrorMessage('Maximum bet is 500 FunBucks');
+        return false;
+    }
+
+    return true;
+}
 const DEFAULT_PROFILE_PIC = "https://polymarket.com/_next/image?url=https%3A%2F%2Fpolymarket-upload.s3.us-east-2.amazonaws.com%2F31669764_829bfb7d-c27d-4c9a-8b78-dd9135282938_1730892972459.png&w=256&q=100";
 const app = firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
@@ -1852,7 +1902,87 @@ const provider = new firebase.auth.GoogleAuthProvider();
 provider.setCustomParameters({
     'hd': 'smmk12.org',
 });
+const adminControls = {
+    showGiveMoneyModal() {
+        if (!currentUser?.isAdmin) return;
+        
+        const modal = document.createElement('div');
+        modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[60]';
+        modal.innerHTML = `
+            <div class="bg-gray-900 rounded-xl p-6 max-w-md w-full">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-bold text-blue-300">Give FunBucks (Admin Only)</h3>
+                    <button onclick="this.closest('.fixed').remove()" class="text-gray-400 hover:text-white">×</button>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-gray-400 mb-2">Username</label>
+                        <input type="text" id="give-money-username" class="w-full p-3 bg-gray-800 rounded-lg border border-gray-700">
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 mb-2">Amount</label>
+                        <input type="number" id="give-money-amount" class="w-full p-3 bg-gray-800 rounded-lg border border-gray-700">
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 mb-2">Reason</label>
+                        <input type="text" id="give-money-reason" class="w-full p-3 bg-gray-800 rounded-lg border border-gray-700">
+                    </div>
+                    <button onclick="adminControls.giveMoney()" class="w-full bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg">
+                        Give FunBucks
+                    </button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    },
 
+    async giveMoney() {
+        if (!currentUser?.isAdmin) return;
+        
+        const username = document.getElementById('give-money-username').value;
+        const amount = Math.abs(parseInt(document.getElementById('give-money-amount').value));
+        const reason = document.getElementById('give-money-reason').value;
+
+        if (!username || !amount || !reason) {
+            showErrorMessage('Please fill all fields');
+            return;
+        }
+
+        try {
+            await db.runTransaction(async (transaction) => {
+                const userQuery = await db.collection('users')
+                    .where('username', '==', username)
+                    .limit(1)
+                    .get();
+
+                if (userQuery.empty) throw new Error('User not found');
+
+                const userRef = userQuery.docs[0].ref;
+                
+                transaction.update(userRef, {
+                    funbucks: firebase.firestore.FieldValue.increment(amount)
+                });
+
+                transaction.set(db.collection('adminActions').doc(), {
+                    type: 'giveMoney',
+                    adminId: auth.currentUser.uid,
+                    adminName: currentUser.username,
+                    targetUserId: userRef.id,
+                    targetUsername: username,
+                    amount: amount,
+                    reason: reason,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            });
+
+            showSuccessMessage(`Given ${formatCurrency(amount)} to ${username}`);
+            document.querySelector('.fixed').remove();
+        } catch (error) {
+            showErrorMessage(error.message);
+        }
+    }
+};
+window.adminControls = adminControls;
 const PLINKO = {
     canvas: null,
     ctx: null,
@@ -1929,7 +2059,7 @@ const PLINKO = {
         },
         high: {
             name: "High Risk",
-            multipliers: [4000.0, 2.0, 0.3, 0.2, 0.1, 0.2, 0.3, 2.0, 4000.0],
+            multipliers: [10.0, 2.0, 0.3, 0.2, 0.1, 0.2, 0.3, 2.0, 10.0],
             centerBias: 0.8,
             colors: ['#DC2626', '#EF4444', '#F87171', '#FCA5A5', '#FEE2E2', '#FCA5A5', '#F87171', '#EF4444', '#DC2626']
         }
@@ -2061,12 +2191,10 @@ const PLINKO = {
 },
 
     async dropBall() {
-        if (!auth.currentUser) {
-            showErrorMessage('Please sign in to play');
-            return;
-        }
-
-        const betAmount = parseFloat(document.getElementById('plinko-bet').value);
+        if (!auth.currentUser) return;
+    
+        const betAmount = document.getElementById('plinko-bet').value;
+        if (!validateBet(betAmount)) return;
         if (!validateBetAmount(betAmount)) {
             showErrorMessage('Please enter a valid positive bet amount');
             return;
@@ -2389,12 +2517,10 @@ const DRAGON = {
     },
 
     async startGame() {
-        if (!auth.currentUser) {
-            showErrorMessage('Please sign in to play');
-            return;
-        }
-        
-        const betAmount = parseFloat(document.getElementById('mines-bet').value);
+        if (!auth.currentUser) return;
+    
+        const betAmount = document.getElementById('tower-bet').value;
+        if (!validateBet(betAmount)) return;
         if (!validateBetAmount(betAmount)) {
             showErrorMessage('Please enter a valid positive bet amount');
             return;
@@ -2599,348 +2725,7 @@ const DRAGON = {
         }
     }
 };
-const ROULETTE = {
-    numbers: [
-        { number: 0, color: 'green' },
-        { number: 26, color: 'black' },
-        { number: 3, color: 'red' },
-        { number: 35, color: 'black' },
-        { number: 12, color: 'red' },
-        { number: 28, color: 'black' },
-        { number: 7, color: 'red' },
-        { number: 29, color: 'black' },
-        { number: 18, color: 'red' },
-        { number: 22, color: 'black' },
-        { number: 9, color: 'red' },
-        { number: 31, color: 'black' },
-        { number: 14, color: 'red' },
-        { number: 20, color: 'black' },
-        { number: 1, color: 'red' },
-        { number: 33, color: 'black' },
-        { number: 16, color: 'red' },
-        { number: 24, color: 'black' },
-        { number: 5, color: 'red' },
-        { number: 10, color: 'black' },
-        { number: 23, color: 'red' },
-        { number: 8, color: 'black' },
-        { number: 30, color: 'red' },
-        { number: 11, color: 'black' },
-        { number: 36, color: 'red' },
-        { number: 13, color: 'black' },
-        { number: 27, color: 'red' },
-        { number: 6, color: 'black' },
-        { number: 34, color: 'red' },
-        { number: 17, color: 'black' },
-        { number: 25, color: 'red' },
-        { number: 2, color: 'black' },
-        { number: 21, color: 'red' },
-        { number: 4, color: 'black' },
-        { number: 19, color: 'red' },
-        { number: 15, color: 'black' },
-        { number: 32, color: 'red' }
-    ],
-    currentBets: new Map(),
-    spinning: false,
-    history: [],
-    rotationAngle: 0,
-    spinAnimation: null,
 
-    init() {
-        this.canvas = document.getElementById('roulette-wheel');
-        this.ctx = this.canvas.getContext('2d');
-        this.canvas.width = 600;
-        this.canvas.height = 600;
-        this.generateNumberGrid();
-        this.drawWheel();
-    },
-
-    drawWheel() {
-        const ctx = this.canvas.getContext('2d');
-        const centerX = this.canvas.width / 2;
-        const centerY = this.canvas.height / 2;
-        const radius = Math.min(centerX, centerY) - 20;
-        const segmentAngle = (2 * Math.PI) / this.numbers.length;
-
-        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        this.numbers.forEach((number, i) => {
-            const startAngle = i * segmentAngle + this.rotationAngle;
-            const endAngle = startAngle + segmentAngle;
-
-            ctx.beginPath();
-            ctx.moveTo(centerX, centerY);
-            ctx.arc(centerX, centerY, radius, startAngle, endAngle);
-            ctx.closePath();
-
-            ctx.fillStyle = number.color === 'red' ? '#DC2626' : 
-                           number.color === 'black' ? '#111827' : '#059669';
-            ctx.fill();
-            ctx.strokeStyle = '#4B5563';
-            ctx.lineWidth = 1;
-            ctx.stroke();
-
-            ctx.save();
-            ctx.translate(centerX, centerY);
-            ctx.rotate(startAngle + segmentAngle / 2);
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.font = 'bold 20px Arial';
-            ctx.fillStyle = 'white';
-            ctx.fillText(number.number.toString(), radius * 0.75, 0);
-            ctx.restore();
-        });
-
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, radius * 0.1, 0, Math.PI * 2);
-        ctx.fillStyle = '#1F2937';
-        ctx.fill();
-        ctx.strokeStyle = '#4B5563';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        ctx.beginPath();
-        ctx.moveTo(centerX, 20);
-        ctx.lineTo(centerX - 10, 0);
-        ctx.lineTo(centerX + 10, 0);
-        ctx.closePath();
-        ctx.fillStyle = '#EF4444';
-        ctx.fill();
-        ctx.strokeStyle = 'white';
-        ctx.lineWidth = 1;
-        ctx.stroke();
-    },
-    
-    generateNumberGrid() {
-        const grid = document.getElementById('number-grid');
-        grid.innerHTML = '';
-        
-        const zeroBtn = document.createElement('button');
-        zeroBtn.className = 'p-3 bg-green-600 hover:bg-green-700 text-white rounded font-bold col-span-6';
-        zeroBtn.textContent = '0 (35×)';
-        zeroBtn.onclick = () => this.placeBet(0);
-        grid.appendChild(zeroBtn);
-
-        for (let i = 1; i <= 36; i++) {
-            const btn = document.createElement('button');
-            const color = this.numbers.find(n => n.number === i).color;
-            btn.className = `p-3 ${color === 'red' ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-900 hover:bg-black'} text-white rounded font-bold`;
-            btn.textContent = `${i} (35×)`;
-            btn.onclick = () => this.placeBet(i);
-            grid.appendChild(btn);
-        }
-    },
-
-    placeBet(bet) {
-        if (this.spinning) return;
-
-        const betAmount = parseFloat(document.getElementById('roulette-bet').value);
-        if (!betAmount || betAmount <= 0) {
-            showErrorMessage('Please enter a valid bet amount');
-            return;
-        }
-
-        if (betAmount > portfolio.balance) {
-            showErrorMessage('Insufficient funds');
-            return;
-        }
-
-        const currentAmount = this.currentBets.get(bet) || 0;
-        this.currentBets.set(bet, currentAmount + betAmount);
-        this.updateBetsDisplay();
-    },
-
-    updateBetsDisplay() {
-    const container = document.getElementById('current-bets');
-    container.innerHTML = '';
-
-    this.currentBets.forEach((amount, bet) => {
-        const betChip = document.createElement('div');
-        betChip.className = 'flex items-center gap-2 px-3 py-1 bg-blue-600 rounded-full text-white text-sm hover:bg-blue-700 cursor-pointer';
-        betChip.innerHTML = `
-            <span>${bet}: ${formatCurrency(amount)}</span>
-            <svg class="w-4 h-4 text-red-300 hover:text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-            </svg>
-        `;
-        betChip.onclick = () => this.removeBet(bet);
-        container.appendChild(betChip);
-            });
-        
-            const spinBtn = document.querySelector('[onclick="ROULETTE.spin()"]');
-            spinBtn.textContent = `SPIN (${formatCurrency(this.getTotalBetAmount())})`;
-        },
-
-        removeBet(bet) {
-            if (this.spinning) return;
-            this.currentBets.delete(bet);
-            this.updateBetsDisplay();
-},
-
-    getTotalBetAmount() {
-        return Array.from(this.currentBets.values()).reduce((a, b) => a + b, 0);
-    },
-
-    async spin() {
-    if (this.spinning || this.currentBets.size === 0) return;
-
-    const totalBet = this.getTotalBetAmount();
-
-    try {
-        await db.runTransaction(async (transaction) => {
-            const userRef = db.collection('users').doc(auth.currentUser.uid);
-            const userDoc = await transaction.get(userRef);
-            
-            if (userDoc.data().funbucks < totalBet) {
-                throw new Error('Insufficient funds');
-            }
-            
-            transaction.update(userRef, {
-                funbucks: firebase.firestore.FieldValue.increment(-totalBet)
-            });
-        });
-        
-        portfolio.balance -= totalBet;
-        updatePortfolioDisplays();
-        
-        this.spinning = true;
-        const result = Math.floor(Math.random() * 37);
-        
-        // Find the index of the result in the numbers array
-        const targetIndex = this.numbers.findIndex(n => n.number === result);
-        
-        // Calculate the exact angle needed
-        const segmentAngle = (2 * Math.PI) / this.numbers.length;
-        const targetAngle = (targetIndex * segmentAngle);
-        
-        await this.animateWheel(targetAngle);
-        await this.processWinnings(result);
-        
-    } catch (error) {
-        console.error('Error spinning:', error);
-        showErrorMessage(error.message);
-    }
-},
-
-animateWheel(targetAngle) {
-    return new Promise(resolve => {
-        const startRotation = this.rotationAngle;
-        const duration = 5000;
-        const startTime = Date.now();
-        const totalRotations = 8;
-
-        const animate = () => {
-            const elapsed = Date.now() - startTime;
-            const progress = Math.min(1, elapsed / duration);
-            
-            // Improved easing function
-            const easeOut = t => 1 - Math.pow(1 - t, 3);
-            
-            // Calculate rotation including complete spins
-            const currentRotation = startRotation + 
-                (totalRotations * Math.PI * 2 * easeOut(progress)) +
-                ((targetAngle - Math.PI / 2) * easeOut(progress)); // Adjusted angle calculation
-
-            this.rotationAngle = currentRotation;
-            this.drawWheel();
-
-            if (progress < 1) {
-                this.spinAnimation = requestAnimationFrame(animate);
-            } else {
-                this.spinning = false;
-                resolve();
-            }
-        };
-
-        animate();
-    });
-},
-    
-
-    async processWinnings(number) {
-        let totalWin = 0;
-        const result = this.numbers.find(n => n.number === number);
-
-        this.currentBets.forEach((amount, bet) => {
-            let winAmount = 0;
-
-            if (parseInt(bet) === number) {
-                winAmount = amount * 36;
-            }
-            else if ((bet === 'red' && result.color === 'red') ||
-                     (bet === 'black' && result.color === 'black')) {
-                winAmount = amount * 2;
-            }
-            else if ((bet === 'even' && number % 2 === 0 && number !== 0) ||
-                     (bet === 'odd' && number % 2 === 1)) {
-                winAmount = amount * 2;
-            }
-            else if ((bet === '1st12' && number >= 1 && number <= 12) ||
-                     (bet === '2nd12' && number >= 13 && number <= 24) ||
-                     (bet === '3rd12' && number >= 25 && number <= 36)) {
-                winAmount = amount * 3;
-            }
-
-            totalWin += winAmount;
-        });
-
-        if (totalWin > 0) {
-            try {
-                await db.runTransaction(async (transaction) => {
-                    const userRef = db.collection('users').doc(auth.currentUser.uid);
-                    
-                    transaction.update(userRef, {
-                        funbucks: firebase.firestore.FieldValue.increment(totalWin)
-                    });
-
-                    transaction.set(db.collection('gameHistory').doc(), {
-                        userId: auth.currentUser.uid,
-                        username: currentUser.username,
-                        gameType: 'roulette',
-                        betAmount: this.getTotalBetAmount(),
-                        winAmount: totalWin,
-                        number: number,
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                });
-                
-                portfolio.balance += totalWin;
-                updatePortfolioDisplays();
-                showWinCelebration(totalWin);
-            } catch (error) {
-                console.error('Error processing win:', error);
-                showErrorMessage('Error processing win');
-            }
-        }
-
-        this.history.unshift({ number, color: result.color });
-        this.history = this.history.slice(0, 10);
-        this.currentBets.clear();
-        this.updateBetsDisplay();
-        this.updateHistory();
-    },
-
-    updateHistory() {
-        const container = document.getElementById('roulette-history');
-        container.innerHTML = this.history.map(result => `
-            <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm"
-                 style="background-color: ${result.color === 'red' ? '#DC2626' : 
-                                         result.color === 'black' ? '#111827' : '#059669'}">
-                ${result.number}
-            </div>
-        `).join('');
-    },
-
-    changeBet(action) {
-        const input = document.getElementById('roulette-bet');
-        const currentBet = parseFloat(input.value);
-        
-        if (action === 'half') {
-            input.value = Math.max(1, currentBet / 2);
-        } else {
-            input.value = Math.min(portfolio.balance, currentBet * 2);
-        }
-    }
-};
 
 const BLACKJACK = {
     deck: [],
@@ -2994,12 +2779,10 @@ const BLACKJACK = {
     },
 
     async deal() {
-        if (!auth.currentUser) {
-            showErrorMessage('Please sign in to play');
-            return;
-        }
-
-        const betAmount = parseFloat(document.getElementById('blackjack-bet').value);
+        if (!auth.currentUser) return;
+    
+        const betAmount = document.getElementById('blackjack-bet').value;
+        if (!validateBet(betAmount)) return;
         if (betAmount > portfolio.balance) {
             showErrorMessage('Insufficient funds');
             return;
@@ -3407,12 +3190,10 @@ const MINES = {
 
    
     async startGame() {
-        if (!auth.currentUser) {
-            showErrorMessage('Please sign in to play');
-            return;
-        }
-
-        const betAmount = parseFloat(document.getElementById('mines-bet').value);
+        if (!auth.currentUser) return;
+    
+        const betAmount = document.getElementById('mines-bet').value;
+        if (!validateBet(betAmount)) return;
         if (betAmount > portfolio.balance) {
             showErrorMessage('Insufficient funds');
             return;
@@ -3639,11 +3420,38 @@ const MINES = {
     }
 },
    
-   updateUI() {
-       document.getElementById('mines-multiplier').textContent = `${this.currentMultiplier.toFixed(2)}×`;
-       const potential = this.betAmount * this.currentMultiplier;
-       document.getElementById('mines-potential').textContent = `+${formatCurrency(potential)}`;
-   },
+updateUI() {
+        const multiplierDisplay = document.getElementById('crash-multiplier');
+        const timerDisplay = document.getElementById('round-timer');
+        
+        if (this.gameState === 'waiting') {
+            timerDisplay.textContent = 'Starting soon...';
+            multiplierDisplay.textContent = '1.00×';
+            multiplierDisplay.classList.remove('text-red-500');
+            multiplierDisplay.classList.add('text-white');
+        } else if (this.gameState === 'in_progress') {
+            timerDisplay.textContent = 'Round in progress';
+            multiplierDisplay.textContent = `${this.multiplier.toFixed(2)}×`;
+            multiplierDisplay.classList.remove('text-red-500');
+            multiplierDisplay.classList.add('text-white');
+            
+            if (this.autoCashoutEnabled && this.multiplier >= this.autoCashoutValue) {
+                this.cashout();
+            }
+        } else if (this.gameState === 'crashed') {
+            timerDisplay.textContent = 'CRASHED!';
+            multiplierDisplay.textContent = `${this.multiplier.toFixed(2)}×`;
+            multiplierDisplay.classList.remove('text-white');
+            multiplierDisplay.classList.add('text-red-500');
+        }
+
+        const historyContainer = document.getElementById('crash-history');
+        historyContainer.innerHTML = this.gameHistory.map(point => `
+            <div class="p-2 rounded text-center ${point < 2 ? 'bg-red-600' : 'bg-green-600'}">
+                ${point.toFixed(2)}×
+            </div>
+        `).join('');
+    },
 
    setMines(count) {
        if (this.gameInProgress) return;
@@ -3702,26 +3510,19 @@ function closePlinko() {
         container.classList.add('hidden');
     }
 }
-const CRASH = {
-    canvas: null,
-    ctx: null,
-    gameState: 'waiting',
-    countdown: 30,
-    multiplier: 1.00,
-    crashPoint: 0,
-    startTime: null,
-    roundRef: null,
-    playersListener: null,
-    roundListener: null,
-    countdownInterval: null,
-    gameLoop: null,
-    autoCashoutEnabled: false,
-    shipX: 0,
-    shipY: 0,
-    crashed: false,
-    history: [],
 
-    init() {
+const CRASH = {
+    multiplier: 1.00,
+    isRunning: false,
+    hasStarted: false,
+    gameHistory: [],
+    betAmount: 0,
+    autoCashoutValue: 2.00,
+    autoCashoutEnabled: false,
+    gameState: 'waiting',
+    crashPoint: 0,
+
+    async init() {
         this.canvas = document.getElementById('crash-canvas');
         this.ctx = this.canvas.getContext('2d');
         this.canvas.width = this.canvas.offsetWidth;
@@ -3730,240 +3531,96 @@ const CRASH = {
         this.shipImage = new Image();
         this.shipImage.src = 'https://i.ibb.co/7z8wHVG/vship.png';
         
-        this.initializeServerSync();
+        const playersDiv = document.querySelector('[id$="-players"]');
+        if (playersDiv) {
+            playersDiv.parentElement.remove();
+        }
+
         this.animate();
+        this.startNewRound();
     },
 
-    async initializeServerSync() {
-    if (this.playersListener) this.playersListener();
-    if (this.roundListener) this.roundListener();
-    if (this.countdownInterval) clearInterval(this.countdownInterval);
-    if (this.gameLoop) clearInterval(this.gameLoop);
+    generateCrashPoint() {
+        const r = Math.random();
+    let crashPoint;
 
-    try {
-        const roundsRef = db.collection('crashRounds');
-        
-        const activeRoundsQuery = await roundsRef
-            .where('status', 'in', ['waiting', 'in_progress'])
-            .limit(1)
-            .get();
-
-        if (!activeRoundsQuery.empty) {
-            this.roundRef = activeRoundsQuery.docs[0].ref;
-            const roundData = activeRoundsQuery.docs[0].data();
-            
-            this.crashPoint = roundData.crashPoint;
-            this.gameState = roundData.status;
-            this.multiplier = roundData.multiplier || 1.00;
-            this.countdown = roundData.countdown || 30;
-
-            if (roundData.status === 'waiting') {
-                if (roundData.lastUpdate) {
-                    const timePassed = Math.floor((Date.now() - roundData.lastUpdate.toMillis()) / 1000);
-                    const remainingCountdown = Math.max(0, roundData.countdown - timePassed);
-                    await this.roundRef.update({
-                        countdown: remainingCountdown
-                    });
-                }
-                this.startCountdown();
-            } else if (roundData.status === 'in_progress') {
-                this.startGameLoop(roundData.startTime.toMillis());
-            }
-        } else {
-            const crashPoint = this.generateCrashPoint();
-            this.roundRef = await roundsRef.add({
-                status: 'waiting',
-                startTime: firebase.firestore.FieldValue.serverTimestamp(),
-                countdown: 30,
-                crashPoint: crashPoint,
-                multiplier: 1.00,
-                lastUpdate: firebase.firestore.FieldValue.serverTimestamp()
-            });
-            
-            this.crashPoint = crashPoint;
-            this.startCountdown();
-        }
-
-        this.setupListeners();
-
-    } catch (error) {
-        console.error('Error initializing game:', error);
-        showErrorMessage('Error initializing game');
+    if (r < 0.5) { 
+        crashPoint = 1.01 + r * 0.49;
+    } else if (r < 0.8) { 
+        crashPoint = 1.5 + (r - 0.5) * 3;
+    } else if (r < 0.95) { 
+        crashPoint = 3 + Math.pow(r - 0.8, 2) * 50;
+    } else { 
+        crashPoint = 10 + Math.pow(r - 0.95, 3) * 1800;
     }
-},
-    
-    startCountdown() {
-        if (this.countdownInterval) clearInterval(this.countdownInterval);
-        
-        this.countdownInterval = setInterval(async () => {
-            try {
-                const doc = await this.roundRef.get();
-                const data = doc.data();
-                
-                if (data.status === 'waiting') {
-                    const newCountdown = Math.max(0, data.countdown - 1);
-                    
-                    if (newCountdown > 0) {
-                        await this.roundRef.update({
-                            countdown: newCountdown,
-                            lastUpdate: firebase.firestore.FieldValue.serverTimestamp()
-                        });
-                    } else {
-                        clearInterval(this.countdownInterval);
-                        this.startGame();
-                    }
-                }
-            } catch (error) {
-                console.error('Error updating countdown:', error);
-            }
-        }, 1000);
-    },
 
-    setupListeners() {
-    this.roundListener = this.roundRef.onSnapshot(async (doc) => {
-        const roundData = doc.data();
-        if (!roundData) return;
-
-        this.gameState = roundData.status;
-        this.multiplier = roundData.multiplier || 1.00;
-        this.countdown = roundData.countdown || 30;
-
-        if (this.gameState === 'in_progress' && 
-            this.autoCashoutEnabled && 
-            auth.currentUser) {
-            const playerRef = this.roundRef.collection('players').doc(auth.currentUser.uid);
-            const playerDoc = await playerRef.get();
-            if (playerDoc.exists && !playerDoc.data().cashedOut) {
-                const autoCashoutValue = parseFloat(document.getElementById('crash-auto-cashout').value);
-                if (this.multiplier >= autoCashoutValue) {
-                    await this.cashout(auth.currentUser.uid);
-                }
-            }
-        }
-
-        this.updateUI(roundData);
-    });
-
-    this.playersListener = this.roundRef.collection('players').onSnapshot(snapshot => {
-        const container = document.getElementById('active-players');
-        if (!container) return;
-
-        container.innerHTML = '';
-        const players = snapshot.docs
-            .map(doc => ({ id: doc.id, ...doc.data() }))
-            .sort((a, b) => {
-                if (!a.cashedOut && b.cashedOut) return -1;
-                if (a.cashedOut && !b.cashedOut) return 1;
-                return (b.cashoutMultiplier || 0) - (a.cashoutMultiplier || 0);
-            });
-            
-        players.forEach(player => this.updatePlayersList(player));
-    });
-},
-
-    async startGame() {
-        await this.roundRef.update({
-            status: 'in_progress',
-            startTime: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        this.startGameLoop();
-    },
-
-    startGameLoop(startTimeMS) {
-    if (this.gameLoop) clearInterval(this.gameLoop);
-    
-    const startTime = startTimeMS || Date.now();
-    this.gameLoop = setInterval(async () => {
-        try {
-            const elapsed = (Date.now() - startTime) / 1000;
-            const newMultiplier = Math.pow(Math.E, 0.06 * elapsed);
-            
-            await this.roundRef.update({
-                multiplier: newMultiplier
-            });
-
-            const roundData = (await this.roundRef.get()).data();
-            if (newMultiplier >= roundData.crashPoint) {
-                clearInterval(this.gameLoop);
-                this.handleCrash();
-            }
-        } catch (error) {
-            console.error('Error updating game:', error);
-        }
-    }, 50);
-},
-
-
-generateCrashPoint() {
-    const houseEdge = 0.85;
-    const r = Math.random();
-    const maxMultiplier = 1.8;
-    const baseMultiplier = 1.3;
-    
-    let crashPoint = Math.max(1.01, Math.min(
-        maxMultiplier,
-        baseMultiplier + (Math.random() - 0.5) * 0.5
-    ));
-    
     return Math.floor(crashPoint * 100) / 100;
-},
+    },
 
-    async handleCrash() {
-    try {
-        await this.roundRef.update({
-            status: 'crashed',
-            endTime: firebase.firestore.FieldValue.serverTimestamp(),
-            isActive: false 
-        });
-
-        const playersSnapshot = await this.roundRef.collection('players').get();
-        const batch = db.batch();
+    startNewRound() {
+        this.multiplier = 1.00;
+        this.isRunning = false;
+        this.hasStarted = false;
+        this.gameState = 'waiting';
+        this.crashPoint = this.generateCrashPoint();
         
-        playersSnapshot.docs.forEach(doc => {
-            const player = doc.data();
-            if (!player.cashedOut) {
-                batch.update(doc.ref, { 
-                    cashedOut: true, 
-                    lost: true 
-                });
-            }
-        });
-
-        await batch.commit();
-
-        this.history.unshift(this.crashPoint);
-        this.history = this.history.slice(0, 10);
-        this.updateHistory();
-
         setTimeout(() => {
-            this.initializeServerSync();
+            this.startGame();
+        }, 5000);
+
+        this.updateUI();
+    },
+
+    startGame() {
+        this.isRunning = true;
+        this.hasStarted = true;
+        this.gameState = 'in_progress';
+        
+        const startTime = Date.now();
+        const gameLoop = () => {
+            if (!this.isRunning) return;
+            
+            const elapsed = (Date.now() - startTime) / 1000;
+            this.multiplier = Math.pow(Math.E, 0.06 * elapsed);
+            
+            if (this.multiplier >= this.crashPoint) {
+                this.handleCrash();
+            } else {
+                requestAnimationFrame(gameLoop);
+            }
+            
+            this.updateUI();
+            
+            if (this.autoCashoutEnabled && this.multiplier >= this.autoCashoutValue) {
+                this.cashout();
+            }
+        };
+        
+        gameLoop();
+    },
+
+    handleCrash() {
+        this.isRunning = false;
+        this.gameState = 'crashed';
+        this.gameHistory.unshift(this.crashPoint);
+        if (this.gameHistory.length > 10) this.gameHistory.pop();
+        
+        setTimeout(() => {
+            this.startNewRound();
         }, 3000);
-
-    } catch (error) {
-        console.error('Error handling crash:', error);
-    }
-},
-
+        
+        this.updateUI();
+    },
 
     async placeBet() {
-        if (!auth.currentUser) {
-            showErrorMessage('Please sign in to play');
-            return;
-        }
+        if (!auth.currentUser || this.hasStarted) return;
+    
+        const betAmount = document.getElementById('crash-bet').value;
+        if (!validateBet(betAmount)) return;
 
-        if (!this.roundRef) {
-            showErrorMessage('Game not initialized - please refresh the page');
-            return;
-        }
-
-        if (this.gameState !== 'waiting') {
-            showErrorMessage('Cannot place bet at this time');
-            return;
-        }
-
-        const betAmount = parseFloat(document.getElementById('crash-bet').value);
-        if (isNaN(betAmount) || betAmount <= 0) {
-            showErrorMessage('Please enter a valid bet amount');
+        const networth = calculateNetworth();
+        if (networth < 200) {
+            showErrorMessage('Minimum networth of 200 required to play');
             return;
         }
 
@@ -3971,6 +3628,156 @@ generateCrashPoint() {
             showErrorMessage('Insufficient funds');
             return;
         }
+
+        this.betAmount = betAmount;
+        portfolio.balance -= betAmount;
+        updatePortfolioDisplays();
+
+        document.getElementById('crash-bet-btn').classList.add('hidden');
+        document.getElementById('crash-cashout-btn').classList.remove('hidden');
+    },
+
+    async cashout() {
+        if (!this.isRunning || !this.hasStarted) return;
+
+        const winAmount = this.betAmount * this.multiplier;
+        portfolio.balance += winAmount;
+        updatePortfolioDisplays();
+        showWinCelebration(winAmount);
+
+        document.getElementById('crash-bet-btn').classList.remove('hidden');
+        document.getElementById('crash-cashout-btn').classList.add('hidden');
+
+        this.betAmount = 0;
+    },
+
+    updateUI() {
+        const multiplierDisplay = document.getElementById('crash-multiplier');
+        const timerDisplay = document.getElementById('round-timer');
+        
+        if (this.gameState === 'waiting') {
+            multiplierDisplay.className = 'text-4xl font-bold text-white';
+            multiplierDisplay.textContent = '1.00×';
+            timerDisplay.textContent = 'Starting soon...';
+        } else if (this.gameState === 'in_progress') {
+            multiplierDisplay.className = 'text-4xl font-bold text-white';
+            multiplierDisplay.textContent = `${this.multiplier.toFixed(2)}×`;
+            timerDisplay.textContent = 'Round in progress';
+            
+            if (this.autoCashoutEnabled && this.betAmount > 0 && 
+                this.multiplier >= parseFloat(document.getElementById('crash-auto-cashout').value)) {
+                this.cashout();
+            }
+        } else if (this.gameState === 'crashed') {
+            multiplierDisplay.className = 'text-4xl font-bold text-red-500';
+            multiplierDisplay.textContent = `${this.multiplier.toFixed(2)}×`;
+            timerDisplay.textContent = 'CRASHED!';
+        }
+
+        document.getElementById('crash-history').innerHTML = 
+            this.gameHistory.map(point => `
+                <div class="p-2 rounded text-center ${point < 2 ? 'bg-red-600' : 'bg-green-600'}">
+                    ${point.toFixed(2)}×
+                </div>
+            `).join('');
+    },
+
+    toggleAutoCashout() {
+        this.autoCashoutEnabled = !this.autoCashoutEnabled;
+        const text = document.getElementById('auto-cashout-text');
+        text.textContent = this.autoCashoutEnabled ? '(ON)' : '(OFF)';
+    },
+
+    changeBet(action) {
+        const input = document.getElementById('crash-bet');
+        const currentBet = Math.abs(parseFloat(input.value));
+        
+        if (action === 'half') {
+            input.value = Math.max(1, currentBet / 2);
+        } else {
+            input.value = Math.min(portfolio.balance, currentBet * 2);
+        }
+    },
+
+    animate() {
+        const ctx = this.ctx;
+        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        const timeElapsed = (Date.now() - this.startTime) / 1000;
+        const progress = Math.min(timeElapsed / 5, 1);
+
+        const gradient = ctx.createLinearGradient(0, 0, 0, this.canvas.height);
+        gradient.addColorStop(0, '#1e40af');
+        gradient.addColorStop(1, '#3b82f6');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+        const time = Date.now() / 1000;
+        for (let i = 0; i < 3; i++) {
+            ctx.beginPath();
+            ctx.moveTo(0, this.canvas.height);
+            
+            for (let x = 0; x < this.canvas.width; x += 10) {
+                const y = this.canvas.height - 
+                         50 * Math.sin((x / 200) + time + i) - 
+                         20 * Math.sin((x / 100) + time * 2 + i);
+                ctx.lineTo(x, y);
+            }
+            
+            ctx.lineTo(this.canvas.width, this.canvas.height);
+            ctx.fillStyle = `rgba(96, 165, 250, ${0.1 + i * 0.1})`;
+            ctx.fill();
+        }
+
+        if (this.gameState === 'in_progress') {
+            const shipX = progress * (this.canvas.width * 0.8);
+            const shipY = this.canvas.height * 0.5 + Math.sin(time * 2) * 10;
+            
+            ctx.save();
+            ctx.translate(shipX, shipY);
+            ctx.rotate(Math.sin(time * 2) * 0.1);
+            ctx.drawImage(this.shipImage, -30, -30, 60, 60);
+            ctx.restore();
+        }
+
+        requestAnimationFrame(() => this.animate());
+    }
+};
+
+const DICE = {
+    betAmount: 0,
+    targetNumber: 50,
+    multiplier: 2.00,
+    rolling: false,
+
+    init() {
+        this.updateUI();
+        this.setupEventListeners();
+    },
+
+    setupEventListeners() {
+        const slider = document.getElementById('dice-target');
+        if (slider) {
+            slider.addEventListener('input', () => {
+                this.targetNumber = parseInt(slider.value);
+                this.updateMultiplier();
+                this.updateUI();
+            });
+        }
+    },
+
+    updateMultiplier() {
+        this.multiplier = (95 / (100 - this.targetNumber)) * 0.99;
+    },
+
+    async roll() {
+        if (this.rolling || !auth.currentUser) return;
+
+        const betAmount = Math.abs(parseFloat(document.getElementById('dice-bet').value));
+        if (!validateBet(betAmount)) return;
+
+        this.rolling = true;
+        const originalBetAmount = betAmount;
 
         try {
             await db.runTransaction(async (transaction) => {
@@ -3980,263 +3787,124 @@ generateCrashPoint() {
                 if (userDoc.data().funbucks < betAmount) {
                     throw new Error('Insufficient funds');
                 }
-                
-                const playerRef = this.roundRef.collection('players').doc(auth.currentUser.uid);
-                const playerDoc = await transaction.get(playerRef);
-                
-                if (playerDoc.exists) {
-                    throw new Error('You already have a bet in this round');
-                }
 
                 transaction.update(userRef, {
                     funbucks: firebase.firestore.FieldValue.increment(-betAmount)
-                });
-
-                transaction.set(playerRef, {
-                    username: currentUser.username,
-                    betAmount: betAmount,
-                    autoCashout: this.autoCashoutEnabled ? 
-                        parseFloat(document.getElementById('crash-auto-cashout').value) : null,
-                    cashedOut: false,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
             });
 
             portfolio.balance -= betAmount;
             updatePortfolioDisplays();
-            
-            document.getElementById('crash-bet-btn').classList.add('hidden');
-            document.getElementById('crash-cashout-btn').classList.remove('hidden');
+
+            const result = Math.floor(Math.random() * 100) + 1;
+            await this.animateRoll(result);
+
+            if (result >= this.targetNumber) {
+                const winAmount = betAmount * this.multiplier;
+                await this.processPayout(winAmount);
+            }
+
+            document.getElementById('dice-bet').value = originalBetAmount;
 
         } catch (error) {
-            console.error('Error placing bet:', error);
+            console.error('Error in dice roll:', error);
             showErrorMessage(error.message);
+        } finally {
+            this.rolling = false;
         }
     },
 
-    async cashout(userId = auth.currentUser?.uid) {
-    if (!userId || this.gameState !== 'in_progress') return;
+    async animateRoll(finalNumber) {
+        const display = document.getElementById('dice-result');
+        const duration = 2000;
+        const startTime = Date.now();
 
-    try {
-        const playerRef = this.roundRef.collection('players').doc(userId);
-        const playerDoc = await playerRef.get();
-        
-        if (!playerDoc.exists || playerDoc.data().cashedOut) return;
-        
-        const player = playerDoc.data();
-        const winAmount = player.betAmount * this.multiplier;
+        return new Promise(resolve => {
+            const animate = () => {
+                const elapsed = Date.now() - startTime;
+                const progress = elapsed / duration;
 
-        await db.runTransaction(async (transaction) => {
-            const userRef = db.collection('users').doc(userId);
-            
-            transaction.update(playerRef, {
-                cashedOut: true,
-                cashoutMultiplier: this.multiplier,
-                winAmount: winAmount
-            });
+                if (progress >= 1) {
+                    display.textContent = finalNumber;
+                    display.className = `text-4xl font-bold ${finalNumber >= this.targetNumber ? 'text-green-400' : 'text-red-400'}`;
+                    resolve();
+                    return;
+                }
 
-            transaction.update(userRef, {
-                funbucks: firebase.firestore.FieldValue.increment(winAmount)
-            });
+                display.textContent = Math.floor(Math.random() * 100) + 1;
+                requestAnimationFrame(animate);
+            };
 
-            transaction.set(db.collection('gameHistory').doc(), {
-                userId,
-                username: player.username,
-                gameType: 'crash',
-                betAmount: player.betAmount,
-                winAmount: winAmount,
-                multiplier: this.multiplier,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            });
+            animate();
         });
+    },
 
-        if (userId === auth.currentUser?.uid) {
-            portfolio.balance += winAmount;
-            updatePortfolioDisplays();
-            
-            showWinCelebration(winAmount, this.multiplier);
-            
-            document.getElementById('crash-cashout-btn').classList.add('hidden');
-        }
-
-    } catch (error) {
-        console.error('Error processing cashout:', error);
-        showErrorMessage('Error processing cashout');
-    }
-},
+    updateUI() {
+        document.getElementById('dice-multiplier').textContent = `${this.multiplier.toFixed(2)}x`;
+        document.getElementById('dice-target-display').textContent = `Roll ${this.targetNumber} or higher`;
+        
+        const potentialWin = this.betAmount * this.multiplier;
+        document.getElementById('dice-potential-win').textContent = formatCurrency(potentialWin);
+    },
 
     changeBet(action) {
-        const input = document.getElementById('crash-bet');
-        const currentBet = parseFloat(input.value);
+        const input = document.getElementById('dice-bet');
+        const currentBet = Math.abs(parseFloat(input.value));
         
         if (action === 'half') {
             input.value = Math.max(1, currentBet / 2);
         } else {
             input.value = Math.min(portfolio.balance, currentBet * 2);
         }
-    },
-
-    toggleAutoCashout() {
-        this.autoCashoutEnabled = !this.autoCashoutEnabled;
-        const btn = document.querySelector('[onclick="CRASH.toggleAutoCashout()"]');
-        const text = document.getElementById('auto-cashout-text');
-        const input = document.getElementById('crash-auto-cashout');
         
-        if (this.autoCashoutEnabled) {
-            btn.classList.remove('bg-blue-600');
-            btn.classList.add('bg-green-600');
-            text.textContent = '(ON)';
-            input.disabled = false;
-        } else {
-            btn.classList.add('bg-blue-600');
-            btn.classList.remove('bg-green-600');
-            text.textContent = '(OFF)';
-            input.disabled = true;
-        }
+        this.updateUI();
     },
 
-    updatePlayersList(player) {
-        const container = document.getElementById('active-players');
-        if (!container) return;
-
-        const playerDiv = document.createElement('div');
-        playerDiv.className = 'flex justify-between items-center p-2 bg-gray-700 rounded mb-2';
-        
-        if (player.cashedOut) {
-            playerDiv.innerHTML = `
-                <div class="flex flex-col">
-                    <span class="text-gray-300">${player.username}</span>
-                    <span class="text-sm text-gray-400">${formatCurrency(player.betAmount)}</span>
-                </div>
-                <div class="text-green-400">
-                    Cashed out ${player.cashoutMultiplier?.toFixed(2)}×
-                </div>
-            `;
-        } else {
-            playerDiv.innerHTML = `
-                <div class="flex flex-col">
-                    <span class="text-white">${player.username}</span>
-                    <span class="text-sm text-gray-400">${formatCurrency(player.betAmount)}</span>
-                </div>
-                <div class="text-yellow-400">Playing</div>
-            `;
-        }
-
-        container.appendChild(playerDiv);
-    },
-
-    updateUI(roundData) {
-        const multiplierDisplay = document.getElementById('crash-multiplier');
-        const timerDisplay = document.getElementById('round-timer');
-        const betBtn = document.getElementById('crash-bet-btn');
-        const cashoutBtn = document.getElementById('crash-cashout-btn');
-
-        multiplierDisplay.classList.remove('text-red-500');
-        multiplierDisplay.classList.add('text-white');
-
-        if (roundData.status === 'waiting') {
-            timerDisplay.textContent = `Next round in: ${roundData.countdown}s`;
-            multiplierDisplay.textContent = '1.00×';
-        } else if (roundData.status === 'in_progress') {
-            timerDisplay.textContent = 'Round in progress';
-            multiplierDisplay.textContent = `${roundData.multiplier.toFixed(2)}×`;
-        } else if (roundData.status === 'crashed') {
-            timerDisplay.textContent = 'CRASHED!';
-            multiplierDisplay.textContent = `${roundData.multiplier.toFixed(2)}×`;
-            multiplierDisplay.classList.add('text-red-500');
-        }
-
-        if (auth.currentUser) {
-            this.roundRef.collection('players').doc(auth.currentUser.uid).get().then(doc => {
-                const hasBet = doc.exists;
-                const playerData = doc.data();
+    async processPayout(amount) {
+        try {
+            await db.runTransaction(async (transaction) => {
+                const userRef = db.collection('users').doc(auth.currentUser.uid);
                 
-                if (!hasBet || roundData.status === 'waiting') {
-                    betBtn.classList.remove('hidden');
-                    cashoutBtn.classList.add('hidden');
-                } else if (hasBet && !playerData.cashedOut && roundData.status === 'in_progress') {
-                    betBtn.classList.add('hidden');
-                    cashoutBtn.classList.remove('hidden');
-                } else {
-                    betBtn.classList.add('hidden');
-                    cashoutBtn.classList.add('hidden');
-                }
+                transaction.update(userRef, {
+                    funbucks: firebase.firestore.FieldValue.increment(amount)
+                });
+
+                transaction.set(db.collection('gameHistory').doc(), {
+                    userId: auth.currentUser.uid,
+                    username: currentUser.username,
+                    gameType: 'dice',
+                    betAmount: this.betAmount,
+                    winAmount: amount,
+                    multiplier: this.multiplier,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
             });
-        }
-    },
-    updateHistory() {
-        const container = document.getElementById('crash-history');
-        if (!container) return;
-        
-        container.innerHTML = this.history.map(point => `
-            <div class="p-2 rounded text-center ${point < 2 ? 'bg-red-600' : 'bg-green-600'}">
-                ${point.toFixed(2)}×
-            </div>
-        `).join('');
-    },
 
-    animate() {
-        const ctx = this.ctx;
-        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        const gradient = ctx.createLinearGradient(0, 0, 0, this.canvas.height);
-        gradient.addColorStop(0, '#1e40af');
-        gradient.addColorStop(1, '#3b82f6');
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-        ctx.beginPath();
-        for (let x = 0; x < this.canvas.width; x += 30) {
-            const y = this.canvas.height * 0.7 + Math.sin(x/50 + Date.now()/1000) * 10;
-            ctx.lineTo(x, y);
-        }
-        ctx.lineTo(this.canvas.width, this.canvas.height);
-        ctx.lineTo(0, this.canvas.height);
-        ctx.fillStyle = '#60a5fa80';
-        ctx.fill();
-
-        if (this.gameState === 'in_progress' && !this.crashed) {
-            this.shipX = (this.multiplier - 1) * (this.canvas.width * 0.15);
-            const shipY = this.canvas.height * 0.5 + Math.sin(Date.now()/500) * 10;
-            
-            ctx.save();
-            ctx.translate(this.shipX, shipY);
-            ctx.rotate(Math.sin(Date.now()/500) * 0.1);
-            ctx.drawImage(this.shipImage, -30, -30, 60, 60);
-            ctx.restore();
-        }
-
-        if (this.crashed) {
-            ctx.fillStyle = 'rgba(239, 68, 68, 0.5)';
-            ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-            for (let i = 0; i < 20; i++) {
-                const x = this.shipX + (Math.random() - 0.5) * 100;
-                const y = this.canvas.height * 0.5 + (Math.random() - 0.5) * 100;
-                const radius = Math.random() * 5 + 2;
-                
-                ctx.beginPath();
-                ctx.arc(x, y, radius, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, ${Math.random() * 100}, 0, ${Math.random()})`;
-                ctx.fill();
-            }
-        }
-
-        requestAnimationFrame(() => this.animate());
-    },
-    
-    
-
-    cleanup() {
-        if (this.playersListener) this.playersListener();
-        if (this.roundListener) this.roundListener();
-        if (this.countdownInterval) clearInterval(this.countdownInterval);
-        if (this.gameLoop) clearInterval(this.gameLoop);
-        
-        if (this.animationFrame) {
-            cancelAnimationFrame(this.animationFrame);
+            portfolio.balance += amount;
+            updatePortfolioDisplays();
+            showWinCelebration(amount);
+        } catch (error) {
+            console.error('Error processing payout:', error);
+            showErrorMessage('Error processing win');
         }
     }
 };
+function showDice() {
+    const container = document.getElementById('dice-container');
+    if (container) {
+        container.style.display = 'flex';
+        container.classList.remove('hidden');
+        DICE.init();
+    }
+}
+
+function closeDice() {
+    const container = document.getElementById('dice-container');
+    if (container) {
+        container.style.display = 'none';
+        container.classList.add('hidden');
+    }
+}
 function showCrash() {
     document.getElementById('crash-container').classList.remove('hidden');
     if (!CRASH.initialized) {
@@ -4541,6 +4209,151 @@ function showPlinkoWin(amount, multiplier, landingPosition) {
         }, 300);
     }, 1700);
 }
+function checkGameRequirements() {
+    const networth = calculateNetworth();
+    if (networth < 200) {
+        showErrorMessage('Minimum networth of 200 required to play');
+        document.body.insertAdjacentHTML('beforeend', `
+            <div class="game-requirements">
+                ⚠️ Minimum networth of 200 FunBucks required to play
+            </div>
+        `);
+        return false;
+    }
+    return true;
+}
+// if (currentUser?.isAdmin) {
+//     addAdminControls();
+// }
+
+const tipSystem = {
+    
+    async sendTip() {
+        const selectedUser = document.querySelector('#user-search').dataset.selectedUser;
+        let amount = Math.abs(parseInt(document.getElementById('tip-amount').value));
+        amount = Math.min(amount, 200);
+        tipSystem.showTipModal = tipSystemEnhancements.showTipModal;
+        tipSystem.setupUserSearch = tipSystemEnhancements.setupUserSearch;
+        if (!selectedUser || !amount || amount <= 0) {
+            showErrorMessage('Please select a user and enter a valid amount');
+            return;
+        }
+
+        try {
+            await db.runTransaction(async (transaction) => {
+                const senderRef = db.collection('users').doc(auth.currentUser.uid);
+                const recipientRef = db.collection('users').doc(selectedUser);
+                
+                const [senderDoc, recipientDoc] = await Promise.all([
+                    transaction.get(senderRef),
+                    transaction.get(recipientRef)
+                ]);
+
+                const senderData = senderDoc.data();
+                const today = new Date().toISOString().split('T')[0];
+                const tipsSentToday = (senderData.tipsSent?.[today] || 0) + amount;
+
+                if (tipsSentToday > 200) {
+                    throw new Error('Daily tip limit exceeded');
+                }
+
+                if (senderData.funbucks < amount) {
+                    throw new Error('Insufficient funds');
+                }
+
+                transaction.update(senderRef, {
+                    funbucks: firebase.firestore.FieldValue.increment(-amount),
+                    [`tipsSent.${today}`]: tipsSentToday
+                });
+
+                transaction.update(recipientRef, {
+                    funbucks: firebase.firestore.FieldValue.increment(amount)
+                });
+
+                transaction.set(db.collection('tips').doc(), {
+                    senderId: auth.currentUser.uid,
+                    senderName: currentUser.username,
+                    recipientId: recipientDoc.id,
+                    recipientName: recipientDoc.data().username,
+                    amount,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            });
+
+            showSuccessMessage(`Tipped ${formatCurrency(amount)} successfully!`);
+            document.querySelector('.fixed').remove();
+        } catch (error) {
+            showErrorMessage(error.message);
+        }
+    },
+
+    async makeItRain() {
+        const amount = Math.min(Math.abs(parseInt(document.getElementById('rain-amount').value)), 1000);
+
+        if (!amount || amount <= 0) {
+            showErrorMessage('Please enter a valid amount');
+            return;
+        }
+
+        try {
+            const usersSnapshot = await db.collection('users')
+                .where('banned', '==', false)
+                .get();
+
+            const activeUsers = usersSnapshot.docs.length;
+            const amountPerUser = Math.floor(amount / activeUsers);
+
+            if (amountPerUser < 1) {
+                throw new Error('Amount too small to split among users');
+            }
+
+            await db.runTransaction(async (transaction) => {
+                const senderRef = db.collection('users').doc(auth.currentUser.uid);
+                const senderDoc = await transaction.get(senderRef);
+
+                if (senderDoc.data().funbucks < amount) {
+                    throw new Error('Insufficient funds');
+                }
+
+                transaction.update(senderRef, {
+                    funbucks: firebase.firestore.FieldValue.increment(-amount)
+                });
+
+                usersSnapshot.docs.forEach(userDoc => {
+                    if (userDoc.id !== auth.currentUser.uid) {
+                        transaction.update(userDoc.ref, {
+                            funbucks: firebase.firestore.FieldValue.increment(amountPerUser)
+                        });
+                    }
+                });
+
+                transaction.set(db.collection('rain').doc(), {
+                    senderId: auth.currentUser.uid,
+                    senderName: currentUser.username,
+                    totalAmount: amount,
+                    amountPerUser,
+                    recipientCount: activeUsers - 1,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            });
+
+            showSuccessMessage(`Made it rain ${formatCurrency(amount)}!`);
+            document.querySelector('.fixed').remove();
+        } catch (error) {
+            showErrorMessage(error.message);
+        }
+    }
+};
+
+window.tipSystem = tipSystem;
+const tipButton = document.createElement('button');
+tipButton.className = 'fixed bottom-20 right-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full shadow-lg flex items-center gap-2 z-50';
+tipButton.innerHTML = `
+    <span>🎁</span>
+    <span>Send Tips</span>
+`;
+tipButton.onclick = () => tipSystem.showTipModal();
+document.body.appendChild(tipButton);
 
 function toggleActivitySidebar() {
     const sidebar = document.getElementById('activity-sidebar');
@@ -5038,7 +4851,234 @@ function initPlinko() {
     generatePins();
     drawPlinkoBoard();
 }
+function showDisputedResolutions() {
+    const adminPanel = document.querySelector('.admin-panel-modal');
+    if (adminPanel) {
+        adminPanel.style.zIndex = '50';
+    }
 
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[75]';
+    
+    modal.innerHTML = `
+        <div class="bg-gray-900 rounded-xl p-6 w-full max-w-4xl" style="max-height: 90vh;">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h3 class="text-2xl font-bold text-blue-300">Disputed Resolutions</h3>
+                    <p class="text-sm text-gray-400">Review and handle market resolution disputes</p>
+                </div>
+                <div class="flex gap-4">
+                    <button onclick="showAdminPanel()" 
+                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        Back to Admin
+                    </button>
+                    <button onclick="this.closest('.fixed').remove()" 
+                            class="text-gray-400 hover:text-white">×</button>
+                </div>
+            </div>
+            
+            <div class="overflow-y-auto pr-2" style="max-height: calc(90vh - 100px);" id="disputed-markets">
+                Loading disputed markets...
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+    loadDisputedMarkets();
+}
+const tipSystemEnhancements = {
+    showTipModal() {
+        const modal = document.createElement('div');
+        modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[60]';
+        modal.innerHTML = `
+            <div class="bg-gray-900 rounded-xl p-6 max-w-md w-full">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-bold text-blue-300">Send Tip</h3>
+                    <button onclick="this.closest('.fixed').remove()" class="text-gray-400 hover:text-white">×</button>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-gray-400 mb-2">Search User</label>
+                        <div class="relative">
+                            <input type="text" id="user-search" 
+                                   class="w-full p-3 bg-gray-800 rounded-lg border border-gray-700"
+                                   autocomplete="off"
+                                   placeholder="Type to search users...">
+                            <div id="user-dropdown" class="absolute left-0 right-0 mt-1 bg-gray-800 rounded-lg border border-gray-700 max-h-48 overflow-y-auto hidden"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 mb-2">Amount (Max 200 FunBucks)</label>
+                        <input type="number" id="tip-amount" min="1" max="200"
+                               class="w-full p-3 bg-gray-800 rounded-lg border border-gray-700">
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="tipSystem.sendTip()" 
+                                class="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg">
+                            Send Tip
+                        </button>
+                        <button onclick="tipSystem.makeItRain()"
+                                class="bg-purple-600 hover:bg-purple-700 text-white p-3 rounded-lg">
+                            Make it Rain
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        this.setupUserSearch();
+    },
+
+    setupUserSearch() {
+        const searchInput = document.getElementById('user-search');
+        const dropdown = document.getElementById('user-dropdown');
+        let selectedUserId = null;
+
+        searchInput.addEventListener('input', async function() {
+            if (this.value.length < 2) {
+                dropdown.classList.add('hidden');
+                return;
+            }
+
+            try {
+                const snapshot = await db.collection('users')
+                    .where('username', '>=', this.value)
+                    .where('username', '<=', this.value + '\uf8ff')
+                    .limit(5)
+                    .get();
+
+                if (snapshot.empty) {
+                    dropdown.innerHTML = '<div class="p-3 text-gray-400">No users found</div>';
+                } else {
+                    dropdown.innerHTML = snapshot.docs
+                        .filter(doc => doc.id !== auth.currentUser.uid)
+                        .map(doc => `
+                            <div class="p-3 hover:bg-gray-700 cursor-pointer user-option" 
+                                 data-user-id="${doc.id}" 
+                                 data-username="${doc.data().username}">
+                                ${doc.data().username}
+                            </div>
+                        `).join('');
+
+                    dropdown.querySelectorAll('.user-option').forEach(option => {
+                        option.addEventListener('click', function() {
+                            searchInput.value = this.dataset.username;
+                            searchInput.dataset.selectedUser = this.dataset.userId;
+                            selectedUserId = this.dataset.userId;
+                            dropdown.classList.add('hidden');
+                        });
+                    });
+                }
+                dropdown.classList.remove('hidden');
+            } catch (error) {
+                console.error('Error searching users:', error);
+            }
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!searchInput.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+    }
+};
+async function loadDisputedMarkets() {
+    try {
+        const snapshot = await db.collection('markets')
+            .where('resolved', '==', true)
+            .get();
+
+        const disputedMarkets = snapshot.docs.filter(doc => {
+            const data = doc.data();
+            return data.challenges && data.challenges.length > 0;
+        });
+
+        const container = document.getElementById('disputed-markets');
+        if (!container) return;
+
+        if (disputedMarkets.length === 0) {
+            container.innerHTML = `
+                <div class="text-center text-gray-400 py-8">
+                    No disputed resolutions at this time
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = disputedMarkets.map(doc => {
+            const market = doc.data();
+            const challenges = market.challenges || [];
+            
+            return `
+                <div class="bg-gray-800 p-4 rounded-lg mb-4 border border-red-900/30">
+                    <div class="flex items-center gap-4 mb-4">
+                        <img src="${market.image}" class="w-16 h-16 rounded-lg object-cover">
+                        <div>
+                            <h4 class="text-lg font-medium text-white">${market.title}</h4>
+                            <div class="text-sm text-gray-400">
+                                Resolved as: <span class="${market.finalResult ? 'text-green-400' : 'text-red-400'}">
+                                    ${market.finalResult ? 'YES' : 'NO'}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        ${challenges.map(challenge => `
+                            <div class="bg-gray-700/50 p-3 rounded border border-red-500/20">
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-blue-300">${challenge.username}</span>
+                                    <span class="text-gray-400">${formatTimeAgo(challenge.timestamp)}</span>
+                                </div>
+                                <p class="text-gray-200 mb-2">${challenge.description}</p>
+                                ${challenge.links ? `
+                                    <a href="${challenge.links}" target="_blank" 
+                                       class="text-blue-400 hover:text-blue-300 text-sm">
+                                        View Evidence
+                                    </a>
+                                ` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="flex gap-2 mt-4">
+                        <button onclick="acceptChallenge('${doc.id}')" 
+                                class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded">
+                            Accept & Flip Result
+                        </button>
+                        <button onclick="rejectChallenge('${doc.id}')"
+                                class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded">
+                            Reject Challenge
+                        </button>
+                        <button onclick="keepMarketOpen('${doc.id}')"
+                                class="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded">
+                            Revert to Open
+                        </button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+    } catch (error) {
+        console.error('Error loading disputed markets:', error);
+        document.getElementById('disputed-markets').innerHTML = `
+            <div class="text-red-400 text-center py-8">
+                Error loading disputed markets
+            </div>
+        `;
+    }
+}
+function addDisputedButton() {
+    const adminPanel = document.querySelector('.admin-panel-modal .flex.gap-3');
+    if (adminPanel) {
+        adminPanel.insertAdjacentHTML('beforeend', `
+            <button onclick="showDisputedResolutions()" 
+                    class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+                View Disputes
+            </button>
+        `);
+    }
+}
 function generatePins() {
     PLINKO_CONFIG.pins = [];
     const rows = 12;
@@ -5553,24 +5593,19 @@ const chartManager = {
 };
 
 async function updateMarketPrice(marketId) {
-    if (!marketId) {
-        showErrorMessage('Invalid market ID');
-        return;
-    }
-
     try {
         const slider = document.getElementById('price-slider');
         const newPrice = parseFloat(slider.value) / 100;
-        
         const marketRef = db.collection('markets').doc(marketId);
         const marketDoc = await marketRef.get();
+        const market = marketDoc.data();
         
-        if (!marketDoc.exists) {
-            throw new Error('Market not found');
+        if (!market) {
+            showErrorMessage('Market not found');
+            return;
         }
 
-        const marketData = marketDoc.data();
-        const previousPrice = marketData.currentPrice;
+        const previousPrice = market.currentPrice;
         const priceChange = ((newPrice - previousPrice) / previousPrice) * 100;
 
         await marketRef.update({
@@ -5585,16 +5620,14 @@ async function updateMarketPrice(marketId) {
 
         const modal = document.querySelector('.fixed');
         if (modal) modal.remove();
+
+        showSuccessMessage(`Price updated to $${newPrice.toFixed(3)} (${priceChange >= 0 ? '+' : ''}${priceChange.toFixed(2)}%)`);
         
-        showSuccessMessage(`Price updated (${priceChange >= 0 ? '+' : ''}${priceChange.toFixed(2)}%)`);
-        await Promise.all([
-            loadAdminMarkets(),
-            getMarkets(),
-            updateMarkets()
-        ]);
+        await updateMarkets();
+        await loadAdminMarkets();
     } catch (error) {
-        console.error('Error updating price:', error);
-        showErrorMessage('Failed to update price');
+        console.error('Error updating market price:', error);
+        showErrorMessage('Failed to update market price');
     }
 }
 
@@ -6796,71 +6829,141 @@ const kingOfHill = {
 document.querySelector('[data-tab="coins"]')?.addEventListener('click', () => {
     kingOfHill.initialize();
 });
-
-function showAdminPanel() {
-    if (!currentUser?.isAdmin) {
-        showErrorMessage('Unauthorized access');
-        return;
-    }
+async function loadAdminMarkets() {
+        const marketsList = document.getElementById('admin-markets-list');
+        try {
+            const snapshot = await db.collection('markets').orderBy('createdAt', 'desc').get();
+            marketsList.innerHTML = snapshot.docs.map(doc => {
+                const market = doc.data();
+                return `
+                    <div class="bg-gray-800 p-4 rounded-lg mb-2">
+                        <div class="flex justify-between">
+                            <div>
+                                <div class="text-white font-medium">${market.title}</div>
+                                <div class="text-gray-400 text-sm">${market.category}</div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="updateMarketPrice('${doc.id}')" 
+                                        class="px-3 py-1 bg-blue-600 rounded text-white">Update Price</button>
+                                <button onclick="showResolutionModal('${doc.id}')"
+                                        class="px-3 py-1 bg-green-600 rounded text-white">Resolve</button>
+                                <button onclick="deleteMarket('${doc.id}')"
+                                        class="px-3 py-1 bg-red-600 rounded text-white">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        } catch (error) {
+            console.error('Error loading markets:', error);
+            marketsList.innerHTML = '<div class="text-red-400">Error loading markets</div>';
+        }
     
-    const existingPanel = document.querySelector('.admin-panel-modal');
-    if (existingPanel) existingPanel.remove();
+    async function giveMoneyToUser() {
+        const username = document.getElementById('give-money-username').value;
+        let amount = parseInt(document.getElementById('give-money-amount').value);
+        const reason = document.getElementById('give-money-reason').value;
+
+        if (!username || !amount || !reason) {
+            showErrorMessage('Please fill all fields');
+            return;
+        }
+
+        try {
+            const userDoc = await db.collection('users')
+                .where('username', '==', username)
+                .limit(1)
+                .get();
+
+            if (userDoc.empty) throw new Error('User not found');
+
+            await db.runTransaction(async (transaction) => {
+                const userRef = userDoc.docs[0].ref;
+                transaction.update(userRef, {
+                    funbucks: firebase.firestore.FieldValue.increment(amount)
+                });
+            });
+
+            showSuccessMessage(`${amount >= 0 ? 'Given' : 'Removed'} ${formatCurrency(Math.abs(amount))} ${amount >= 0 ? 'to' : 'from'} ${username}`);
+            document.querySelector('.admin-money-modal')?.remove();
+        } catch (error) {
+            showErrorMessage(error.message);
+        }
+    }}
+function showAdminPanel() {
+    if (!currentUser?.isAdmin) return;
 
     const modal = document.createElement('div');
-    modal.className = 'admin-panel-modal fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center';
-    modal.style.zIndex = '50';
+    modal.className = 'admin-panel-modal fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50';
     
     modal.innerHTML = `
-        <div class="bg-gray-900 rounded-2xl max-w-6xl w-full mx-4" style="max-height: 90vh; display: flex; flex-direction: column;">
-            <div class="p-6 border-b border-gray-800">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-2xl font-bold text-blue-300">Admin Dashboard</h2>
-                    <div class="flex items-center gap-3">
-                        <button onclick="showMarketStats()" 
-                                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                            Market Stats
+        <div class="admin-panel-modal fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50">
+    <div class="bg-gray-900 rounded-2xl max-w-7xl w-full mx-4" style="max-height: 90vh; overflow-y: auto;">
+        <div class="p-6 border-b border-gray-800">
+            <div class="flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-blue-300">Admin Dashboard</h2>
+                <button onclick="closeAdminPanel()" class="text-gray-400 hover:text-white">×</button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-12 gap-6 p-6">
+            <!-- Quick Actions Sidebar -->
+            <div class="col-span-3 space-y-4">
+                <div class="bg-gray-800 p-4 rounded-lg">
+                    <h3 class="text-lg font-semibold text-blue-300 mb-4">Quick Actions</h3>
+                    <div class="space-y-2">
+                        <button onclick="adminControls.showGiveMoneyModal()" 
+                                class="w-full bg-green-600 hover:bg-green-700 text-white p-3 rounded-lg flex items-center gap-2">
+                            <span>💰</span>
+                            <span>Give FunBucks</span>
                         </button>
-                        <button onclick="showUserManagement()" 
-                                class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
-                            User Management
+                        
+                        <button onclick="showDisputedResolutions()" 
+                                class="w-full bg-red-600 hover:bg-red-700 text-white p-3 rounded-lg flex items-center gap-2">
+                            <span>⚖️</span>
+                            <span>Resolution Disputes</span>
                         </button>
+                        
                         <button onclick="showBanHistory()" 
-                                class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
-                            Ban History
+                                class="w-full bg-purple-600 hover:bg-purple-700 text-white p-3 rounded-lg flex items-center gap-2">
+                            <span>🚫</span>
+                            <span>Ban History</span>
                         </button>
+                        
                         <button onclick="showNewMarketForm()" 
-                                class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
-                            Create Market
+                                class="w-full bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg flex items-center gap-2">
+                            <span>📈</span>
+                            <span>Create Market</span>
                         </button>
-                        <button onclick="closeAdminPanel()" 
-                                class="text-gray-400 hover:text-white ml-4">×</button>
+
+                        <button onclick="showUserManagement()" 
+                                class="w-full bg-yellow-600 hover:bg-yellow-700 text-white p-3 rounded-lg flex items-center gap-2">
+                            <span>👥</span>
+                            <span>User Management</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 p-4 rounded-lg">
+                    <h3 class="text-lg font-semibold text-blue-300 mb-4">Statistics</h3>
+                    <div id="admin-statistics" class="space-y-2">
+                        Loading statistics...
                     </div>
                 </div>
             </div>
 
-            <div class="flex-1 overflow-hidden p-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 h-full">
-                
-                <div class="space-y-4">
-                    <div class="bg-gray-800 p-4 rounded-lg">
-                        <h3 class="text-lg font-semibold text-blue-300 mb-4">Overview</h3>
-                        <div id="admin-overview" class="space-y-2">
-                            Loading stats...
-                        </div>
-                    </div>
-                </div>
-
-                
-                <div class="col-span-2 flex flex-col h-full">
-                    <div class="bg-gray-800 p-4 rounded-lg flex flex-col h-full">
-                        
-                        <div class="flex items-center gap-4 mb-4">
+            <!-- Main Content Area -->
+            <div class="col-span-9">
+                <div class="bg-gray-800 p-4 rounded-lg">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold text-blue-300">Market Management</h3>
+                        <div class="flex gap-2">
                             <input type="text" 
                                    id="admin-market-search" 
                                    placeholder="Search markets..." 
-                                   class="w-full p-3 rounded-lg bg-gray-700 border border-gray-600">
+                                   class="p-2 bg-gray-700 rounded border border-gray-600">
                             <select id="admin-market-filter" 
-                                    class="p-3 rounded-lg bg-gray-700 border border-gray-600">
+                                    class="p-2 bg-gray-700 rounded border border-gray-600">
                                 <option value="all">All Categories</option>
                                 <option value="ASB">ASB</option>
                                 <option value="Sports">Sports</option>
@@ -6870,35 +6973,20 @@ function showAdminPanel() {
                                 <option value="Daily">Daily</option>
                             </select>
                         </div>
-
-                        
-                        <div class="flex-1 overflow-y-auto pr-2" style="max-height: calc(90vh - 250px);">
-                            <div id="admin-markets-list" class="space-y-4">
-                                Loading markets...
-                            </div>
-                        </div>
+                    </div>
+                    <div id="admin-markets-list" class="space-y-2">
+                        Loading markets...
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
     `;
 
     document.body.appendChild(modal);
-
-    loadAdminMarkets();
     loadAdminStats();
-
-    const searchInput = document.getElementById('admin-market-search');
-    const filterSelect = document.getElementById('admin-market-filter');
-
-    searchInput?.addEventListener('input', () => {
-        filterAdminMarkets(searchInput.value, filterSelect.value);
-    });
-
-    filterSelect?.addEventListener('change', () => {
-        filterAdminMarkets(searchInput.value, filterSelect.value);
-    });
+    loadAdminMarkets();
 }
 const style = document.createElement('style');
 style.textContent = `
@@ -6922,12 +7010,19 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
 async function loadAdminStats() {
     try {
-        const [usersSnapshot, marketsSnapshot, betsSnapshot] = await Promise.all([
+        const [usersSnapshot, marketsSnapshot, betsSnapshot, tipSnapshot, rainSnapshot] = await Promise.all([
             db.collection('users').get(),
             db.collection('markets').get(),
             db.collection('bets')
+                .where('timestamp', '>', Date.now() - 86400000)
+                .get(),
+            db.collection('tips')
+                .where('timestamp', '>', Date.now() - 86400000)
+                .get(),
+            db.collection('rain')
                 .where('timestamp', '>', Date.now() - 86400000)
                 .get()
         ]);
@@ -6937,35 +7032,49 @@ async function loadAdminStats() {
             bannedUsers: usersSnapshot.docs.filter(doc => doc.data().banned).length,
             totalMarkets: marketsSnapshot.size,
             activeMarkets: marketsSnapshot.docs.filter(doc => !doc.data().resolved).length,
-            dailyVolume: betsSnapshot.docs.reduce((sum, doc) => sum + doc.data().amount, 0)
+            dailyVolume: betsSnapshot.docs.reduce((sum, doc) => sum + doc.data().amount, 0),
+            dailyTips: tipSnapshot.docs.reduce((sum, doc) => sum + doc.data().amount, 0),
+            dailyRain: rainSnapshot.docs.reduce((sum, doc) => sum + doc.data().totalAmount, 0)
         };
 
-        const overview = document.getElementById('admin-overview');
-        if (overview) {
-            overview.innerHTML = `
-                <div class="flex justify-between mb-2">
+        const adminStatisticsContainer = document.getElementById('admin-statistics');
+        if (adminStatisticsContainer) {
+            adminStatisticsContainer.innerHTML = `
+                <div class="flex justify-between">
                     <span class="text-gray-400">Total Users:</span>
                     <span class="text-white">${stats.totalUsers}</span>
                 </div>
-                <div class="flex justify-between mb-2">
+                <div class="flex justify-between">
                     <span class="text-gray-400">Banned Users:</span>
                     <span class="text-red-400">${stats.bannedUsers}</span>
                 </div>
-                <div class="flex justify-between mb-2">
-                    <span class="text-gray-400">Active Markets:</span>
-                    <span class="text-white">${stats.activeMarkets}</span>
+                <div class="flex justify-between">
+                    <span class="text-gray-400">Total Markets:</span>
+                    <span class="text-white">${stats.totalMarkets}</span>
                 </div>
                 <div class="flex justify-between">
-                    <span class="text-gray-400">24h Volume:</span>
+                    <span class="text-gray-400">Active Markets:</span>
+                    <span class="text-blue-400">${stats.activeMarkets}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-400">Daily Bet Volume:</span>
                     <span class="text-green-400">$${stats.dailyVolume.toFixed(2)}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-400">Daily Tips:</span>
+                    <span class="text-purple-400">$${stats.dailyTips.toFixed(2)}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-400">Daily Rain:</span>
+                    <span class="text-blue-400">$${stats.dailyRain.toFixed(2)}</span>
                 </div>
             `;
         }
     } catch (error) {
         console.error('Error loading admin stats:', error);
-        const overview = document.getElementById('admin-overview');
-        if (overview) {
-            overview.innerHTML = '<div class="text-red-400">Error loading stats</div>';
+        const adminStatisticsContainer = document.getElementById('admin-statistics');
+        if (adminStatisticsContainer) {
+            adminStatisticsContainer.innerHTML = '<div class="text-red-400">Error loading statistics</div>';
         }
     }
 }
@@ -7299,22 +7408,22 @@ const lotterySystem = {
     },
     async loadLotteryData() {
         try {
-            const lotteryDoc = await db.collection('lottery').doc('current').get();
+            let lotteryDoc = await db.collection('lottery').doc('current').get();
             
             if (!lotteryDoc.exists) {
                 const initialData = {
                     currentPot: 0,
                     entries: [],
                     nextDrawing: firebase.firestore.Timestamp.fromDate(this.getNextDrawingTime()),
-                    lastWinner: null
+                    lastWinner: null,
+                    isActive: true
                 };
                 
                 await db.collection('lottery').doc('current').set(initialData);
-                this.currentData = initialData;
-            } else {
-                this.currentData = lotteryDoc.data();
+                lotteryDoc = await db.collection('lottery').doc('current').get();
             }
-            
+
+            this.currentData = lotteryDoc.data();
             this.updateUI();
         } catch (error) {
             console.error('Error loading lottery:', error);
@@ -7940,14 +8049,18 @@ async function filterAdminMarkets(search = '', category = 'all') {
 }
 
 function showPriceUpdateModal(market) {
-    if (!market || !market.id) {
-        showErrorMessage('Invalid market data');
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50';
+    
+    const marketData = typeof market === 'string' 
+        ? markets.find(m => m.id === market) 
+        : market;
+
+    if (!marketData) {
+        showErrorMessage('Market not found');
         return;
     }
 
-    const modal = document.createElement('div');
-    modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center';
-    modal.style.zIndex = '10001';
     modal.innerHTML = `
         <div class="bg-gray-900 rounded-xl p-6 max-w-md w-full">
             <div class="flex justify-between items-center mb-6">
@@ -7955,10 +8068,10 @@ function showPriceUpdateModal(market) {
                 <button onclick="this.closest('.fixed').remove()" class="text-gray-400 hover:text-white">×</button>
             </div>
             
-            <h4 class="text-white mb-4">${market.title}</h4>
+            <h4 class="text-white mb-4">${marketData.title}</h4>
             <div class="space-y-6">
                 <div class="flex justify-between text-sm text-gray-400">
-                    <span>Current: $${market.currentPrice.toFixed(3)}</span>
+                    <span>Current: $${marketData.currentPrice.toFixed(3)}</span>
                     <span id="price-change"></span>
                 </div>
 
@@ -7967,17 +8080,17 @@ function showPriceUpdateModal(market) {
                            id="price-slider" 
                            min="0" 
                            max="100" 
-                           value="${market.currentPrice * 100}" 
+                           value="${marketData.currentPrice * 100}" 
                            class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
                     <div class="flex justify-between text-sm text-gray-400 mt-2">
                         <span>$0.00</span>
-                        <span id="new-price" class="text-blue-400">$${market.currentPrice.toFixed(3)}</span>
+                        <span id="new-price" class="text-blue-400">$${marketData.currentPrice.toFixed(3)}</span>
                         <span>$1.00</span>
                     </div>
                 </div>
 
                 <div class="flex gap-4 pt-4">
-                    <button onclick="updateMarketPrice('${market.id}')" 
+                    <button onclick="updateMarketPrice('${marketData.id}')" 
                             class="flex-1 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg">
                         Update Price
                     </button>
@@ -7997,7 +8110,7 @@ function showPriceUpdateModal(market) {
 
     slider.oninput = () => {
         const newPrice = slider.value / 100;
-        const change = ((newPrice - market.currentPrice) / market.currentPrice) * 100;
+        const change = ((newPrice - marketData.currentPrice) / marketData.currentPrice) * 100;
         newPriceDisplay.textContent = `$${newPrice.toFixed(3)}`;
         changeDisplay.textContent = `${change >= 0 ? '+' : ''}${change.toFixed(2)}%`;
         changeDisplay.className = `text-sm ${change >= 0 ? 'text-green-400' : 'text-red-400'}`;
@@ -8372,38 +8485,79 @@ if (marketsNav) {
         </button>
     `;
 }
+
 async function loadAdminMarkets() {
     const marketsContainer = document.getElementById('admin-markets-list');
     if (!marketsContainer) return;
 
     try {
-        const snapshot = await db.collection('markets').orderBy('createdAt', 'desc').get();
-        marketsContainer.innerHTML = snapshot.docs.map(doc => {
+        const marketSearchInput = document.getElementById('admin-market-search');
+        const marketFilterSelect = document.getElementById('admin-market-filter');
+        
+        const search = (marketSearchInput?.value || '').toLowerCase();
+        const category = marketFilterSelect?.value || 'all';
+
+        const snapshot = await db.collection('markets').get();
+        
+        const filteredMarkets = snapshot.docs
+            .filter(doc => {
+                const market = { id: doc.id, ...doc.data() };
+                const matchesSearch = !search || 
+                    market.title.toLowerCase().includes(search) || 
+                    market.description.toLowerCase().includes(search);
+                const matchesCategory = category === 'all' || market.category === category;
+                return matchesSearch && matchesCategory;
+            })
+            .sort((a, b) => {
+                const marketA = a.data();
+                const marketB = b.data();
+                return (marketB.createdAt?.seconds || 0) - (marketA.createdAt?.seconds || 0);
+            });
+
+        if (filteredMarkets.length === 0) {
+            marketsContainer.innerHTML = '<div class="text-gray-400 text-center p-4">No markets found</div>';
+            return;
+        }
+
+        const marketsHtml = filteredMarkets.map(doc => {
             const market = { id: doc.id, ...doc.data() };
-            const marketJson = JSON.stringify(market).replace(/"/g, '&quot;');
+            const priceChange = calculatePriceChange24h(market);
             
             return `
                 <div class="bg-gray-800 p-4 rounded-lg border border-gray-700">
-                    <div class="flex justify-between items-center">
-                        <div class="flex-grow">
-                            <div class="font-medium text-blue-300">${market.title}</div>
-                            <div class="text-sm text-gray-400">${market.category}</div>
+                    <div class="flex justify-between items-center mb-3">
+                        <div class="flex items-center gap-4">
+                            <img src="${market.image}" class="w-16 h-16 rounded-lg object-cover">
+                            <div>
+                                <div class="font-medium text-blue-300">${market.title}</div>
+                                <div class="text-sm text-gray-400">${market.category}</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-bold ${market.currentPrice >= 0.5 ? 'text-green-400' : 'text-red-400'}">
+                                $${market.currentPrice.toFixed(3)}
+                            </div>
+                            <div class="text-sm ${priceChange >= 0 ? 'text-green-400' : 'text-red-400'}">
+                                ${priceChange >= 0 ? '+' : ''}${priceChange.toFixed(2)}%
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center mt-4">
+                        <div class="text-sm text-gray-400">
+                            ${market.resolved ? 'Resolved' : 'Active'}
+                            ${market.marketType === 'community' ? ' • Community' : ' • Official'}
                         </div>
                         <div class="flex gap-2">
                             <button onclick="showEditMarketModal('${market.id}')" 
-                                    class="bg-yellow-600 text-white px-3 py-1 rounded">
+                                    class="px-3 py-1 bg-yellow-600 text-white rounded hover:bg-yellow-700">
                                 Edit
                             </button>
-                            <button onclick="showPriceUpdateModal(${marketJson})" 
-                                    class="bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700">
+                            <button onclick="showPriceUpdateModal('${market.id}')" 
+                                    class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700">
                                 Update Price
                             </button>
-                            <button onclick="showResolutionModal(${marketJson})" 
-                                    class="bg-green-600 text-white px-3 py-2 rounded hover:bg-green-700">
-                                Resolve
-                            </button>
                             <button onclick="deleteMarket('${market.id}')" 
-                                    class="bg-red-600 text-white px-3 py-1 rounded">
+                                    class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">
                                 Delete
                             </button>
                         </div>
@@ -8411,9 +8565,22 @@ async function loadAdminMarkets() {
                 </div>
             `;
         }).join('');
+
+        marketsContainer.innerHTML = marketsHtml;
+
+        if (!marketSearchInput.hasEventListener) {
+            marketSearchInput.addEventListener('input', loadAdminMarkets);
+            marketSearchInput.hasEventListener = true;
+        }
+        
+        if (!marketFilterSelect.hasEventListener) {
+            marketFilterSelect.addEventListener('change', loadAdminMarkets);
+            marketFilterSelect.hasEventListener = true;
+        }
+
     } catch (error) {
-        console.error('Error loading markets:', error);
-        marketsContainer.innerHTML = '<div class="text-red-400">Error loading markets</div>';
+        console.error('Error loading admin markets:', error);
+        marketsContainer.innerHTML = '<div class="text-red-400 text-center p-4">Error loading markets</div>';
     }
 }
 
@@ -10426,39 +10593,261 @@ async function sellBet(betIndex) {
 
         const currentPrice = bet.position === 'yes' ? market.currentPrice : (1 - market.currentPrice);
         const sellValue = bet.shares * currentPrice;
-        const profit = sellValue - bet.amount;
 
         await db.runTransaction(async (transaction) => {
             const userRef = db.collection('users').doc(auth.currentUser.uid);
+            const userDoc = await transaction.get(userRef);
+            const userData = userDoc.data();
             
-            const completedBet = {
-                ...bet,
-                sellAmount: sellValue,
-                profit: profit,
-                sellTimestamp: Date.now()
-            };
+            // Verify bet still exists
+            const betExists = userData.bets.some(b => 
+                b.marketId === bet.marketId && 
+                b.shares === bet.shares && 
+                b.position === bet.position
+            );
+            
+            if (!betExists) {
+                throw new Error('Bet has already been sold');
+            }
 
+            // Remove the specific bet and update user data
+            const updatedBets = userData.bets.filter((_, idx) => idx !== betIndex);
+            
             transaction.update(userRef, {
                 funbucks: firebase.firestore.FieldValue.increment(sellValue),
-                bets: portfolio.bets.filter((_, idx) => idx !== betIndex),
-                completedBets: firebase.firestore.FieldValue.arrayUnion(completedBet)
+                bets: updatedBets
             });
         });
 
+        // Update local portfolio
         portfolio.balance += sellValue;
         portfolio.bets.splice(betIndex, 1);
-
-        allModals.forEach(modal => modal.remove());
         
-        await showSellSuccess(sellValue, profit);
+        updatePortfolioDisplays();
+        showSuccessMessage(`Position sold for ${formatCurrency(sellValue)}`);
         
-        await updatePortfolioDisplays();
-        await updateRecentActivity();
-        await loadUserTitles();
-
     } catch (error) {
         console.error('Error selling bet:', error);
-        showErrorMessage('Failed to sell position');
+        showErrorMessage(error.message);
+    }
+}
+
+async function updateRecentActivity() {
+    try {
+        // Get all recent activity in parallel
+        const [betsSnapshot, tipsSnapshot, rainSnapshot] = await Promise.all([
+            db.collection('bets')
+                .orderBy('timestamp', 'desc')
+                .limit(20)
+                .get(),
+            db.collection('tips')
+                .orderBy('timestamp', 'desc')
+                .limit(10)
+                .get(),
+            db.collection('rain')
+                .orderBy('timestamp', 'desc')
+                .limit(10)
+                .get()
+        ]);
+
+        const buysList = document.getElementById('recent-buys-list');
+        const sellsList = document.getElementById('recent-sells-list');
+        
+        if (!buysList || !sellsList) return;
+
+        const activities = [];
+
+        // Process bets
+        betsSnapshot.docs.forEach(doc => {
+            const bet = doc.data();
+            const market = markets.find(m => m.id === bet.marketId);
+            if (!market) return;
+
+            const timeAgo = formatTimeAgo(bet.timestamp);
+            activities.push({
+                type: bet.type || 'buy',
+                element: `
+                    <div class="bg-gray-800 p-3 rounded-lg mb-2 border border-gray-700 hover:border-blue-600 transition-colors">
+                        <div class="flex items-center gap-3">
+                            <img src="${market.image || 'https://i.ibb.co/4ZxPbNW/TCcB5yZ.png'}" 
+                                 alt="${market.title}" 
+                                 class="w-10 h-10 rounded object-cover">
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm font-medium text-gray-300">${bet.username || 'Anonymous'}</span>
+                                    <span class="${bet.position === 'yes' ? 'text-green-400' : 'text-red-400'} text-xs font-medium">
+                                        ${bet.position?.toUpperCase() || 'N/A'}
+                                    </span>
+                                </div>
+                                <div class="text-sm text-blue-300 truncate">${market.title}</div>
+                                <div class="text-xs text-gray-400 flex items-center gap-1">
+                                    <span>${(bet.price * 100).toFixed(0)}¢</span>
+                                    <span>•</span>
+                                    <span>${timeAgo}</span>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-medium text-white">
+                                    ${formatCurrency(bet.amount)}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                timestamp: bet.timestamp
+            });
+        });
+
+        // Process tips
+        tipsSnapshot.docs.forEach(doc => {
+            const tip = doc.data();
+            activities.push({
+                type: 'tip',
+                element: `
+                    <div class="bg-gray-800/50 p-3 rounded-lg mb-2 border border-green-600/30 hover:border-green-500 transition-colors">
+                        <div class="flex items-center gap-2">
+                            <span class="text-green-400 text-lg">🎁</span>
+                            <div class="flex-1">
+                                <span class="text-sm font-medium text-blue-300">${tip.senderName}</span>
+                                <span class="text-gray-400 text-sm"> tipped </span>
+                                <span class="text-sm font-medium text-blue-300">${tip.recipientName}</span>
+                                <div class="text-green-400 text-sm">${formatCurrency(tip.amount)}</div>
+                            </div>
+                            <div class="text-xs text-gray-400">${formatTimeAgo(tip.timestamp)}</div>
+                        </div>
+                    </div>
+                `,
+                timestamp: tip.timestamp
+            });
+        });
+
+        // Process rain events
+        rainSnapshot.docs.forEach(doc => {
+            const rain = doc.data();
+            activities.push({
+                type: 'rain',
+                element: `
+                    <div class="bg-gray-800/50 p-3 rounded-lg mb-2 border border-blue-600/30 hover:border-blue-500 transition-colors">
+                        <div class="flex items-center gap-2">
+                            <span class="text-blue-400 text-lg">🌧️</span>
+                            <div class="flex-1">
+                                <span class="text-sm font-medium text-blue-300">${rain.senderName}</span>
+                                <span class="text-gray-400 text-sm"> made it rain </span>
+                                <div class="text-blue-400 text-sm">
+                                    ${formatCurrency(rain.totalAmount)} 
+                                    <span class="text-gray-400">split among ${rain.recipientCount} users</span>
+                                </div>
+                            </div>
+                            <div class="text-xs text-gray-400">${formatTimeAgo(rain.timestamp)}</div>
+                        </div>
+                    </div>
+                `,
+                timestamp: rain.timestamp
+            });
+        });
+
+        // Sort all activities by timestamp
+        activities.sort((a, b) => b.timestamp - a.timestamp);
+
+        // Separate buys and sells
+        const buys = activities.filter(a => a.type === 'buy').map(a => a.element);
+        const sells = activities.filter(a => a.type === 'sell').map(a => a.element);
+        const others = activities.filter(a => a.type !== 'buy' && a.type !== 'sell').map(a => a.element);
+
+        buysList.innerHTML = buys.length ? buys.join('') : 
+            '<div class="text-gray-400 text-center p-4">No recent buys</div>';
+            
+        sellsList.innerHTML = sells.length ? sells.join('') : 
+            '<div class="text-gray-400 text-center p-4">No recent sells</div>';
+
+    } catch (error) {
+        console.error('Error updating recent activity:', error);
+        if (buysList) buysList.innerHTML = '<div class="text-red-400 text-center">Error loading recent buys</div>';
+        if (sellsList) sellsList.innerHTML = '<div class="text-red-400 text-center">Error loading recent sells</div>';
+    }
+}
+
+async function sellPosition(betIndex, percentage) {
+    if (!auth.currentUser) return;
+    
+    try {
+        const bet = portfolio.bets[betIndex];
+        if (!bet) {
+            showErrorMessage('Bet not found');
+            return;
+        }
+
+        const market = markets.find(m => m.id === bet.marketId);
+        if (!market) {
+            showErrorMessage('Market not found');
+            return;
+        }
+
+        const currentPrice = bet.position === 'yes' ? market.currentPrice : (1 - market.currentPrice);
+        const sellValue = Math.floor((bet.shares * percentage * currentPrice) * 1e8) / 1e8;
+
+        await db.runTransaction(async (transaction) => {
+            const userRef = db.collection('users').doc(auth.currentUser.uid);
+            const userDoc = await transaction.get(userRef);
+            
+            if (!userDoc.exists) throw new Error('User not found');
+            
+            const userData = userDoc.data();
+            const userBet = userData.bets?.[betIndex];
+            
+            if (!userBet || userBet.marketId !== bet.marketId) {
+                throw new Error('Position already sold');
+            }
+
+            const remainingShares = percentage === 1 ? 0 : 
+                Math.floor((bet.shares * (1 - percentage)) * 1e8) / 1e8;
+
+            let updatedBets = [...userData.bets];
+            if (percentage === 1) {
+                updatedBets.splice(betIndex, 1);
+            } else {
+                updatedBets[betIndex] = {
+                    ...bet,
+                    shares: remainingShares
+                };
+            }
+
+            transaction.update(userRef, {
+                funbucks: firebase.firestore.FieldValue.increment(sellValue),
+                bets: updatedBets
+            });
+
+            const sellRecord = {
+                userId: auth.currentUser.uid,
+                username: currentUser.username,
+                marketId: market.id,
+                marketTitle: market.title,
+                position: bet.position,
+                shares: bet.shares * percentage,
+                price: currentPrice,
+                amount: sellValue,
+                type: 'sell',
+                timestamp: Date.now()
+            };
+
+            transaction.set(db.collection('bets').doc(), sellRecord);
+        });
+
+        if (percentage === 1) {
+            portfolio.bets.splice(betIndex, 1);
+        } else {
+            portfolio.bets[betIndex].shares = Math.floor((bet.shares * (1 - percentage)) * 1e8) / 1e8;
+        }
+        portfolio.balance += sellValue;
+
+        document.querySelectorAll('.fixed').forEach(modal => modal.remove());
+        await updatePortfolioDisplays();
+        await updateRecentActivity();
+        showSuccessMessage(`Sold ${percentage * 100}% for ${formatCurrency(sellValue)}`);
+
+    } catch (error) {
+        console.error('Error selling position:', error);
+        showErrorMessage(error.message || 'Error selling position');
     }
 }
 
@@ -10468,9 +10857,7 @@ function showSellConfirmation(betIndex) {
     if (!market || !bet) return;
 
     const currentPrice = bet.position === 'yes' ? market.currentPrice : (1 - market.currentPrice);
-    const maxShares = bet.shares;
-    const maxValue = maxShares * currentPrice;
-    const priceChange = ((currentPrice - bet.entryPrice) / bet.entryPrice) * 100;
+    const maxValue = bet.shares * currentPrice;
 
     const modal = document.createElement('div');
     modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50';
@@ -10481,7 +10868,7 @@ function showSellConfirmation(betIndex) {
             <div class="space-y-4">
                 <div class="bg-gray-800 rounded-lg p-4">
                     <div class="flex items-center gap-4 mb-3">
-                        <img src="${market.image}" alt="${market.title}" class="w-16 h-16 rounded-lg object-cover">
+                        <img src="${market.image}" class="w-16 h-16 rounded-lg object-cover">
                         <div>
                             <div class="text-white font-medium">${market.title}</div>
                             <div class="text-gray-400 text-sm">Position: ${bet.position}</div>
@@ -10491,76 +10878,43 @@ function showSellConfirmation(betIndex) {
                     <div class="space-y-2">
                         <div class="flex justify-between text-sm">
                             <span class="text-gray-400">Total Shares:</span>
-                            <span class="text-white">${maxShares.toFixed(2)}</span>
+                            <span class="text-white">${bet.shares.toFixed(2)}</span>
                         </div>
                         <div class="flex justify-between text-sm">
-                            <span class="text-gray-400">Current Price:</span>
-                            <span class="text-white">$${currentPrice.toFixed(3)}</span>
-                        </div>
-                        <div class="flex justify-between text-sm">
-                            <span class="text-gray-400">Price Change:</span>
-                            <span class="${priceChange >= 0 ? 'text-green-400' : 'text-red-400'}">
-                                ${priceChange >= 0 ? '+' : ''}${priceChange.toFixed(2)}%
-                            </span>
+                            <span class="text-gray-400">Current Value:</span>
+                            <span class="text-white">${formatCurrency(maxValue)}</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-gray-800 rounded-lg p-4">
-                    <label class="block text-gray-400 mb-2">Shares to Sell</label>
-                    <input type="number" id="sell-shares-input" 
-                           class="w-full p-3 bg-gray-700 rounded-lg mb-3"
-                           min="0.01" max="${maxShares}" step="0.01" 
-                           value="${maxShares}">
-                    
-                    <div class="grid grid-cols-4 gap-2 mb-3">
-                        <button onclick="setSellAmount(${maxShares}, 0.25)"
-                                class="p-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm text-white">
-                            25%
-                        </button>
-                        <button onclick="setSellAmount(${maxShares}, 0.5)"
-                                class="p-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm text-white">
-                            50%
-                        </button>
-                        <button onclick="setSellAmount(${maxShares}, 0.75)"
-                                class="p-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm text-white">
-                            75%
-                        </button>
-                        <button onclick="setSellAmount(${maxShares}, 1)"
-                                class="p-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm text-white">
-                            100%
-                        </button>
-                    </div>
-
-                    <div class="text-sm text-gray-400">
-                        Sale Value: <span id="sell-value-preview" class="text-green-400">
-                            ${formatCurrency(maxValue)}
-                        </span>
-                    </div>
-                </div>
-
-                <div class="flex gap-3">
-                    <button onclick="sellPartialPosition(${betIndex})"
-                            class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg transition-colors">
-                        Confirm Sale
+                <div class="grid grid-cols-4 gap-2">
+                    <button onclick="sellPosition(${betIndex}, 0.25)" 
+                            class="p-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg">
+                        25%
                     </button>
-                    <button onclick="this.closest('.fixed').remove()"
-                            class="flex-1 border border-gray-700 text-gray-400 py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors">
-                        Cancel
+                    <button onclick="sellPosition(${betIndex}, 0.5)" 
+                            class="p-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg">
+                        50%
+                    </button>
+                    <button onclick="sellPosition(${betIndex}, 0.75)" 
+                            class="p-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg">
+                        75%
+                    </button>
+                    <button onclick="sellPosition(${betIndex}, 1)" 
+                            class="p-3 bg-green-600 hover:bg-green-700 text-white rounded-lg">
+                        100%
                     </button>
                 </div>
+
+                <button onclick="this.closest('.fixed').remove()" 
+                        class="w-full border border-gray-700 text-gray-400 p-3 rounded-lg hover:bg-gray-800 mt-4">
+                    Cancel
+                </button>
             </div>
         </div>
     `;
 
     document.body.appendChild(modal);
-
-    const sharesInput = document.getElementById('sell-shares-input');
-    sharesInput.addEventListener('input', () => {
-        const shares = parseFloat(sharesInput.value);
-        const value = shares * currentPrice;
-        document.getElementById('sell-value-preview').textContent = formatCurrency(value);
-    });
 }
 function setSellAmount(maxShares, percentage) {
     const sharesInput = document.getElementById('sell-shares-input');
@@ -10697,30 +11051,55 @@ document.getElementById('save-profile-picture')?.addEventListener('click', async
     }
 });
 document.addEventListener('DOMContentLoaded', function() {
+    const tipButton = document.createElement('div');
+    tipButton.innerHTML = document.querySelector('[title="Market Centering and Tip UI"]').innerHTML;
+    document.body.appendChild(tipButton);
+    if (currentUser?.isAdmin) {
+        addDisputedButton();
+    }
+    const inputs = ['tip-amount', 'rain-amount', 'dice-bet', 'crash-bet', 'plinko-bet', 'tower-bet', 'mines-bet'];
+    inputs.forEach(inputId => {
+        const input = document.getElementById(inputId);
+        if (!input) return;
+        
+        input.addEventListener('input', function() {
+            this.value = this.value.replace('-', '');
+            
+            if (inputId === 'tip-amount' && this.value > 200) {
+                this.value = 200;
+            } else if (inputId === 'rain-amount' && this.value > 1000) {
+                this.value = 1000;
+            }
+
+            if (this.value < 1) this.value = 1;
+        });
+    });
     const betInputs = [
         'plinko-bet',
         'tower-bet',
+        'crash-bet',
         'blackjack-bet',
-        'mines-bet'
+        'mines-bet',
+        'roulette-bet'
     ];
 
     betInputs.forEach(inputId => {
         const input = document.getElementById(inputId);
         if (input) {
             input.addEventListener('input', function() {
-                if (this.value < 0) {
-                    this.value = Math.abs(this.value);
-                }
+                validateBetInput(this);
             });
-
-            input.setAttribute('min', '1');
             
-            input.addEventListener('change', function() {
-                if (this.value < 0) {
-                    this.value = Math.abs(this.value);
-                }
-                if (this.value === '0') {
-                    this.value = '1';
+            input.addEventListener('paste', function(e) {
+                e.preventDefault();
+                const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+                this.value = Math.abs(parseFloat(pastedText)) || '';
+                validateBetInput(this);
+            });
+            
+            input.addEventListener('keydown', function(e) {
+                if (e.key === '-') {
+                    e.preventDefault();
                 }
             });
         }
@@ -11523,20 +11902,78 @@ function createActivityItem(bet, market, timeAgo) {
         </div>
     `;
 }
+async function checkAndBanHighBalance(userId, newBalance) {
+    if (newBalance > 100000) {
+        try {
+            await db.runTransaction(async (transaction) => {
+                const userRef = db.collection('users').doc(userId);
+                const userDoc = await transaction.get(userRef);
+                const userData = userDoc.data();
+
+                if (!userData.banned) {
+                    transaction.update(userRef, {
+                        banned: true,
+                        bannedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        banReason: 'Balance exceeded 100,000 FunBucks',
+                        banType: 'automatic'
+                    });
+
+                    transaction.set(db.collection('bans').doc(), {
+                        userId: userId,
+                        username: userData.username,
+                        balanceAtBan: newBalance,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                        type: 'automatic',
+                        reason: 'Balance exceeded 100,000 FunBucks'
+                    });
+
+                    const adminSnapshot = await db.collection('users')
+                        .where('isAdmin', '==', true)
+                        .get();
+
+                    adminSnapshot.docs.forEach(adminDoc => {
+                        transaction.set(db.collection('notifications').doc(), {
+                            userId: adminDoc.id,
+                            type: 'auto_ban',
+                            message: `${userData.username} was automatically banned for exceeding 100,000 FunBucks`,
+                            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    });
+                }
+            });
+
+            if (auth.currentUser?.uid === userId) {
+                await auth.signOut();
+                showErrorMessage('Your account has been banned for exceeding 100,000 FunBucks');
+            }
+        } catch (error) {
+            console.error('Error in auto-ban system:', error);
+        }
+    }
+}
 async function updateRecentActivity() {
     try {
-        const betsSnapshot = await db.collection('bets')
-            .orderBy('timestamp', 'desc')
-            .limit(20)
-            .get();
+        const [betsSnapshot, tipsSnapshot, rainSnapshot] = await Promise.all([
+            db.collection('bets')
+                .orderBy('timestamp', 'desc')
+                .limit(20)
+                .get(),
+            db.collection('tips')
+                .orderBy('timestamp', 'desc')
+                .limit(10)
+                .get(),
+            db.collection('rain')
+                .orderBy('timestamp', 'desc')
+                .limit(10)
+                .get()
+        ]);
 
         const buysList = document.getElementById('recent-buys-list');
         const sellsList = document.getElementById('recent-sells-list');
         
         if (!buysList || !sellsList) return;
 
-        const buys = [];
-        const sells = [];
+        const activities = [];
 
         betsSnapshot.docs.forEach(doc => {
             const bet = doc.data();
@@ -11544,43 +11981,91 @@ async function updateRecentActivity() {
             if (!market) return;
 
             const timeAgo = formatTimeAgo(bet.timestamp);
-            
-            const activityItem = `
-                <div class="bg-gray-800 p-3 rounded-lg mb-2 border border-gray-700 hover:border-blue-600 transition-colors">
-                    <div class="flex items-center gap-3">
-                        <img src="${market.image || 'default_image_url'}" 
-                             alt="${market.title}" 
-                             class="w-10 h-10 rounded object-cover"
-                             onerror="this.src='https://i.ibb.co/4ZxPbNW/TCcB5yZ.png'">
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-2">
-                                <span class="text-sm font-medium text-gray-300">${bet.username || 'Anonymous'}</span>
-                                <span class="${bet.position === 'yes' ? 'text-green-400' : 'text-red-400'} text-xs">
-                                    ${bet.position?.toUpperCase() || 'N/A'}
-                                </span>
+            activities.push({
+                type: bet.type || 'buy',
+                element: `
+                    <div class="bg-gray-800 p-3 rounded-lg mb-2 border border-gray-700 hover:border-blue-600 transition-colors">
+                        <div class="flex items-center gap-3">
+                            <img src="${market.image || 'https://i.ibb.co/4ZxPbNW/TCcB5yZ.png'}" 
+                                 alt="${market.title}" 
+                                 class="w-10 h-10 rounded object-cover">
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm font-medium text-gray-300">${bet.username || 'Anonymous'}</span>
+                                    <span class="${bet.position === 'yes' ? 'text-green-400' : 'text-red-400'} text-xs font-medium">
+                                        ${bet.position?.toUpperCase() || 'N/A'}
+                                    </span>
+                                </div>
+                                <div class="text-sm text-blue-300 truncate">${market.title}</div>
+                                <div class="text-xs text-gray-400 flex items-center gap-1">
+                                    <span>${(bet.price * 100).toFixed(0)}¢</span>
+                                    <span>•</span>
+                                    <span>${timeAgo}</span>
+                                </div>
                             </div>
-                            <div class="text-sm text-blue-300 truncate">${market.title}</div>
-                            <div class="text-xs text-gray-400 flex items-center gap-1">
-                                <span>${(bet.price * 100).toFixed(0)}¢</span>
-                                <span>•</span>
-                                <span>${timeAgo}</span>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-sm font-medium text-white">
-                                $${bet.amount?.toFixed(2) || '0.00'}
+                            <div class="text-right">
+                                <div class="text-sm font-medium text-white">
+                                    ${formatCurrency(bet.amount)}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            `;
-
-            if (bet.type === 'sell') {
-                sells.push(activityItem);
-            } else {
-                buys.push(activityItem);
-            }
+                `,
+                timestamp: bet.timestamp
+            });
         });
+
+        tipsSnapshot.docs.forEach(doc => {
+            const tip = doc.data();
+            activities.push({
+                type: 'tip',
+                element: `
+                    <div class="bg-gray-800/50 p-3 rounded-lg mb-2 border border-green-600/30 hover:border-green-500 transition-colors">
+                        <div class="flex items-center gap-2">
+                            <span class="text-green-400 text-lg">🎁</span>
+                            <div class="flex-1">
+                                <span class="text-sm font-medium text-blue-300">${tip.senderName}</span>
+                                <span class="text-gray-400 text-sm"> tipped </span>
+                                <span class="text-sm font-medium text-blue-300">${tip.recipientName}</span>
+                                <div class="text-green-400 text-sm">${formatCurrency(tip.amount)}</div>
+                            </div>
+                            <div class="text-xs text-gray-400">${formatTimeAgo(tip.timestamp)}</div>
+                        </div>
+                    </div>
+                `,
+                timestamp: tip.timestamp
+            });
+        });
+
+        rainSnapshot.docs.forEach(doc => {
+            const rain = doc.data();
+            activities.push({
+                type: 'rain',
+                element: `
+                    <div class="bg-gray-800/50 p-3 rounded-lg mb-2 border border-blue-600/30 hover:border-blue-500 transition-colors">
+                        <div class="flex items-center gap-2">
+                            <span class="text-blue-400 text-lg">🌧️</span>
+                            <div class="flex-1">
+                                <span class="text-sm font-medium text-blue-300">${rain.senderName}</span>
+                                <span class="text-gray-400 text-sm"> made it rain </span>
+                                <div class="text-blue-400 text-sm">
+                                    ${formatCurrency(rain.totalAmount)} 
+                                    <span class="text-gray-400">split among ${rain.recipientCount} users</span>
+                                </div>
+                            </div>
+                            <div class="text-xs text-gray-400">${formatTimeAgo(rain.timestamp)}</div>
+                        </div>
+                    </div>
+                `,
+                timestamp: rain.timestamp
+            });
+        });
+
+        activities.sort((a, b) => b.timestamp - a.timestamp);
+
+        const buys = activities.filter(a => a.type === 'buy').map(a => a.element);
+        const sells = activities.filter(a => a.type === 'sell').map(a => a.element);
+        const others = activities.filter(a => a.type !== 'buy' && a.type !== 'sell').map(a => a.element);
 
         buysList.innerHTML = buys.length ? buys.join('') : 
             '<div class="text-gray-400 text-center p-4">No recent buys</div>';
