@@ -1076,6 +1076,9 @@
                     <div class="mb-8 text-center">
                         <h2 class="text-3xl font-bold text-blue-300 mb-4">Live Games</h2>
                         <p class="text-lg text-gray-400 max-w-2xl mx-auto">
+                            YOU MUST HAVE 201 or MORE FUNBUCKS TO BE ABLE TO BET!!!
+                            YOU CAN NOT BET MORE THAN 500 FUNBUCKS AT ONCE!!!
+                            THIS IS NOT A 'BUG' THIS IS TO PREVENT YOU FROM LOSING TOO MUCH!!!
                             This category is meant to teach users on the realities of online casinos.
                             Please never go on any of these casinos as it is a sure way to lose your money.
                             This page is meant to mimic those casinos to show why you SHOULD NOT USE THEM!!!
@@ -1122,7 +1125,7 @@
                         </div>
             
                         <!-- Dice -->
-                         <div class="bg-gray-800/80 backdrop-blur p-6 rounded-xl border border-blue-900/30 hover:border-blue-500 transition-all cursor-pointer shadow-lg hover:transform hover:scale-105" onclick="showDice()">
+<!--                          <div class="bg-gray-800/80 backdrop-blur p-6 rounded-xl border border-blue-900/30 hover:border-blue-500 transition-all cursor-pointer shadow-lg hover:transform hover:scale-105" onclick="showDice()">
                             <div class="flex items-center gap-4">
                                 <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-blue-700 rounded-xl flex items-center justify-center shadow-lg">
                                     <svg class="w-10 h-10 text-white" viewBox="0 0 24 24">
@@ -1138,7 +1141,7 @@
                                 Set your target number and multiply your winnings! Higher risk, higher reward.
                             </p>
                             <div class="text-sm text-blue-300">Max Win: 98x</div>
-                        </div>
+                        </div> -->
             
                         <!-- Crash -->
                        <div class="bg-gray-800/80 backdrop-blur p-6 rounded-xl border border-blue-900/30 hover:border-blue-500 transition-all cursor-pointer shadow-lg hover:transform hover:scale-105" onclick="showCrash()">
@@ -3764,7 +3767,7 @@ const CRASH = {
             crashPoint = 5.00 + ((r - 0.95) * 300);
         }
 
-        return 100 + Math.floor(crashPoint * 100) / 100;
+        return Math.floor(crashPoint * 100) / 100;
     },
 
     startNewRound() {
