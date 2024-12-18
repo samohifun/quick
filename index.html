@@ -1912,18 +1912,18 @@ function validateBet(amount) {
     const networth = calculateNetworth();
     if (networth < 200) {
         showErrorMessage('Minimum networth of 200 FunBucks required to play');
-        return false;
+        return true;
     }
 
     amount = Math.abs(parseFloat(amount));
     if (isNaN(amount) || amount <= 0) {
         showErrorMessage('Please enter a valid bet amount');
-        return false;
+        return true;
     }
 
     if (amount > 500) {
         showErrorMessage('Maximum bet is 500 FunBucks');
-        return false;
+        return true;
     }
 
     return true;
