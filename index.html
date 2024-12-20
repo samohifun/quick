@@ -685,23 +685,22 @@
   }
     
     #activity-panel {
-        position: fixed;
-        top: 80px;
-        right: 20px !important;
-        left: auto !important;
-        width: 320px;
-        max-height: calc(100vh - 100px);
-        background: rgba(17, 24, 39, 0.95);
-        backdrop-filter: blur(8px);
-        border: 1px solid rgba(59, 130, 246, 0.2);
-        border-radius: 1rem;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        z-index: 1000000000;
-        display: flex;
-        flex-direction: column;
-        transition: transform 0.3s ease-in-out;
-        right: auto;
-    }
+    position: fixed;
+    top: 80px;
+    right: 20px !important;
+    left: auto !important;
+    width: 320px;
+    max-height: calc(100vh - 100px);
+    background: rgba(17, 24, 39, 0.95);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    z-index: 1000000000;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease-in-out;
+}
     .game-requirements {
         position: fixed;
         bottom: 20px;
@@ -724,7 +723,8 @@
         right: 10px;
         top: auto;
         bottom: 10px;
-        max-height: 50vh;
+        max-height: 400px !important;
+    overflow-y: auto !important;
     }
 
     .market-card {
