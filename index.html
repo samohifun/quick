@@ -1040,56 +1040,56 @@
             </div>
         </header>
         <div id="activity-panel" class="fixed top-20 right-4 w-80 bg-gray-900/95 backdrop-blur-md rounded-xl shadow-2xl border border-blue-900/50 transition-all duration-300 transform z-[100] hover:scale-[1.02]">
-            <div class="p-4 border-b border-gray-800">
-                <div class="flex items-center justify-between">
-                    <h2 class="text-lg font-bold text-blue-300">Live Activity</h2>
-                    <div class="flex gap-2">
-                        <button id="activity-refresh" class="text-gray-400 hover:text-white transition-colors">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                      d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                            </svg>
-                        </button>
-                        <button id="activity-minimize" class="text-gray-400 hover:text-white transition-colors">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <div id="activity-content" class="overflow-hidden transition-all duration-300" style="max-height: 600px;">
-                <div class="p-4 space-y-4">
-                    <!-- Recent Buys -->
-                    <div>
-                        <div class="flex items-center gap-2 mb-2">
-                            <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                            <h3 class="text-sm font-medium text-green-400">Recent Buys</h3>
-                        </div>
-                        <div id="recent-buys-list" class="space-y-2 max-h-[200px] overflow-y-auto custom-scrollbar"></div>
-                    </div>
-                    
-                    <!-- Recent Sells -->
-                    <div>
-                        <div class="flex items-center gap-2 mb-2">
-                            <div class="w-2 h-2 bg-red-400 rounded-full animate-pulse"></div>
-                            <h3 class="text-sm font-medium text-red-400">Recent Sells</h3>
-                        </div>
-                        <div id="recent-sells-list" class="space-y-2 max-h-[200px] overflow-y-auto custom-scrollbar"></div>
-                    </div>
-                    
-                    <!-- Recent Tips -->
-                    <div>
-                        <div class="flex items-center gap-2 mb-2">
-                            <div class="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
-                            <h3 class="text-sm font-medium text-purple-400">Recent Tips & Rain</h3>
-                        </div>
-                        <div id="recent-tips-list" class="space-y-2 max-h-[200px] overflow-y-auto custom-scrollbar"></div>
-                    </div>
-                </div>
+    <div class="p-4 border-b border-gray-800">
+        <div class="flex items-center justify-between">
+            <h2 class="text-lg font-bold text-blue-300">Live Activity</h2>
+            <div class="flex gap-2">
+                <button id="activity-refresh" class="text-gray-400 hover:text-white transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                </button>
+                <button id="activity-minimize" class="text-gray-400 hover:text-white transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
             </div>
         </div>
+    </div>
+    
+    <div id="activity-content" class="overflow-hidden transition-all duration-300" style="max-height: 600px;">
+        <div class="p-4 space-y-4">
+            <!-- Recent Buys -->
+            <div>
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                    <h3 class="text-sm font-medium text-green-400">Recent Buys</h3>
+                </div>
+                <div id="recent-buys-list" class="space-y-2 max-h-[200px] overflow-y-auto custom-scrollbar"></div>
+            </div>
+            
+            <!-- Recent Sells -->
+            <div>
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-2 h-2 bg-red-400 rounded-full animate-pulse"></div>
+                    <h3 class="text-sm font-medium text-red-400">Recent Sells</h3>
+                </div>
+                <div id="recent-sells-list" class="space-y-2 max-h-[200px] overflow-y-auto custom-scrollbar"></div>
+            </div>
+            
+            <!-- Recent Tips -->
+            <div>
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
+                    <h3 class="text-sm font-medium text-purple-400">Recent Tips & Rain</h3>
+                </div>
+                <div id="recent-tips-list" class="space-y-2 max-h-[200px] overflow-y-auto custom-scrollbar"></div>
+            </div>
+        </div>
+    </div>
+</div>
         
         <nav class="max-w-8xl mx-auto px-8 py-6">
             <div id="market-king" class="mb-6">
