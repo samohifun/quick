@@ -1888,7 +1888,7 @@ const adminControls = {
     async showTitleManager() {
         const modal = document.createElement('div');
         modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center';
-        modal.style.zIndex = '75'; // Higher than admin panel
+        modal.style.zIndex = '75';
 
         try {
             const usersSnapshot = await db.collection('users').get();
@@ -2040,7 +2040,7 @@ const adminControls = {
             });
             
             showSuccessMessage('Title added successfully');
-            this.showTitleManager(); // Refresh the title manager
+            this.showTitleManager();
         } catch (error) {
             console.error('Error adding title:', error);
             showErrorMessage('Error adding title');
@@ -2055,7 +2055,7 @@ const adminControls = {
             });
             
             showSuccessMessage('Title removed successfully');
-            this.showTitleManager(); // Refresh the title manager
+            this.showTitleManager();
         } catch (error) {
             console.error('Error removing title:', error);
             showErrorMessage('Error removing title');
@@ -2917,7 +2917,6 @@ const BLACKJACK = {
 
         this.playerHands.push(newHand);
 
-        // Deduct additional bet amount
         portfolio.balance -= this.betAmount;
         updatePortfolioDisplays();
 
@@ -2928,18 +2927,15 @@ const BLACKJACK = {
     doubleDown() {
         if (!this.canDoubleDown()) return;
 
-        // Deduct additional bet amount
         portfolio.balance -= this.betAmount;
         updatePortfolioDisplays();
 
         this.betAmount *= 2;
         this.isDoubleBet = true;
 
-        // Draw one final card
         const currentHand = this.playerHands[this.currentHandIndex];
         currentHand.push(this.drawCard());
 
-        // Automatically stand after doubling down
         this.stand();
     },
 
@@ -2980,7 +2976,6 @@ const BLACKJACK = {
             this.betAmount = betAmount;
             updatePortfolioDisplays();
 
-            // Reset game state
             this.playerHands = [[this.drawCard(), this.drawCard()]];
             this.dealerHand = [this.drawCard(), this.drawCard()];
             this.currentHandIndex = 0;
@@ -2990,7 +2985,6 @@ const BLACKJACK = {
             this.updateUI();
             this.updateButtons();
 
-            // Check for immediate Blackjack
             const playerScore = this.calculateScore(this.playerHands[0]);
             if (playerScore === 21) {
                 await this.stand();
@@ -3008,7 +3002,6 @@ const BLACKJACK = {
         
         const score = this.calculateScore(currentHand);
         if (score > 21) {
-            // Move to next hand if split, otherwise end game
             if (this.playerHands.length > 1 && this.currentHandIndex < this.playerHands.length - 1) {
                 this.currentHandIndex++;
             } else {
@@ -3021,14 +3014,12 @@ const BLACKJACK = {
     },
 
     async stand() {
-        // If multiple hands, move to next hand
         if (this.playerHands.length > 1 && this.currentHandIndex < this.playerHands.length - 1) {
             this.currentHandIndex++;
             this.updateUI();
             return;
         }
 
-        // Dealer's turn
         while (this.calculateScore(this.dealerHand) < 17) {
             this.dealerHand.push(this.drawCard());
         }
@@ -3047,11 +3038,9 @@ const BLACKJACK = {
             let result = 'lose';
             let winMultiplier = 0;
 
-            // Determine win conditions
             if (playerScore > 21) {
                 result = 'lose';
             } else if (dealerScore > 21 || playerScore > dealerScore) {
-                // Natural Blackjack (2 cards, 21) pays 2.5x
                 if (playerHand.length === 2 && playerScore === 21) {
                     result = 'blackjack';
                     winMultiplier = 2.5;
@@ -3064,7 +3053,6 @@ const BLACKJACK = {
                 winMultiplier = 1;
             }
 
-            // Calculate winnings
             const handBetAmount = this.betAmount / this.playerHands.length;
             const winAmount = result === 'blackjack' ? handBetAmount * 2.5 :
                              result === 'win' ? handBetAmount * 2 :
@@ -3072,11 +3060,9 @@ const BLACKJACK = {
 
             totalWinAmount += winAmount;
 
-            // Log the result
             await this.logHandResult(handBetAmount, result, winAmount);
         }
 
-        // Update portfolio
         await db.runTransaction(async (transaction) => {
             const userRef = db.collection('users').doc(auth.currentUser.uid);
             
@@ -3091,7 +3077,6 @@ const BLACKJACK = {
             portfolio.balance += totalWinAmount;
             updatePortfolioDisplays();
             
-            // Celebration for net positive result
             if (totalWinAmount > this.betAmount) {
                 showWinCelebration(totalWinAmount);
             }
@@ -3099,7 +3084,7 @@ const BLACKJACK = {
 
         this.gameInProgress = false;
         this.updateButtons();
-        this.updateUI(true);  // Show all dealer cards
+        this.updateUI(true);
     },
 
     async logHandResult(betAmount, result, winAmount) {
@@ -3128,8 +3113,7 @@ const BLACKJACK = {
                 score += parseInt(card.value);
             }
         }
-        
-        // Adjust for aces
+    
         while (score > 21 && aces > 0) {
             score -= 10;
             aces--;
@@ -3150,11 +3134,9 @@ const BLACKJACK = {
         const playerScoreEl = document.getElementById('player-score');
         const dealerScoreEl = document.getElementById('dealer-score');
 
-        // Clear existing cards
         playerCardsEls.innerHTML = '';
         dealerCardsEls.innerHTML = '';
 
-        // Render player hands
         this.playerHands.forEach((hand, index) => {
             const handWrapper = document.createElement('div');
             handWrapper.className = `player-hand flex gap-2 ${index !== this.currentHandIndex ? 'opacity-50' : ''}`;
@@ -3167,20 +3149,16 @@ const BLACKJACK = {
             playerCardsEls.appendChild(handWrapper);
         });
 
-        // Calculate and display player score
         const currentHand = this.playerHands[this.currentHandIndex];
         playerScoreEl.textContent = `Score: ${this.calculateScore(currentHand)}`;
 
-        // Dealer cards
         if (showAll) {
-            // Show all dealer cards when game is over
             this.dealerHand.forEach(card => {
                 const cardEl = this.createCardElement(card);
                 dealerCardsEls.appendChild(cardEl);
             });
             dealerScoreEl.textContent = `Score: ${this.calculateScore(this.dealerHand)}`;
         } else {
-            // Show first dealer card face up, create back card manually
             const firstCard = this.createCardElement(this.dealerHand[0]);
             dealerCardsEls.appendChild(firstCard);
 
@@ -3197,21 +3175,17 @@ const BLACKJACK = {
         const isRed = ['♥', '♦'].includes(card.suit);
         const color = isRed ? 'text-red-600' : 'text-black';
         
-        // Create a div element directly
         const cardElement = document.createElement('div');
         cardElement.className = `card w-[120px] h-[168px] bg-white rounded-lg flex flex-col justify-between p-3 ${animated ? 'animate__animated animate__flipInY' : ''}`;
         
-        // Top corner
         const topCorner = document.createElement('div');
         topCorner.className = `${color} text-2xl font-bold text-left`;
         topCorner.textContent = `${card.value}\n${card.suit}`;
         
-        // Bottom corner
         const bottomCorner = document.createElement('div');
         bottomCorner.className = `${color} text-2xl font-bold text-right rotate-180`;
         bottomCorner.textContent = `${card.value}\n${card.suit}`;
         
-        // Append corners to card
         cardElement.appendChild(topCorner);
         cardElement.appendChild(bottomCorner);
         
@@ -3225,29 +3199,23 @@ const BLACKJACK = {
         const doubleBtn = document.getElementById('double-button');
         const splitBtn = document.getElementById('split-button');
         
-        // Reset all button states
         [dealBtn, hitBtn, standBtn, doubleBtn, splitBtn].forEach(btn => {
             btn.classList.add('hidden');
             btn.disabled = false;
         });
 
         if (!this.gameInProgress) {
-            // Deal button visible when no game is in progress
             dealBtn.classList.remove('hidden');
         } else {
-            // Game is in progress
             const currentHand = this.playerHands[this.currentHandIndex];
             
-            // Hit and Stand always available during game
             hitBtn.classList.remove('hidden');
             standBtn.classList.remove('hidden');
 
-            // Double Down available only on first turn of first hand
             if (this.canDoubleDown()) {
                 doubleBtn.classList.remove('hidden');
             }
 
-            // Split available only on first turn of first hand
             if (this.canSplit()) {
                 splitBtn.classList.remove('hidden');
             }
@@ -3281,23 +3249,22 @@ const MINES = {
     gameInProgress: false,
 
     init() {
-        this.createGrid(); // Always create the grid
+        this.createGrid();
         this.setupEventListeners();
         this.setupMineButtons();
     },
 
     createGrid() {
         const grid = document.getElementById('mines-grid');
-        grid.innerHTML = ''; // Clear existing grid
+        grid.innerHTML = '';
         
-        // Use CSS grid with equal-sized cells
         grid.className = 'grid grid-cols-5 gap-2 w-full aspect-square';
 
         for (let i = 0; i < 25; i++) {
             const cell = document.createElement('div');
             cell.className = 'bg-gray-700 rounded-lg cursor-pointer hover:bg-gray-600 transition-all flex items-center justify-center text-2xl aspect-square';
             cell.dataset.index = i;
-            cell.textContent = '❓'; // Default hidden state
+            cell.textContent = '❓';
             cell.addEventListener('click', () => this.revealCell(i));
             grid.appendChild(cell);
         }
@@ -3323,7 +3290,6 @@ const MINES = {
             });
         });
 
-        // Ensure 3 mines is active by default
         const defaultButton = document.querySelector('.mines-btn[data-mines="3"]');
         if (defaultButton) defaultButton.classList.add('active');
     },
@@ -3357,7 +3323,6 @@ const MINES = {
 
     async placeBet(betAmount) {
         try {
-            // Deduct bet amount
             await db.runTransaction(async (transaction) => {
                 const userRef = db.collection('users').doc(auth.currentUser.uid);
                 const userDoc = await transaction.get(userRef);
@@ -3371,20 +3336,16 @@ const MINES = {
                 });
             });
 
-            // Local state update
             portfolio.balance -= betAmount;
             updatePortfolioDisplays();
 
-            // Start game
             this.betAmount = betAmount;
             this.gameInProgress = true;
             this.revealedCells = [];
             this.generateMines();
 
-            // Reset grid
             this.resetGrid();
 
-            // Update UI
             document.getElementById('mines-start-btn').classList.add('hidden');
             document.getElementById('mines-cashout-btn').classList.remove('hidden');
             this.updateMultiplierDisplay();
@@ -3420,19 +3381,16 @@ const MINES = {
         const cell = grid.children[index];
 
         if (this.mineLocations.includes(index)) {
-            // Hit a mine
             cell.textContent = '💥';
             cell.className = 'bg-red-600 rounded-lg flex items-center justify-center text-4xl aspect-square';
             this.endGame(false);
         } else {
-            // Safe cell
             cell.textContent = '💎';
             cell.className = 'bg-green-600 rounded-lg flex items-center justify-center text-4xl aspect-square';
             
             this.revealedCells.push(index);
             this.updateMultiplierDisplay();
 
-            // Check win condition
             const totalSafeCells = 25 - this.mineCount;
             if (this.revealedCells.length === totalSafeCells) {
                 this.endGame(true);
@@ -3468,7 +3426,6 @@ const MINES = {
         const multiplier = this.calculateCurrentMultiplier();
         const winAmount = won ? this.betAmount * multiplier : 0;
 
-        // Reveal all mines
         const grid = document.getElementById('mines-grid');
         this.mineLocations.forEach(mineIndex => {
             if (!this.revealedCells.includes(mineIndex)) {
@@ -3478,7 +3435,6 @@ const MINES = {
             }
         });
 
-        // Process win
         if (won) {
             await db.runTransaction(async (transaction) => {
                 const userRef = db.collection('users').doc(auth.currentUser.uid);
@@ -3504,7 +3460,6 @@ const MINES = {
             showWinCelebration(winAmount, multiplier);
         }
 
-        // Reset UI
         document.getElementById('mines-start-btn').classList.remove('hidden');
         document.getElementById('mines-cashout-btn').classList.add('hidden');
     },
@@ -3575,7 +3530,6 @@ const LIMBO = {
     },
 
     async placeBet() {
-        // Validate inputs
         const betAmount = parseFloat(document.getElementById('limbo-bet').value);
         const targetMultiplier = parseFloat(document.getElementById('limbo-target').value);
 
@@ -3590,7 +3544,6 @@ const LIMBO = {
         }
 
         try {
-            // Deduct bet amount
             await db.runTransaction(async (transaction) => {
                 const userRef = db.collection('users').doc(auth.currentUser.uid);
                 const userDoc = await transaction.get(userRef);
@@ -3604,26 +3557,20 @@ const LIMBO = {
                 });
             });
 
-            // Local state update
             portfolio.balance -= betAmount;
             updatePortfolioDisplays();
 
-            // Generate random multiplier
             const resultMultiplier = this.generateRandomMultiplier();
 
-            // Determine win/loss and calculate winnings
             const didWin = resultMultiplier >= targetMultiplier;
             const winAmount = didWin ? betAmount * (targetMultiplier - 1) : 0;
 
-            // Animate and display result
             this.animateMultiplier(resultMultiplier, targetMultiplier);
 
-            // Process win
             if (didWin) {
                 await this.processWin(winAmount);
             }
 
-            // Log game result and update recent results
             await this.logGameResult(betAmount, resultMultiplier, targetMultiplier, didWin, winAmount);
 
         } catch (error) {
@@ -3645,7 +3592,7 @@ const LIMBO = {
         const resultContainer = document.getElementById('limbo-result');
 
         let currentMultiplier = 1.00;
-        const animationDuration = 2000; // 2 seconds
+        const animationDuration = 2000;
         const startTime = Date.now();
 
         const animate = () => {
@@ -3686,7 +3633,6 @@ const LIMBO = {
     },
 
     async logGameResult(betAmount, resultMultiplier, targetMultiplier, didWin, winAmount) {
-        // Log to game history
         await db.collection('gameHistory').add({
             userId: auth.currentUser.uid,
             username: currentUser.username,
@@ -3699,26 +3645,23 @@ const LIMBO = {
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        // Update recent results
         await this.updateRecentResults(resultMultiplier, didWin);
     },
 
     async updateRecentResults(resultMultiplier, didWin) {
         const historyContainer = document.getElementById('limbo-history');
         
-        // Add new result to the top of the list
         const newResultElement = document.createElement('div');
         newResultElement.className = `p-2 rounded text-center ${didWin ? 'bg-green-600' : 'bg-red-600'}`;
         newResultElement.textContent = `${resultMultiplier.toFixed(2)}×`;
         
-        // Insert at the beginning of the container
+
         if (historyContainer.firstChild) {
             historyContainer.insertBefore(newResultElement, historyContainer.firstChild);
         } else {
             historyContainer.appendChild(newResultElement);
         }
 
-        // Limit to 12 recent results
         while (historyContainer.children.length > 12) {
             historyContainer.removeChild(historyContainer.lastChild);
         }
@@ -3733,7 +3676,7 @@ const LIMBO = {
                 .get();
 
             const historyContainer = document.getElementById('limbo-history');
-            historyContainer.innerHTML = ''; // Clear existing results
+            historyContainer.innerHTML = '';
 
             snapshot.docs.forEach(doc => {
                 const result = doc.data();
@@ -3765,136 +3708,120 @@ function closeLimbo() {
     }
 }
 
-const theftSystem = {
-    COOLDOWN_TIME: 30 * 60 * 1000,
-    MAX_STEAL: 500,
 
-    initialize() {
-        this.addStealButton();
-        this.checkCooldown();
+const theftSystem = {
+    MAX_STEAL_AMOUNT: 500,
+    COOLDOWN_MINUTES: 9,
+
+    async initialize() {
+        if (!auth.currentUser) return;
+        
+        const theftButton = document.createElement('div');
+        theftButton.className = 'fixed bottom-24 right-6 z-50';
+        theftButton.innerHTML = `
+            <button id="steal-btn" 
+                    class="hidden px-6 py-3 bg-gradient-to-r from-red-600 to-purple-600 text-white rounded-full 
+                           shadow-lg flex items-center gap-2 transform hover:-translate-y-1 transition-all duration-300">
+                <span class="text-xl">🦹‍♂️</span>
+                <span>Steal FunBucks!</span>
+            </button>
+            <div id="theft-cooldown" 
+                 class="hidden px-6 py-3 bg-gray-800 text-gray-400 rounded-full shadow-lg 
+                        flex items-center gap-2">
+                <span class="text-xl">⏳</span>
+                <span>Next theft in: <span id="theft-timer"></span></span>
+            </div>
+        `;
+        document.body.appendChild(theftButton);
+
+        document.getElementById('steal-btn')?.addEventListener('click', () => this.showStealModal());
+
+        this.checkTheftAvailability();
+        setInterval(() => this.checkTheftAvailability(), 1000);
     },
 
-    addStealButton() {
-        const button = document.createElement('button');
-        button.className = 'game-requirements bg-red-600/90 hover:bg-red-700 transition-colors shadow-lg flex items-center gap-2';
-        button.innerHTML = `
-            <span>🦹‍♂️</span>
-            <span>Steal FunBucks</span>
-        `;
-        button.onclick = () => this.showStealModal();
-        
-        const container = document.createElement('div');
-        container.className = 'fixed bottom-4 left-4 flex gap-2 z-[50]';
-        container.appendChild(button);
-        document.body.appendChild(container);
+    async checkTheftAvailability() {
+        if (!auth.currentUser) return;
+
+        try {
+            const theftRef = db.collection('theftHistory')
+                .doc(auth.currentUser.uid);
+            
+            const theftDoc = await theftRef.get();
+            const lastTheft = theftDoc.exists ? theftDoc.data().lastTheft?.toDate() : null;
+
+            const now = new Date();
+            if (!lastTheft || (now - lastTheft) >= (this.COOLDOWN_MINUTES * 60 * 1000)) {
+                document.getElementById('steal-btn')?.classList.remove('hidden');
+                document.getElementById('theft-cooldown')?.classList.add('hidden');
+            } else {
+                document.getElementById('steal-btn')?.classList.add('hidden');
+                document.getElementById('theft-cooldown')?.classList.remove('hidden');
+                
+                const timeLeft = this.COOLDOWN_MINUTES * 60 * 1000 - (now - lastTheft);
+                const minutes = Math.floor(timeLeft / (60 * 1000));
+                const seconds = Math.floor((timeLeft % (60 * 1000)) / 1000);
+                
+                const timerElement = document.getElementById('theft-timer');
+                if (timerElement) {
+                    timerElement.textContent = `${minutes}m ${seconds}s`;
+                }
+            }
+        } catch (error) {
+            console.error('Error checking theft availability:', error);
+        }
     },
 
     async showStealModal() {
-        if (!auth.currentUser) {
-            showErrorMessage('Please sign in to steal FunBucks');
-            return;
-        }
-
         const modal = document.createElement('div');
         modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[60]';
         
         modal.innerHTML = `
             <div class="bg-gray-900 rounded-xl p-6 max-w-md w-full">
                 <div class="flex justify-between items-center mb-6">
-                    <div>
-                        <h3 class="text-xl font-bold text-red-400">Steal FunBucks</h3>
-                        <div id="steal-cooldown" class="text-sm text-gray-400">Checking cooldown...</div>
-                    </div>
+                    <h3 class="text-xl font-bold text-red-400">Steal FunBucks (Balance not Networth)</h3>
                     <button onclick="this.closest('.fixed').remove()" 
                             class="text-gray-400 hover:text-white">×</button>
-                </div>
-
-                <div class="mb-6">
-                    <h4 class="text-sm font-medium text-gray-400 mb-2">Quick Steal Options</h4>
-                    <div id="top-targets" class="space-y-2">Loading richest users...</div>
                 </div>
                 
                 <div class="space-y-4">
                     <div class="relative">
-                        <label class="block text-gray-400 mb-2">Or Search User</label>
                         <input type="text" 
-                               id="victim-search"
-                               placeholder="Type username..."
+                               id="victim-search" 
+                               placeholder="Search users to steal from..." 
                                class="w-full p-3 rounded-lg bg-gray-800/50 border border-gray-700">
-                        <div id="victim-search-results" 
-                             class="absolute left-0 right-0 mt-1 bg-gray-800 rounded-lg border border-gray-700 max-h-48 overflow-y-auto hidden z-50">
+                        <div id="victim-results" class="absolute left-0 right-0 mt-1 bg-gray-800 rounded-lg max-h-48 overflow-y-auto hidden">
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-gray-400 mb-2">Amount (Max ${this.MAX_STEAL})</label>
+                        <label class="block text-gray-400 mb-2">Amount to Steal (max 500)</label>
                         <input type="number" 
-                               id="steal-amount"
-                               min="1"
-                               max="${this.MAX_STEAL}"
+                               id="steal-amount" 
+                               min="1" 
+                               max="${this.MAX_STEAL_AMOUNT}"
                                value="100"
                                class="w-full p-3 rounded-lg bg-gray-800/50 border border-gray-700">
                     </div>
 
                     <button onclick="theftSystem.attemptTheft()"
-                            class="w-full p-4 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors">
-                        Attempt Theft
+                            class="w-full p-4 bg-gradient-to-r from-red-600 to-purple-600 text-white rounded-lg">
+                        Execute Theft
                     </button>
                 </div>
             </div>
         `;
 
         document.body.appendChild(modal);
-        await this.loadTopTargets();
-        this.initializeVictimSearch();
-        this.updateCooldownTimer();
+        this.setupVictimSearch();
     },
 
-    async loadTopTargets() {
-        const container = document.getElementById('top-targets');
-        if (!container) return;
-
-        try {
-            const snapshot = await db.collection('users')
-                .orderBy('funbucks', 'desc')
-                .limit(3)
-                .get();
-
-            container.innerHTML = snapshot.docs
-                .filter(doc => doc.id !== auth.currentUser.uid)
-                .map(doc => {
-                    const userData = doc.data();
-                    return `
-                        <div class="bg-gray-800/50 p-3 rounded-lg border border-gray-700 hover:border-red-500 transition-colors">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-2">
-                                    <img src="${userData.profilePicture || DEFAULT_PROFILE_PIC}" 
-                                         class="w-8 h-8 rounded-full">
-                                    <div>
-                                        <div class="text-white">${userData.username}</div>
-                                        <div class="text-sm text-green-400">${formatCurrency(userData.funbucks)}</div>
-                                    </div>
-                                </div>
-                                <button onclick="theftSystem.quickSteal('${doc.id}')"
-                                        class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm">
-                                    Quick Steal
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-
-        } catch (error) {
-            console.error('Error loading top targets:', error);
-            container.innerHTML = '<div class="text-red-400 text-center">Error loading targets</div>';
-        }
-    },
-
-    initializeVictimSearch() {
+    async setupVictimSearch() {
         const searchInput = document.getElementById('victim-search');
-        const resultsDiv = document.getElementById('victim-search-results');
+        const resultsDiv = document.getElementById('victim-results');
+        
         if (!searchInput || !resultsDiv) return;
-
+        
         searchInput.addEventListener('input', async () => {
             const searchTerm = searchInput.value.toLowerCase().trim();
             if (searchTerm.length < 2) {
@@ -3904,11 +3831,13 @@ const theftSystem = {
 
             try {
                 const snapshot = await db.collection('users').get();
-                const matches = snapshot.docs.filter(doc => {
-                    const userData = doc.data();
-                    return doc.id !== auth.currentUser.uid &&
-                           userData.username.toLowerCase().includes(searchTerm);
-                }).slice(0, 5);
+                const matches = snapshot.docs
+                    .filter(doc => {
+                        const userData = doc.data();
+                        return doc.id !== auth.currentUser.uid && 
+                               userData.username.toLowerCase().includes(searchTerm);
+                    })
+                    .slice(0, 5);
 
                 if (matches.length === 0) {
                     resultsDiv.innerHTML = `
@@ -3918,20 +3847,31 @@ const theftSystem = {
                     resultsDiv.innerHTML = matches.map(doc => {
                         const userData = doc.data();
                         return `
-                            <div class="p-3 hover:bg-gray-700 cursor-pointer flex items-center gap-3"
-                                 onclick="theftSystem.selectVictim('${doc.id}', '${userData.username}')">
+                            <div class="p-3 hover:bg-gray-700 cursor-pointer flex items-center gap-3 victim-result"
+                                 data-user-id="${doc.id}"
+                                 data-username="${userData.username}">
                                 <img src="${userData.profilePicture || DEFAULT_PROFILE_PIC}" 
                                      class="w-8 h-8 rounded-full">
                                 <div>
                                     <div class="text-white">${userData.username}</div>
-                                    <div class="text-sm text-green-400">${formatCurrency(userData.funbucks)}</div>
+                                    <div class="text-sm text-green-400">
+                                        ${formatCurrency(userData.funbucks)}
+                                    </div>
                                 </div>
                             </div>
                         `;
                     }).join('');
-                }
-                resultsDiv.classList.remove('hidden');
 
+                    resultsDiv.querySelectorAll('.victim-result').forEach(el => {
+                        el.addEventListener('click', () => {
+                            searchInput.value = el.dataset.username;
+                            searchInput.dataset.selectedUser = el.dataset.userId;
+                            resultsDiv.classList.add('hidden');
+                        });
+                    });
+                }
+
+                resultsDiv.classList.remove('hidden');
             } catch (error) {
                 console.error('Error searching users:', error);
                 resultsDiv.innerHTML = `
@@ -3947,153 +3887,115 @@ const theftSystem = {
         });
     },
 
-    selectVictim(userId, username) {
-        const searchInput = document.getElementById('victim-search');
-        const resultsDiv = document.getElementById('victim-search-results');
-        searchInput.value = username;
-        searchInput.dataset.selectedUser = userId;
-        resultsDiv.classList.add('hidden');
-    },
-
-    updateCooldownTimer() {
-        const cooldownDiv = document.getElementById('steal-cooldown');
-        if (!cooldownDiv) return;
-
-        const updateTimer = async () => {
-            try {
-                const userDoc = await db.collection('users').doc(auth.currentUser.uid).get();
-                const userData = userDoc.data();
-                const lastTheft = userData.lastTheft?.toDate();
-
-                if (!lastTheft) {
-                    cooldownDiv.innerHTML = `<span class="text-green-400">Ready to steal up to ${formatCurrency(this.MAX_STEAL)}</span>`;
-                    return;
-                }
-
-                const cooldownEnd = lastTheft.getTime() + this.COOLDOWN_TIME;
-                const timeLeft = cooldownEnd - Date.now();
-
-                if (timeLeft <= 0) {
-                    cooldownDiv.innerHTML = `<span class="text-green-400">Ready to steal up to ${formatCurrency(this.MAX_STEAL)}</span>`;
-                    return;
-                }
-
-                const minutes = Math.floor(timeLeft / 60000);
-                const seconds = Math.floor((timeLeft % 60000) / 1000);
-                cooldownDiv.innerHTML = `<span class="text-yellow-400">Cooldown: ${minutes}m ${seconds}s</span>`;
-
-                setTimeout(() => updateTimer(), 1000);
-            } catch (error) {
-                console.error('Error updating cooldown:', error);
-                cooldownDiv.textContent = 'Error checking cooldown';
-            }
-        };
-
-        updateTimer();
-    },
-
-    async checkCooldown() {
-        if (!auth.currentUser) return false;
-        
-        try {
-            const userDoc = await db.collection('users').doc(auth.currentUser.uid).get();
-            const userData = userDoc.data();
-            const lastTheft = userData.lastTheft?.toDate();
-            
-            if (!lastTheft) return true;
-            
-            return Date.now() - lastTheft.getTime() >= this.COOLDOWN_TIME;
-        } catch (error) {
-            console.error('Error checking cooldown:', error);
-            return false;
-        }
-    },
-
-    async quickSteal(victimId) {
-        if (!await this.checkCooldown()) {
-            showErrorMessage('You must wait for the cooldown to end before stealing again');
-            return;
-        }
-
-        await this.attemptTheft(victimId, this.MAX_STEAL);
-    },
-
-    async attemptTheft(victimId, amount) {
-        if (!victimId) {
-            victimId = document.getElementById('victim-search').dataset.selectedUser;
-            amount = parseInt(document.getElementById('steal-amount').value);
-        }
+    async attemptTheft() {
+        const victimId = document.getElementById('victim-search').dataset.selectedUser;
+        const amount = parseInt(document.getElementById('steal-amount').value);
 
         if (!victimId) {
             showErrorMessage('Please select a user to steal from');
             return;
         }
 
-        if (!amount || amount < 1 || amount > this.MAX_STEAL) {
-            showErrorMessage(`Please enter an amount between 1 and ${this.MAX_STEAL}`);
-            return;
-        }
-
-        if (!await this.checkCooldown()) {
-            showErrorMessage('You must wait for the cooldown to end before stealing again');
+        if (!amount || amount < 1 || amount > this.MAX_STEAL_AMOUNT) {
+            showErrorMessage(`Please enter an amount between 1 and ${this.MAX_STEAL_AMOUNT}`);
             return;
         }
 
         try {
             await db.runTransaction(async (transaction) => {
-                const [victimDoc, thiefDoc] = await Promise.all([
-                    transaction.get(db.collection('users').doc(victimId)),
-                    transaction.get(db.collection('users').doc(auth.currentUser.uid))
-                ]);
-
-                const victimData = victimDoc.data();
-                const thiefData = thiefDoc.data();
-
-                if (victimData.funbucks < amount) {
-                    throw new Error('Target does not have enough FunBucks');
+                const theftRef = db.collection('theftHistory').doc(auth.currentUser.uid);
+                const theftDoc = await transaction.get(theftRef);
+                
+                const lastTheft = theftDoc.exists ? theftDoc.data().lastTheft?.toDate() : null;
+                const now = new Date();
+                if (lastTheft && (now - lastTheft) < (this.COOLDOWN_MINUTES * 60 * 1000)) {
+                    throw new Error('Theft not yet available');
                 }
 
-                transaction.update(victimDoc.ref, {
+                const victimRef = db.collection('users').doc(victimId);
+                const victimDoc = await transaction.get(victimRef);
+                const victimData = victimDoc.data();
+
+                if (victimData.funbucks < amount) {
+                    throw new Error('Victim doesn\'t have enough FunBucks');
+                }
+                transaction.update(victimRef, {
                     funbucks: firebase.firestore.FieldValue.increment(-amount)
                 });
 
-                transaction.update(thiefDoc.ref, {
-                    funbucks: firebase.firestore.FieldValue.increment(amount),
-                    lastTheft: firebase.firestore.FieldValue.serverTimestamp()
+                const thiefRef = db.collection('users').doc(auth.currentUser.uid);
+                transaction.update(thiefRef, {
+                    funbucks: firebase.firestore.FieldValue.increment(amount)
                 });
 
-                transaction.set(db.collection('theftHistory').doc(), {
+                transaction.set(theftRef, {
+                    lastTheft: firebase.firestore.FieldValue.serverTimestamp(),
                     userId: auth.currentUser.uid,
-                    username: thiefData.username,
                     amount: amount,
                     victimId: victimId,
-                    victimUsername: victimData.username,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    victimUsername: victimData.username
+                });
+
+                transaction.set(db.collection('notifications').doc(), {
+                    userId: victimId,
+                    type: 'theft',
+                    message: `${currentUser.username} stole ${formatCurrency(amount)} from you!`,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    read: false
                 });
             });
 
             portfolio.balance += amount;
             updatePortfolioDisplays();
-            showSuccessMessage(`Successfully stole ${formatCurrency(amount)}!`);
-            document.querySelector('.fixed')?.remove();
+
+            this.showTheftAnimation(amount);
+
+            document.querySelector('.fixed').remove();
 
         } catch (error) {
             console.error('Error executing theft:', error);
-            showErrorMessage(error.message || 'Failed to steal');
+            showErrorMessage(error.message);
         }
+    },
+
+    showTheftAnimation(amount) {
+        const animation = document.createElement('div');
+        animation.className = 'fixed inset-0 flex items-center justify-center z-[1000] pointer-events-none';
+        animation.innerHTML = `
+            <div class="bg-gradient-to-r from-red-600 to-purple-600 text-white px-8 py-6 rounded-xl 
+                        shadow-2xl transform scale-0 opacity-0 transition-all duration-500">
+                <div class="text-center">
+                    <div class="text-4xl mb-2">🦹‍♂️</div>
+                    <div class="text-2xl font-bold">Stole ${formatCurrency(amount)}!</div>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(animation);
+        
+        requestAnimationFrame(() => {
+            const content = animation.firstElementChild;
+            content.style.transform = 'scale(1)';
+            content.style.opacity = '1';
+        });
+
+        setTimeout(() => {
+            animation.firstElementChild.style.transform = 'scale(0)';
+            animation.firstElementChild.style.opacity = '0';
+            setTimeout(() => animation.remove(), 500);
+        }, 2000);
     }
 };
 
 
 const recentStealsDisplay = {
-    initialize() {
-        // Remove any existing container
+    async initialize() {
+        if (!auth.currentUser) return;
+        
         const existingContainer = document.getElementById('steals-container');
         if (existingContainer) {
             existingContainer.remove();
         }
-
-        // Create the feed container
         const container = document.createElement('div');
         container.id = 'steals-container';
         container.className = 'fixed left-6 top-24 w-80 bg-gray-900 rounded-xl shadow-2xl border border-purple-500 z-50';
@@ -4104,64 +4006,116 @@ const recentStealsDisplay = {
                         <span>🦹‍♂️</span>
                         <span>Recent Steals</span>
                     </h2>
-                    <button id="refresh-steals" class="text-gray-400 hover:text-white transition-colors bg-gray-700 p-2 rounded-lg">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button id="refresh-steals" class="text-gray-400 hover:text-white hover:bg-gray-700 p-1 rounded transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.001 0 01-15.357-2m15.357 2H15" />
                         </svg>
                     </button>
                 </div>
             </div>
-            <div id="steals-list" class="max-h-[400px] overflow-y-auto p-4 space-y-3 bg-gray-900"></div>
+            
+            <div class="p-4 border-b border-gray-800 bg-gray-700/50">
+                <h3 class="text-sm font-semibold text-yellow-400 mb-2">🏆 Dethrone the Top 3 Richest Users</h3>
+                <div id="top-users-list" class="space-y-2">Loading...</div>
+            </div>
+            
+            <div id="steals-list" class="max-h-[300px] overflow-y-auto p-4 space-y-3 bg-gray-900"></div>
         `;
         document.body.appendChild(container);
 
-        // Add refresh handler with proper binding
-        document.getElementById('refresh-steals')?.addEventListener('click', () => {
-            const refreshBtn = document.getElementById('refresh-steals');
-            refreshBtn.classList.add('animate-spin');
-            this.loadRecentSteals().then(() => {
-                setTimeout(() => refreshBtn.classList.remove('animate-spin'), 1000);
+        const refreshTopUsers = document.getElementById('refresh-steals');
+        if (refreshTopUsers) {
+            refreshTopUsers.addEventListener('click', () => {
+                this.loadTopUsers();
+                refreshTopUsers.classList.add('animate-spin');
+                setTimeout(() => refreshTopUsers.classList.remove('animate-spin'), 1000);
             });
-        });
+        }
 
-        // Add custom scrollbar styles
+        await Promise.all([
+            this.loadTopUsers(),
+            this.loadRecentSteals()
+        ]);
+
         const style = document.createElement('style');
         style.textContent = `
-            #steals-list::-webkit-scrollbar {
+            #steals-container::-webkit-scrollbar {
                 width: 6px;
             }
-            #steals-list::-webkit-scrollbar-track {
-                background: rgba(31, 41, 55, 0.5);
+            #steals-container::-webkit-scrollbar-track {
+                background: rgba(31, 41, 55, 0.3);
                 border-radius: 3px;
             }
-            #steals-list::-webkit-scrollbar-thumb {
+            #steals-container::-webkit-scrollbar-thumb {
                 background: rgba(147, 51, 234, 0.5);
                 border-radius: 3px;
             }
             @keyframes slide-in {
-                from {
-                    transform: translateX(-100%);
-                    opacity: 0;
-                }
-                to {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
+                from { transform: translateX(-100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
             }
             .theft-item {
                 animation: slide-in 0.3s ease-out forwards;
             }
         `;
         document.head.appendChild(style);
+    },
 
-        // Initial load and auto-refresh
-        this.loadRecentSteals();
-        // Set up auto-refresh interval
-        if (this.refreshInterval) {
-            clearInterval(this.refreshInterval);
+    async loadTopUsers() {
+        const topUsersContainer = document.getElementById('top-users-list');
+        if (!topUsersContainer) return;
+
+        try {
+            const snapshot = await db.collection('users').get();
+            
+            const usersWithNetworth = await Promise.all(snapshot.docs.map(async doc => {
+                const userData = doc.data();
+                const networth = calculateNetworth(userData);
+                return {
+                    id: doc.id,
+                    username: userData.username,
+                    balance: userData.funbucks || 0,
+                    networth,
+                    profilePicture: userData.profilePicture || DEFAULT_PROFILE_PIC
+                };
+            }));
+
+            const topUsers = usersWithNetworth
+                .filter(user => !user.banned)
+                .sort((a, b) => b.balance - a.balance)
+                .slice(0, 3);
+
+            topUsersContainer.innerHTML = topUsers.length > 0 ? topUsers.map((user, index) => `
+                <div class="flex items-center gap-3 bg-gray-800/50 p-2 rounded-lg hover:bg-gray-700/50 transition-colors">
+                    <span class="text-xl">
+                        ${['🥇', '🥈', '🥉'][index]}
+                    </span>
+                    <img src="${user.profilePicture}" 
+                         class="w-8 h-8 rounded-full object-cover border-2 border-yellow-400"
+                         onerror="this.src='${DEFAULT_PROFILE_PIC}'">
+                    <div class="flex-1">
+                        <div class="text-sm text-white">${user.username}</div>
+                        <div class="text-xs text-green-400">
+                            ${formatCurrency(user.balance)}
+                        </div>
+                    </div>
+                </div>
+            `).join('') : `
+                <div class="text-center text-gray-400 py-2">
+                    No users found
+                </div>
+            `;
+
+        } catch (error) {
+            console.error('Error loading top users:', error);
+            const topUsersContainer = document.getElementById('top-users-list');
+            if (topUsersContainer) {
+                topUsersContainer.innerHTML = `
+                    <div class="text-red-400 text-center py-2">Error loading top users</div>
+                `;
+            }
         }
-        this.refreshInterval = setInterval(() => this.loadRecentSteals(), 30000);
     },
 
     async loadRecentSteals() {
@@ -4189,8 +4143,7 @@ const recentStealsDisplay = {
                 const thiefData = thiefDoc.data();
                 
                 return `
-                    <div class="theft-item bg-gray-800 p-3 rounded-lg border border-purple-500/30 
-                                hover:border-purple-500 transition-all">
+                    <div class="theft-item bg-gray-800 p-3 rounded border border-purple-500/30 hover:border-purple-500 transition-all">
                         <div class="flex items-center gap-3">
                             <img src="${thiefData?.profilePicture || DEFAULT_PROFILE_PIC}" 
                                  class="w-8 h-8 rounded-full border border-purple-500/50"
@@ -4257,18 +4210,18 @@ const recentStealsDisplay = {
             </div>
         `;
 
-        // Add to the top of the list with animation
         if (stealsList.firstChild) {
             stealsList.insertBefore(newStealElement, stealsList.firstChild);
         } else {
             stealsList.appendChild(newStealElement);
         }
 
-        // Remove oldest if more than 20
         const items = stealsList.querySelectorAll('.theft-item');
         if (items.length > 20) {
             items[items.length - 1].remove();
         }
+
+        this.loadTopUsers();
     }
 };
 
@@ -4279,7 +4232,6 @@ const chatSystem = {
     ],
 
     initialize() {
-        // Replace lottery tab content
         const lotteryTab = document.getElementById('lottery-tab');
         if (lotteryTab) {
             lotteryTab.innerHTML = `
@@ -4313,8 +4265,6 @@ const chatSystem = {
                     </div>
                 </div>
             `;
-
-            // Add custom scrollbar styles
             const style = document.createElement('style');
             style.textContent = `
                 #chat-messages::-webkit-scrollbar {
@@ -4395,7 +4345,6 @@ const chatSystem = {
         if (!messagesDiv) return;
 
         try {
-            // Set up real-time listener
             db.collection('chat')
                 .orderBy('timestamp', 'desc')
                 .limit(100)
@@ -4409,7 +4358,6 @@ const chatSystem = {
                         }
                     });
 
-                    // Clear loading message if present
                     const loadingMsg = messagesDiv.querySelector('.text-gray-400');
                     if (loadingMsg) {
                         loadingMsg.remove();
@@ -4460,10 +4408,8 @@ const chatSystem = {
         const countElement = document.getElementById('chat-online-count');
         if (!countElement) return;
 
-        // Set up presence system
         const presenceRef = db.collection('presence');
         
-        // Update user's online status
         if (auth.currentUser) {
             const userPresenceRef = presenceRef.doc(auth.currentUser.uid);
             userPresenceRef.set({
@@ -4471,11 +4417,9 @@ const chatSystem = {
                 lastSeen: firebase.firestore.FieldValue.serverTimestamp()
             });
 
-            // Remove presence when user disconnects
             userPresenceRef.onDisconnect().delete();
         }
 
-        // Listen for online users count
         presenceRef.onSnapshot((snapshot) => {
             const onlineCount = snapshot.size;
             countElement.innerHTML = `
@@ -4486,81 +4430,31 @@ const chatSystem = {
     }
 };
 
-// Initialize on tab click
 document.querySelector('[data-tab="lottery"]')?.addEventListener('click', () => {
     setTimeout(() => chatSystem.initialize(), 0);
 });
 
-// Initialize if already on chat tab
 if (document.querySelector('[data-tab="lottery"]')?.classList.contains('selected')) {
     chatSystem.initialize();
 }
 
+auth.onAuthStateChanged(async (user) => {
+    if (user) {
+        const presenceRef = db.collection('presence').doc(user.uid);
+        await presenceRef.set({
+            online: true,
+            lastSeen: firebase.firestore.FieldValue.serverTimestamp()
+        });
+    }
+});
 
 const originalAttemptTheft = theftSystem.attemptTheft;
 theftSystem.attemptTheft = async function() {
-    const victimId = document.getElementById('victim-search').dataset.selectedUser;
-    const amount = parseInt(document.getElementById('steal-amount').value);
-
-    if (!victimId) {
-        showErrorMessage('Please select a user to steal from');
-        return;
+    const result = await originalAttemptTheft.call(this);
+    if (result && result.success) {
+        recentStealsDisplay.addNewSteal(result);
     }
-
-    if (!amount || amount < 1 || amount > 500) {
-        showErrorMessage('Please enter an amount between 1 and 500');
-        return;
-    }
-
-    try {
-        // Simple update approach without transaction
-        const victimRef = db.collection('users').doc(victimId);
-        const thiefRef = db.collection('users').doc(auth.currentUser.uid);
-
-        const [victimDoc, thiefDoc] = await Promise.all([
-            victimRef.get(),
-            thiefRef.get()
-        ]);
-
-        const victimData = victimDoc.data();
-        const thiefData = thiefDoc.data();
-
-        // Check victim's balance
-        if (victimData.funbucks < amount) {
-            throw new Error('Target does not have enough FunBucks');
-        }
-
-        // Update balances
-        await Promise.all([
-            victimRef.update({
-                funbucks: firebase.firestore.FieldValue.increment(-amount)
-            }),
-            thiefRef.update({
-                funbucks: firebase.firestore.FieldValue.increment(amount),
-                lastTheft: firebase.firestore.FieldValue.serverTimestamp()
-            })
-        ]);
-
-        // Create theft history record
-        await db.collection('theftHistory').add({
-            userId: auth.currentUser.uid,
-            username: thiefData.username,
-            amount: amount,
-            victimId: victimId,
-            victimUsername: victimData.username,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        });
-
-        // Update local portfolio
-        portfolio.balance += amount;
-        updatePortfolioDisplays();
-        showSuccessMessage(`Successfully stole ${formatCurrency(amount)}!`);
-        document.querySelector('.fixed')?.remove();
-
-    } catch (error) {
-        console.error('Error executing theft:', error);
-        showErrorMessage(error.message || 'Failed to execute theft');
-    }
+    return result;
 };
 
 const DICE = {
@@ -5138,18 +5032,15 @@ const tipSystem = {
                 const senderData = senderDoc.data();
                 const recipientData = recipientDoc.data();
 
-                // Validate sender's balance
                 if (senderData.funbucks < amount) {
                     throw new Error('Insufficient funds');
                 }
 
-                // Check daily tip limit
                 const dailyTipsToday = (senderData.dailyTips?.[today] || 0) + amount;
                 if (dailyTipsToday > 200) {
                     throw new Error(`Daily tip limit of 200 FunBucks exceeded`);
                 }
 
-                // Perform the tip transaction
                 transaction.update(senderRef, {
                     funbucks: firebase.firestore.FieldValue.increment(-amount),
                     [`dailyTips.${today}`]: dailyTipsToday
@@ -5159,7 +5050,6 @@ const tipSystem = {
                     funbucks: firebase.firestore.FieldValue.increment(amount)
                 });
 
-                // Record the tip
                 transaction.set(db.collection('tips').doc(), {
                     senderId: auth.currentUser.uid,
                     senderName: senderData.username,
@@ -5170,7 +5060,6 @@ const tipSystem = {
                 });
             });
 
-            // Refresh activities
             await this.loadRecentTips();
             await updateRecentActivity();
             
@@ -5202,7 +5091,7 @@ const tipSystem = {
                                !userData.banned && 
                                userData.username.toLowerCase().includes(searchTerm);
                     })
-                    .slice(0, 8); // Show more results
+                    .slice(0, 8);
 
                 if (matches.length === 0) {
                     resultsDiv.innerHTML = `
@@ -5245,7 +5134,6 @@ const tipSystem = {
             }
         });
 
-        // Hide results when clicking outside
         document.addEventListener('click', (e) => {
             if (!searchInput.contains(e.target) && !resultsDiv.contains(e.target)) {
                 resultsDiv.classList.add('hidden');
@@ -5557,13 +5445,11 @@ const rainSystem = {
         const amount = parseFloat(document.getElementById('rain-amount').value);
         
         try {
-            // Validate amount
             if (!amount || amount < 1) {
                 this.showNotification('error', 'Please enter a valid amount');
                 return;
             }
 
-            // Check user's balance
             const userRef = db.collection('users').doc(auth.currentUser.uid);
             const userDoc = await userRef.get();
             const userData = userDoc.data();
@@ -5573,7 +5459,6 @@ const rainSystem = {
                 return;
             }
 
-            // Check daily rain limit
             const today = new Date().toISOString().split('T')[0];
             const dailyRainToday = (userData.dailyRain?.[today] || 0) + amount;
             
@@ -5582,12 +5467,10 @@ const rainSystem = {
                 return;
             }
 
-            // Get ALL non-banned users
             const usersSnapshot = await db.collection('users')
                 .where('banned', '==', false)
                 .get();
 
-            // Remove sender from recipients
             const recipients = usersSnapshot.docs.filter(doc => doc.id !== auth.currentUser.uid);
 
             if (recipients.length === 0) {
@@ -5595,31 +5478,26 @@ const rainSystem = {
                 return;
             }
 
-            // Calculate exact amount per user (rounded to 2 decimal places)
             const amountPerUser = Math.floor((amount / recipients.length) * 100) / 100;
 
             await db.runTransaction(async (transaction) => {
-                // Update sender's balance and daily rain amount
                 transaction.update(userRef, {
                     funbucks: firebase.firestore.FieldValue.increment(-amount),
                     [`dailyRain.${today}`]: dailyRainToday,
                     totalRainAmount: firebase.firestore.FieldValue.increment(amount)
                 });
 
-                // If they've rained over 1000 total, give them the rainmaker title
                 if ((userData.totalRainAmount || 0) + amount >= 1000) {
                     transaction.update(userRef, {
                         titles: firebase.firestore.FieldValue.arrayUnion('rainmaker')
                     });
                 }
 
-                // Distribute to ALL recipients
                 recipients.forEach(recipientDoc => {
                     transaction.update(recipientDoc.ref, {
                         funbucks: firebase.firestore.FieldValue.increment(amountPerUser)
                     });
 
-                    // Create notification for each recipient
                     transaction.set(db.collection('notifications').doc(), {
                         userId: recipientDoc.id,
                         type: 'rain_received',
@@ -5629,7 +5507,6 @@ const rainSystem = {
                     });
                 });
 
-                // Log the rain event
                 transaction.set(db.collection('rain').doc(), {
                     senderId: auth.currentUser.uid,
                     senderName: userData.username,
@@ -5640,13 +5517,11 @@ const rainSystem = {
                 });
             });
 
-            // Update local portfolio
             portfolio.balance -= amount;
             updatePortfolioDisplays();
 
             this.showNotification('success', `Made it rain ${formatCurrency(amount)} to ${recipients.length} users!`);
             
-            // If they just got the rainmaker title, show an achievement notification
             if ((userData.totalRainAmount || 0) + amount >= 1000 && !userData.titles?.includes('rainmaker')) {
                 setTimeout(() => {
                     this.showNotification('achievement', 'New Title Unlocked: Rainmaker! 🌧️');
@@ -5745,232 +5620,7 @@ function showRainModal() {
     document.body.appendChild(modal);
 }
 function addSocialButtons() {
-    const buttonsContainer = document.createElement('div');
-    buttonsContainer.className = 'fixed bottom-4 left-4 flex gap-2 z-[50]';
-
-    // Steal button
-    const stealButton = document.createElement('button');
-    stealButton.className = 'game-requirements bg-red-600/90 hover:bg-red-700 transition-colors shadow-lg flex items-center gap-2';
-    stealButton.innerHTML = `
-        <span>🦹‍♂️</span>
-        <span>Steal FunBucks</span>
-    `;
-    stealButton.onclick = () => showStealModal();
-    buttonsContainer.appendChild(stealButton);
-
-    document.body.appendChild(buttonsContainer);
-}
-
-function showStealModal() {
-    if (!auth.currentUser) {
-        showErrorMessage('Please sign in to steal FunBucks');
-        return;
-    }
-
-    const modal = document.createElement('div');
-    modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[60]';
     
-    modal.innerHTML = `
-        <div class="bg-gray-900 rounded-xl p-6 max-w-md w-full">
-            <div class="flex justify-between items-center mb-6">
-                <div>
-                    <h3 class="text-xl font-bold text-red-400">Steal FunBucks</h3>
-                    <div id="steal-cooldown" class="text-sm text-gray-400">Loading steal limit...</div>
-                </div>
-                <button onclick="this.closest('.fixed').remove()" 
-                        class="text-gray-400 hover:text-white">×</button>
-            </div>
-
-            <!-- Top 3 Richest Users -->
-            <div class="mb-6">
-                <h4 class="text-sm font-medium text-gray-400 mb-2">Quick Steal Options</h4>
-                <div id="top-targets" class="space-y-2">
-                    Loading richest users...
-                </div>
-            </div>
-            
-            <div class="space-y-4">
-                <div class="relative">
-                    <label class="block text-gray-400 mb-2">Or Search User</label>
-                    <input type="text" 
-                           id="victim-search"
-                           placeholder="Type username..."
-                           class="w-full p-3 rounded-lg bg-gray-800/50 border border-gray-700">
-                    <div id="victim-search-results" 
-                         class="absolute left-0 right-0 mt-1 bg-gray-800 rounded-lg border border-gray-700 max-h-48 overflow-y-auto hidden z-50">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-gray-400 mb-2">Amount (Max 500)</label>
-                    <input type="number" 
-                           id="steal-amount"
-                           min="1"
-                           max="500"
-                           value="100"
-                           class="w-full p-3 rounded-lg bg-gray-800/50 border border-gray-700">
-                </div>
-
-                <button onclick="theftSystem.attemptTheft()"
-                        class="w-full p-4 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors">
-                    Attempt Theft
-                </button>
-            </div>
-        </div>
-    `;
-
-    document.body.appendChild(modal);
-    initializeVictimSearch();
-    loadTopTargets();
-    updateStealCooldown();
-    theftSystem.updateCooldownTimer();
-}
-async function loadTopTargets() {
-    const container = document.getElementById('top-targets');
-    if (!container) return;
-
-    try {
-        const snapshot = await db.collection('users')
-            .orderBy('funbucks', 'desc')
-            .limit(3)
-            .get();
-
-        container.innerHTML = snapshot.docs
-            .filter(doc => doc.id !== auth.currentUser.uid)
-            .map(doc => {
-                const userData = doc.data();
-                return `
-                    <div class="bg-gray-800/50 p-3 rounded-lg border border-gray-700 hover:border-red-500 transition-colors">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-2">
-                                <img src="${userData.profilePicture || 'https://polymarket.com/_next/image?url=https%3A%2F%2Fpolymarket-upload.s3.us-east-2.amazonaws.com%2F31669764_829bfb7d-c27d-4c9a-8b78-dd9135282938_1730892972459.png&w=256&q=100'}" 
-                                     class="w-8 h-8 rounded-full">
-                                <div>
-                                    <div class="text-white">${userData.username}</div>
-                                    <div class="text-sm text-green-400">${formatCurrency(userData.funbucks)}</div>
-                                </div>
-                            </div>
-                            <button onclick="theftSystem.quickSteal('${doc.id}', ${Math.min(500, userData.funbucks)})"
-                                    class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm">
-                                Quick Steal
-                            </button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-    } catch (error) {
-        console.error('Error loading top targets:', error);
-        container.innerHTML = '<div class="text-red-400 text-center">Error loading targets</div>';
-    }
-}
-
-function initializeVictimSearch() {
-    const searchInput = document.getElementById('victim-search');
-    const resultsDiv = document.getElementById('victim-search-results');
-    if (!searchInput || !resultsDiv) return;
-
-    searchInput.addEventListener('input', async () => {
-        const searchTerm = searchInput.value.toLowerCase().trim();
-        if (searchTerm.length < 2) {
-            resultsDiv.classList.add('hidden');
-            return;
-        }
-
-        try {
-            const snapshot = await db.collection('users').get();
-            const matches = snapshot.docs.filter(doc => {
-                const userData = doc.data();
-                return doc.id !== auth.currentUser.uid &&
-                       userData.username.toLowerCase().includes(searchTerm);
-            }).slice(0, 5);
-
-            if (matches.length === 0) {
-                resultsDiv.innerHTML = `
-                    <div class="p-3 text-gray-400 text-center">No users found</div>
-                `;
-            } else {
-                resultsDiv.innerHTML = matches.map(doc => {
-                    const userData = doc.data();
-                    return `
-                        <div class="p-3 hover:bg-gray-700 cursor-pointer flex items-center gap-3 user-result"
-                             data-user-id="${doc.id}"
-                             data-username="${userData.username}">
-                            <img src="${userData.profilePicture || 'https://polymarket.com/_next/image?url=https%3A%2F%2Fpolymarket-upload.s3.us-east-2.amazonaws.com%2F31669764_829bfb7d-c27d-4c9a-8b78-dd9135282938_1730892972459.png&w=256&q=100'}" 
-                                 class="w-8 h-8 rounded-full">
-                            <div>
-                                <div class="text-white">${userData.username}</div>
-                                <div class="text-sm text-green-400">${formatCurrency(userData.funbucks)}</div>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-            }
-            resultsDiv.classList.remove('hidden');
-
-            document.querySelectorAll('.user-result').forEach(el => {
-                el.addEventListener('click', () => {
-                    searchInput.value = el.dataset.username;
-                    searchInput.dataset.selectedUser = el.dataset.userId;
-                    resultsDiv.classList.add('hidden');
-                });
-            });
-
-        } catch (error) {
-            console.error('Error searching users:', error);
-            resultsDiv.innerHTML = `
-                <div class="p-3 text-red-400 text-center">Error searching users</div>
-            `;
-        }
-    });
-
-    // Hide results when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!searchInput.contains(e.target) && !resultsDiv.contains(e.target)) {
-            resultsDiv.classList.add('hidden');
-        }
-    });
-}
-function updateStealCooldown() {
-    const cooldownDiv = document.getElementById('steal-cooldown');
-    if (!cooldownDiv) return;
-
-    // Get user's last theft time
-    db.collection('users').doc(auth.currentUser.uid).get().then(doc => {
-        const userData = doc.data();
-        const lastTheft = userData.lastTheft?.toDate();
-        
-        if (!lastTheft) {
-            cooldownDiv.textContent = 'You can steal up to 500 FunBucks';
-            return;
-        }
-
-        const cooldownEnd = lastTheft.getTime() + (30 * 60 * 1000);
-        const timeLeft = cooldownEnd - Date.now();
-
-        if (timeLeft <= 0) {
-            cooldownDiv.textContent = 'You can steal up to 500 FunBucks';
-        } else {
-            const minutes = Math.ceil(timeLeft / 60000);
-            cooldownDiv.textContent = `Cooldown: ${minutes} minutes until next steal`;
-        }
-    }).catch(error => {
-        console.error('Error checking cooldown:', error);
-        cooldownDiv.textContent = 'Error checking steal cooldown';
-    });
-}
-theftSystem.quickSteal = async function(victimId, amount) {
-    this.attemptTheft(victimId, Math.min(500, amount));
-};
-function selectVictim(userId, username) {
-    const searchInput = document.getElementById('victim-search');
-    searchInput.value = username;
-    searchInput.dataset.selectedUser = userId;
-    
-    const resultsContainer = searchInput.parentNode.querySelector('div');
-    if (resultsContainer) {
-        resultsContainer.classList.add('hidden');
-    }
 }
 
 document.addEventListener('DOMContentLoaded', addRainButton);
@@ -6259,28 +5909,25 @@ async function initializeUser(result, referralCode) {
 
     return userDoc.data();
 }
-
 auth.onAuthStateChanged(async (user) => {
     try {
         if (user) {
+            recentStealsDisplay.initialize();
             theftSystem.initialize();
-            
             const urlParams = new URLSearchParams(window.location.search);
             const referralCode = urlParams.get('ref');
             
             if (referralCode) {
                 localStorage.setItem('pendingReferral', referralCode);
             }
-
             const userDoc = await db.collection('users').doc(user.uid).get();
             const userData = userDoc.data();
-
-            if (userData?.banned) {
+            console.log('Fetched user data:', userDoc.data());
+            if (userData.banned) {
                 await auth.signOut();
                 showErrorMessage('Your account has been banned');
                 return;
             }
-
             if (!userDoc.exists) {
                 const initialData = {
                     username: user.displayName,
@@ -6292,12 +5939,12 @@ auth.onAuthStateChanged(async (user) => {
                         value: 500
                     }],
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    isAdmin: false,
-                    referralCode: generateReferralCode(),
-                    referredBy: null
+                    isAdmin: false
                 };
                 
+                console.log('Creating new user with data:', initialData);
                 await db.collection('users').doc(user.uid).set(initialData);
+                
                 currentUser = { uid: user.uid, ...initialData };
                 portfolio = {
                     balance: 500,
@@ -6306,6 +5953,8 @@ auth.onAuthStateChanged(async (user) => {
                 };
             } else {
                 const userData = userDoc.data();
+                console.log('Using existing user data:', userData);
+                
                 currentUser = { 
                     uid: user.uid, 
                     ...userData,
@@ -6319,12 +5968,20 @@ auth.onAuthStateChanged(async (user) => {
                     bets: userData.bets || [],
                     history: userData.history || []
                 };
+
+                if (userData.username !== user.displayName) {
+                    await db.collection('users').doc(user.uid).update({
+                        username: user.displayName
+                    });
+                }
             }
+            
+            console.log('Final state:', { currentUser, portfolio });
             
             document.getElementById('auth-container').classList.add('hidden');
             document.getElementById('app-container').classList.remove('hidden');
             document.getElementById('username-display').textContent = currentUser.username;
-
+            
             const adminButton = document.getElementById('admin-panel-btn');
             if (adminButton) {
                 if (currentUser.isAdmin === true) {
@@ -6334,13 +5991,14 @@ auth.onAuthStateChanged(async (user) => {
                     adminButton.classList.add('hidden');
                 }
             }
-
+            
             await getMarkets();
             await updateMarkets();
             await updatePortfolioDisplays();
             await updateRecentActivity();
-
         } else {
+            console.log('User signed out');
+            
             currentUser = null;
             markets = [];
             portfolio = {
@@ -6356,6 +6014,8 @@ auth.onAuthStateChanged(async (user) => {
         console.error('Auth state change error:', error);
         showErrorMessage('Error loading user data');
     }
+    
+    console.log('==== AUTH STATE CHANGE END ====');
 });
 
 function initPlinko() {
@@ -7058,7 +6718,6 @@ async function updateMarketPrice(marketId) {
         
         document.body.appendChild(modal);
 
-        // Add event listener after the modal is in the DOM
         const slider = document.getElementById('new-price-slider');
         const display = document.getElementById('new-price-display');
         
@@ -9467,7 +9126,7 @@ async function filterAdminMarkets(search = '', category = 'all') {
 function showPriceUpdateModal(marketId) {
     const modal = document.createElement('div');
     modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center';
-    modal.style.zIndex = '100001'; // Ensure it's above admin panel
+    modal.style.zIndex = '100001';
     
     modal.innerHTML = `
         <div class="bg-gray-900 rounded-xl p-6 max-w-md w-full">
@@ -9949,7 +9608,7 @@ async function resolveMarket(marketId) {
 
         const modal = document.createElement('div');
         modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center';
-        modal.style.zIndex = '100001'; // Ensure it's above admin panel
+        modal.style.zIndex = '100001';
 
         modal.innerHTML = `
             <div class="bg-gray-900 rounded-xl p-6 max-w-md w-full">
@@ -10024,7 +9683,7 @@ async function editMarket(marketId) {
         
         const modal = document.createElement('div');
         modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center';
-        modal.style.zIndex = '100001'; // Ensure it's above admin panel
+        modal.style.zIndex = '100001';
         
         modal.innerHTML = `
             <div class="bg-gray-900 rounded-xl p-6 max-w-md w-full">
@@ -12085,7 +11744,6 @@ async function sellBet(betIndex) {
             const userDoc = await transaction.get(userRef);
             const userData = userDoc.data();
             
-            // Verify bet still exists
             const betExists = userData.bets.some(b => 
                 b.marketId === bet.marketId && 
                 b.shares === bet.shares && 
@@ -12096,7 +11754,6 @@ async function sellBet(betIndex) {
                 throw new Error('Bet has already been sold');
             }
 
-            // Remove the specific bet and update user data
             const updatedBets = userData.bets.filter((_, idx) => idx !== betIndex);
             
             transaction.update(userRef, {
@@ -12105,7 +11762,6 @@ async function sellBet(betIndex) {
             });
         });
 
-        // Update local portfolio
         portfolio.balance += sellValue;
         portfolio.bets.splice(betIndex, 1);
         
@@ -12148,7 +11804,6 @@ async function updateRecentActivity() {
             return;
         }
 
-        // Process market trades (buys/sells)
         const buys = [];
         const sells = [];
 
@@ -12194,10 +11849,8 @@ async function updateRecentActivity() {
             }
         });
 
-        // Process tips and rain
         const socialActivities = [];
 
-        // Process Tips
         tipsSnapshot.docs.forEach(doc => {
             const tip = doc.data();
             socialActivities.push(`
@@ -12216,7 +11869,6 @@ async function updateRecentActivity() {
             `);
         });
 
-        // Process Rain
         rainSnapshot.docs.forEach(doc => {
             const rain = doc.data();
             socialActivities.push(`
@@ -12237,7 +11889,6 @@ async function updateRecentActivity() {
             `);
         });
 
-        // Update the DOM with animations
         buysList.innerHTML = buys.length ? buys.join('') : 
             '<div class="text-gray-400 text-center p-4">No recent buys</div>';
         
@@ -12247,7 +11898,6 @@ async function updateRecentActivity() {
         tipsList.innerHTML = socialActivities.length ? socialActivities.join('') : 
             '<div class="text-gray-400 text-center p-4">No recent social activity</div>';
 
-        // Add animations to new elements
         document.querySelectorAll('.activity-item').forEach(item => {
             item.classList.add('animate__animated', 'animate__fadeIn');
         });
