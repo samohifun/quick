@@ -12348,6 +12348,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 document.addEventListener('DOMContentLoaded', () => {
+    
     recentStealsDisplay.initialize();
     theftSystem.initialize();
     createClosureAnnouncement();
@@ -12377,6 +12378,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const minimizeBtn = document.getElementById('activity-minimize');
     const refreshBtn = document.getElementById('activity-refresh');
     let isMinimized = false;
+
+    minimizeBtn.addEventListener('click', () => {
+        isMinimized = !isMinimized;
+        content.style.maxHeight = isMinimized ? '0' : '600px';
+        minimizeBtn.querySelector('svg').style.transform = isMinimized ? 'rotate(180deg)' : '';
+    });
+
+    refreshBtn.addEventListener('click', async () => {
+        refreshBtn.classList.add('animate-spin');
+        await updateRecentActivity();
+        setTimeout(() => refreshBtn.classList.remove('animate-spin'), 1000);
+    });
+
+    setInterval(updateRecentActivity, 30000);
+    if (auth.currentUser) {
+        updateRecentActivity();
+    }
     const gameModals = [
         'mines-container',
         'plinko-container',
