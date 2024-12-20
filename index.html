@@ -466,18 +466,18 @@
             margin-left: 10px;
         }
         .market-card {
-            background: rgba(17, 24, 39, 0.8);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            box-shadow: 0 8px 32px rgba(2, 8, 20, 0.1);
-            transition: all 0.3s ease;
-        }
+        background: linear-gradient(to bottom right, rgba(30, 41, 59, 0.9), rgba(17, 24, 39, 0.9));
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(59, 130, 246, 0.2);
+        box-shadow: 0 8px 32px rgba(2, 8, 20, 0.1);
+        transition: all 0.3s ease;
+    }
         
-        .market-card:hover {
-            transform: translateY(-2px);
-            border-color: rgba(59, 130, 246, 0.4);
-            box-shadow: 0 12px 40px rgba(2, 8, 20, 0.15);
-        }
+    .market-card:hover {
+        transform: translateY(-2px);
+        border-color: rgba(59, 130, 246, 0.4);
+        box-shadow: 0 12px 40px rgba(59, 130, 246, 0.2);
+    }
         .canvas-container { 
             width: 100%; 
             height: 300px;
@@ -495,19 +495,19 @@
             height: 100%;
         }
 
-        .tab-button svg {
-            width: 1.75rem;
-            height: 1.75rem;
-        }
+        .tab-button:hover {
+        background: linear-gradient(135deg, rgba(37, 99, 235, 0.8), rgba(37, 99, 235, 0.6));
+        border-color: rgba(59, 130, 246, 0.4);
+    }
         .tab-button:hover {
             background: rgba(37, 99, 235, 0.8);
             border-color: rgba(59, 130, 246, 0.4);
         }
         .tab-button.selected {
-            background: rgba(37, 99, 235, 0.9);
-            border-color: rgba(59, 130, 246, 0.6);
-            box-shadow: 0 0 20px rgba(37, 99, 235, 0.3);
-        }
+        background: linear-gradient(135deg, rgba(37, 99, 235, 0.9), rgba(37, 99, 235, 0.7));
+        border-color: rgba(59, 130, 246, 0.6);
+        box-shadow: 0 0 20px rgba(37, 99, 235, 0.3);
+    }
         .modal-content {
             background: linear-gradient(145deg, #2d3748, #1a202c);
             border: 1px solid rgba(66, 153, 225, 0.3);
@@ -717,26 +717,7 @@
         gap: 8px;
         backdrop-filter: blur(8px);
     }
-    #activity-content {
-        flex: 1;
-        overflow-y: auto;
-        scrollbar-width: thin;
-        scrollbar-color: rgba(66, 153, 225, 0.5) rgba(17, 24, 39, 0.3);
-    }
-
-    #activity-content::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    #activity-content::-webkit-scrollbar-track {
-        background: rgba(17, 24, 39, 0.3);
-        border-radius: 3px;
-    }
-
-    #activity-content::-webkit-scrollbar-thumb {
-        background: rgba(66, 153, 225, 0.5);
-        border-radius: 3px;
-    }
+   
     @media screen and (max-width: 768px) {
     #activity-panel {
         width: calc(100% - 20px);
@@ -1097,10 +1078,10 @@
                 </button>
                 <button class="tab-button" data-tab="live-games">
                     <div class="relative">
-                        <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                  d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/>
                         </svg>
+                        
                         <span class="absolute -top-1 -right-1 flex h-3 w-3">
                             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
                             <span class="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
@@ -1109,10 +1090,11 @@
                     <span class="ml-2">Live Games</span>
                 </button>
                 <button class="tab-button" data-tab="lottery">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/>
+                    <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                              d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/>
                     </svg>
-                    <span>Lottery</span>
+                    <span>Chat Room</span>
                 </button>
                 <!-- <button class="tab-button p-4 rounded-full flex items-center gap-3" data-tab="coins">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1127,9 +1109,7 @@
                     <div class="mb-8 text-center">
                         <h2 class="text-3xl font-bold text-blue-300 mb-4">Live Games</h2>
                         <p class="text-lg text-gray-400 max-w-2xl mx-auto">
-                            This category is meant to teach users on the realities of online casinos.
-                            Please never go on any of these casinos as it is a sure way to lose your money.
-                            This page is meant to mimic those casinos to show why you SHOULD NOT USE THEM!!!
+                            LIMITS REMOVED! NEVER BET ON ANY ONLINE CASINOS! ODDS HAVE BEEN INCREASED IN PLAYER'S FAVOR FOR FINAL DAY!
                         </p>
                     </div>
                     
@@ -1190,7 +1170,7 @@
                             </p>
                             <div class="text-sm text-blue-300">Max Win: 98x</div>
                         </div>
-                        <!--<div class="bg-gray-800/80 backdrop-blur p-6 rounded-xl border border-blue-900/30 hover:border-blue-500 transition-all cursor-pointer shadow-lg hover:transform hover:scale-105" onclick="showLimbo()">
+                        <div class="bg-gray-800/80 backdrop-blur p-6 rounded-xl border border-blue-900/30 hover:border-blue-500 transition-all cursor-pointer shadow-lg hover:transform hover:scale-105" onclick="showLimbo()">
                             <div class="flex items-center gap-4 mb-4">
                                 <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-700 rounded-xl flex items-center justify-center shadow-lg">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1206,7 +1186,7 @@
                                 Set your target multiplier and test your luck! Can you predict the perfect cash out point?
                             </p>
                             <div class="text-sm text-blue-300">Max Win: 100x</div>
-                        </div>-->
+                        </div>
                         
                         <div id="limbo-container" class="fixed inset-0 bg-black/90 flex items-center justify-center hidden z-50">
                             <div class="bg-gray-900 rounded-xl p-4 w-[1200px] h-[800px]">
@@ -1727,80 +1707,7 @@
                 </div>
             </div>
             <div id="lottery-tab" class="tab-content hidden">
-                <div class="market-card p-6 rounded-lg">
-                    <h2 class="text-2xl font-bold text-blue-300 mb-6">Weekly Lottery (ALL BETS ARE FINAL!!!) (OPENING WEDNESDAY)</h2>
-                    
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                        <div class="bg-gray-800 p-4 rounded-lg">
-                            <div class="text-gray-400">Current Pot</div>
-                            <div class="text-2xl font-bold text-white" id="lottery-pot">$0.00</div>
-                        </div>
-                        
-                        <div class="bg-gray-800 p-4 rounded-lg">
-                            <div class="text-gray-400">Your Tickets</div>
-                            <div class="text-2xl font-bold text-white" id="lottery-tickets">0</div>
-                            <div class="text-sm text-gray-400" id="lottery-chance">0% chance to win</div>
-                        </div>
-                        
-                        <div class="bg-gray-800 p-4 rounded-lg">
-                            <div class="text-gray-400">Next Drawing</div>
-                            <div class="text-2xl font-bold text-white" id="lottery-countdown">Loading...</div>
-                        </div>
-                    </div>
-                    
-                    
-                    <div class="bg-gray-800 p-6 rounded-lg mb-8">
-                        <h3 class="text-lg font-bold text-white mb-4">Buy Tickets</h3>
-                        <div class="flex gap-4 mb-4">
-                            <input type="number" id="ticket-amount" min="1" value="10"
-                                   class="flex-1 p-3 bg-gray-700 rounded border border-gray-600 text-white">
-                            <button id="buy-tickets" 
-                                    class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
-                                Buy Tickets
-                            </button>
-                        </div>
-                        <div class="text-sm text-gray-400">
-                            Each FunBuck = 1 ticket. More tickets = higher chance to win!
-                        </div>
-                    </div>
-                    
-                    
-                    <div class="bg-gray-800 p-6 rounded-lg mb-8" id="last-winner-container">
-                        <h3 class="text-lg font-bold text-white mb-4">Last Week's Winner</h3>
-                        <div id="last-winner">
-                            No previous winner
-                        </div>
-                    </div>
-                    
-                    
-                    <div class="bg-gray-800 p-6 rounded-lg">
-                        <h3 class="text-lg font-bold text-white mb-4">Recent Entries</h3>
-                        <div id="recent-entries" class="space-y-2">
-                            
-                        </div>
-                    </div>
-                    <div class="bg-gray-800 p-6 rounded-lg mt-8">
-                        <h3 class="text-lg font-bold text-white mb-4">Discussion</h3>
-                        
-                        
-                        <div class="mb-6">
-                            <textarea id="lottery-comment-input" 
-                                     class="w-full p-3 bg-gray-700 rounded border border-gray-600 text-white mb-2"
-                                     placeholder="Share your thoughts..."
-                                     rows="3"></textarea>
-                            <button id="post-lottery-comment" 
-                                    class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
-                                Post Comment
-                            </button>
-                        </div>
-                        
-                        
-                        <div id="lottery-comments" class="space-y-4">
-                            
-                        </div>
-                    </div>
-                </div>
+                
             </div>
             <div id="home-tab" class="tab-content">
                 <div class="flex gap-8">
@@ -1932,24 +1839,8 @@ function validateBetInput(input) {
     }
 }
 function validateBet(amount) {
-    const networth = calculateNetworth();
-    if (networth < 200) {
-        showErrorMessage('Minimum networth of 200 FunBucks required to play');
-        return false;
-    }
-
-    amount = Math.abs(parseFloat(amount));
-    if (isNaN(amount) || amount <= 0) {
-        showErrorMessage('Please enter a valid bet amount');
-        return false;
-    }
-
-    if (amount > 500) {
-        showErrorMessage('Maximum bet is 500 FunBucks');
-        return false;
-    }
-
-    return true;
+    const betAmount = Number(amount);
+    return !isNaN(betAmount) && betAmount > 0 && isFinite(betAmount);
 }
 const DEFAULT_PROFILE_PIC = "https://polymarket.com/_next/image?url=https%3A%2F%2Fpolymarket-upload.s3.us-east-2.amazonaws.com%2F31669764_829bfb7d-c27d-4c9a-8b78-dd9135282938_1730892972459.png&w=256&q=100";
 const app = firebase.initializeApp(firebaseConfig);
@@ -2281,19 +2172,19 @@ const PLINKO = {
     difficulties: {
         low: {
             name: "Low Risk",
-            multipliers: [5.0, 2.3, 1.0, 0.75, 0.5, 0.75, 1.0, 2.3, 5.0],
+            multipliers: [5.0, 2.3, 1.0, 0.75, 0.5, 0.75, 1.0, 2.3, 7.5],
             centerBias: 0.9,
             colors: ['#059669', '#10B981', '#34D399', '#6EE7B7', '#A7F3D0', '#6EE7B7', '#34D399', '#10B981', '#059669']
         },
         medium: {
             name: "Medium Risk",
-            multipliers: [7.5, 3.7, 0.6, 0.4, 0.2, 0.4, 0.6, 3.7, 7.5],
+            multipliers: [7.5, 3.7, 0.6, 0.4, 0.2, 0.4, 0.6, 3.7, 10],
             centerBias: 0.85,
             colors: ['#D97706', '#F59E0B', '#FBBF24', '#FCD34D', '#FDE68A', '#FCD34D', '#FBBF24', '#F59E0B', '#D97706']
         },
         high: {
             name: "High Risk",
-            multipliers: [10.0, 5.0, 0.3, 0.2, 0.1, 0.2, 0.3, 5.0, 10.0],
+            multipliers: [10.0, 5.0, 0.3, 0.2, 0.1, 0.2, 0.3, 5.0, 20.0],
             centerBias: 0.8,
             colors: ['#DC2626', '#EF4444', '#F87171', '#FCA5A5', '#FEE2E2', '#FCA5A5', '#F87171', '#EF4444', '#DC2626']
         }
@@ -3569,7 +3460,7 @@ const MINES = {
             multiplier *= (totalSafeCells - (i - 1)) / (25 - (i - 1));
         }
 
-        return Math.max(1, 0.99 / multiplier);
+        return Math.max(1, 0.9 / multiplier);
     },
 
     async endGame(won) {
@@ -3722,13 +3613,12 @@ const LIMBO = {
 
             // Determine win/loss and calculate winnings
             const didWin = resultMultiplier >= targetMultiplier;
-            // If they win, they get their bet amount * target multiplier
-            const winAmount = didWin ? betAmount * targetMultiplier : 0;
+            const winAmount = didWin ? betAmount * (targetMultiplier - 1) : 0;
 
             // Animate and display result
             this.animateMultiplier(resultMultiplier, targetMultiplier);
 
-            // Process win if they won
+            // Process win
             if (didWin) {
                 await this.processWin(winAmount);
             }
@@ -3744,10 +3634,10 @@ const LIMBO = {
 
     generateRandomMultiplier() {
         const r = Math.random();
-        if (r < 0.50) return 1 + (r * 1.5);      // 1.00x - 2.50x (50% chance)
-        if (r < 0.80) return 2.50 + (r * 3);     // 2.50x - 5.50x (30% chance)
-        if (r < 0.95) return 5.50 + (r * 5);     // 5.50x - 10.50x (15% chance)
-        return 10.50 + (r * 89.50);              // 10.50x - 100x (5% chance)
+        if (r < 0.75) return 1 + (r * 1.5);   
+        if (r < 0.90) return 2.50 + (r * 3);   
+        if (r < 0.95) return 5.50 + (r * 5);  
+        return 10.50 + (r * 89.50);        
     },
 
     animateMultiplier(resultMultiplier, targetMultiplier) {
@@ -3875,7 +3765,803 @@ function closeLimbo() {
     }
 }
 
+const theftSystem = {
+    COOLDOWN_TIME: 30 * 60 * 1000,
+    MAX_STEAL: 500,
 
+    initialize() {
+        this.addStealButton();
+        this.checkCooldown();
+    },
+
+    addStealButton() {
+        const button = document.createElement('button');
+        button.className = 'game-requirements bg-red-600/90 hover:bg-red-700 transition-colors shadow-lg flex items-center gap-2';
+        button.innerHTML = `
+            <span>🦹‍♂️</span>
+            <span>Steal FunBucks</span>
+        `;
+        button.onclick = () => this.showStealModal();
+        
+        const container = document.createElement('div');
+        container.className = 'fixed bottom-4 left-4 flex gap-2 z-[50]';
+        container.appendChild(button);
+        document.body.appendChild(container);
+    },
+
+    async showStealModal() {
+        if (!auth.currentUser) {
+            showErrorMessage('Please sign in to steal FunBucks');
+            return;
+        }
+
+        const modal = document.createElement('div');
+        modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[60]';
+        
+        modal.innerHTML = `
+            <div class="bg-gray-900 rounded-xl p-6 max-w-md w-full">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-red-400">Steal FunBucks</h3>
+                        <div id="steal-cooldown" class="text-sm text-gray-400">Checking cooldown...</div>
+                    </div>
+                    <button onclick="this.closest('.fixed').remove()" 
+                            class="text-gray-400 hover:text-white">×</button>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="text-sm font-medium text-gray-400 mb-2">Quick Steal Options</h4>
+                    <div id="top-targets" class="space-y-2">Loading richest users...</div>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="relative">
+                        <label class="block text-gray-400 mb-2">Or Search User</label>
+                        <input type="text" 
+                               id="victim-search"
+                               placeholder="Type username..."
+                               class="w-full p-3 rounded-lg bg-gray-800/50 border border-gray-700">
+                        <div id="victim-search-results" 
+                             class="absolute left-0 right-0 mt-1 bg-gray-800 rounded-lg border border-gray-700 max-h-48 overflow-y-auto hidden z-50">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-400 mb-2">Amount (Max ${this.MAX_STEAL})</label>
+                        <input type="number" 
+                               id="steal-amount"
+                               min="1"
+                               max="${this.MAX_STEAL}"
+                               value="100"
+                               class="w-full p-3 rounded-lg bg-gray-800/50 border border-gray-700">
+                    </div>
+
+                    <button onclick="theftSystem.attemptTheft()"
+                            class="w-full p-4 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors">
+                        Attempt Theft
+                    </button>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+        await this.loadTopTargets();
+        this.initializeVictimSearch();
+        this.updateCooldownTimer();
+    },
+
+    async loadTopTargets() {
+        const container = document.getElementById('top-targets');
+        if (!container) return;
+
+        try {
+            const snapshot = await db.collection('users')
+                .orderBy('funbucks', 'desc')
+                .limit(3)
+                .get();
+
+            container.innerHTML = snapshot.docs
+                .filter(doc => doc.id !== auth.currentUser.uid)
+                .map(doc => {
+                    const userData = doc.data();
+                    return `
+                        <div class="bg-gray-800/50 p-3 rounded-lg border border-gray-700 hover:border-red-500 transition-colors">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <img src="${userData.profilePicture || DEFAULT_PROFILE_PIC}" 
+                                         class="w-8 h-8 rounded-full">
+                                    <div>
+                                        <div class="text-white">${userData.username}</div>
+                                        <div class="text-sm text-green-400">${formatCurrency(userData.funbucks)}</div>
+                                    </div>
+                                </div>
+                                <button onclick="theftSystem.quickSteal('${doc.id}')"
+                                        class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm">
+                                    Quick Steal
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+        } catch (error) {
+            console.error('Error loading top targets:', error);
+            container.innerHTML = '<div class="text-red-400 text-center">Error loading targets</div>';
+        }
+    },
+
+    initializeVictimSearch() {
+        const searchInput = document.getElementById('victim-search');
+        const resultsDiv = document.getElementById('victim-search-results');
+        if (!searchInput || !resultsDiv) return;
+
+        searchInput.addEventListener('input', async () => {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            if (searchTerm.length < 2) {
+                resultsDiv.classList.add('hidden');
+                return;
+            }
+
+            try {
+                const snapshot = await db.collection('users').get();
+                const matches = snapshot.docs.filter(doc => {
+                    const userData = doc.data();
+                    return doc.id !== auth.currentUser.uid &&
+                           userData.username.toLowerCase().includes(searchTerm);
+                }).slice(0, 5);
+
+                if (matches.length === 0) {
+                    resultsDiv.innerHTML = `
+                        <div class="p-3 text-gray-400 text-center">No users found</div>
+                    `;
+                } else {
+                    resultsDiv.innerHTML = matches.map(doc => {
+                        const userData = doc.data();
+                        return `
+                            <div class="p-3 hover:bg-gray-700 cursor-pointer flex items-center gap-3"
+                                 onclick="theftSystem.selectVictim('${doc.id}', '${userData.username}')">
+                                <img src="${userData.profilePicture || DEFAULT_PROFILE_PIC}" 
+                                     class="w-8 h-8 rounded-full">
+                                <div>
+                                    <div class="text-white">${userData.username}</div>
+                                    <div class="text-sm text-green-400">${formatCurrency(userData.funbucks)}</div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+                resultsDiv.classList.remove('hidden');
+
+            } catch (error) {
+                console.error('Error searching users:', error);
+                resultsDiv.innerHTML = `
+                    <div class="p-3 text-red-400 text-center">Error searching users</div>
+                `;
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!searchInput.contains(e.target) && !resultsDiv.contains(e.target)) {
+                resultsDiv.classList.add('hidden');
+            }
+        });
+    },
+
+    selectVictim(userId, username) {
+        const searchInput = document.getElementById('victim-search');
+        const resultsDiv = document.getElementById('victim-search-results');
+        searchInput.value = username;
+        searchInput.dataset.selectedUser = userId;
+        resultsDiv.classList.add('hidden');
+    },
+
+    updateCooldownTimer() {
+        const cooldownDiv = document.getElementById('steal-cooldown');
+        if (!cooldownDiv) return;
+
+        const updateTimer = async () => {
+            try {
+                const userDoc = await db.collection('users').doc(auth.currentUser.uid).get();
+                const userData = userDoc.data();
+                const lastTheft = userData.lastTheft?.toDate();
+
+                if (!lastTheft) {
+                    cooldownDiv.innerHTML = `<span class="text-green-400">Ready to steal up to ${formatCurrency(this.MAX_STEAL)}</span>`;
+                    return;
+                }
+
+                const cooldownEnd = lastTheft.getTime() + this.COOLDOWN_TIME;
+                const timeLeft = cooldownEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    cooldownDiv.innerHTML = `<span class="text-green-400">Ready to steal up to ${formatCurrency(this.MAX_STEAL)}</span>`;
+                    return;
+                }
+
+                const minutes = Math.floor(timeLeft / 60000);
+                const seconds = Math.floor((timeLeft % 60000) / 1000);
+                cooldownDiv.innerHTML = `<span class="text-yellow-400">Cooldown: ${minutes}m ${seconds}s</span>`;
+
+                setTimeout(() => updateTimer(), 1000);
+            } catch (error) {
+                console.error('Error updating cooldown:', error);
+                cooldownDiv.textContent = 'Error checking cooldown';
+            }
+        };
+
+        updateTimer();
+    },
+
+    async checkCooldown() {
+        if (!auth.currentUser) return false;
+        
+        try {
+            const userDoc = await db.collection('users').doc(auth.currentUser.uid).get();
+            const userData = userDoc.data();
+            const lastTheft = userData.lastTheft?.toDate();
+            
+            if (!lastTheft) return true;
+            
+            return Date.now() - lastTheft.getTime() >= this.COOLDOWN_TIME;
+        } catch (error) {
+            console.error('Error checking cooldown:', error);
+            return false;
+        }
+    },
+
+    async quickSteal(victimId) {
+        if (!await this.checkCooldown()) {
+            showErrorMessage('You must wait for the cooldown to end before stealing again');
+            return;
+        }
+
+        await this.attemptTheft(victimId, this.MAX_STEAL);
+    },
+
+    async attemptTheft(victimId, amount) {
+        if (!victimId) {
+            victimId = document.getElementById('victim-search').dataset.selectedUser;
+            amount = parseInt(document.getElementById('steal-amount').value);
+        }
+
+        if (!victimId) {
+            showErrorMessage('Please select a user to steal from');
+            return;
+        }
+
+        if (!amount || amount < 1 || amount > this.MAX_STEAL) {
+            showErrorMessage(`Please enter an amount between 1 and ${this.MAX_STEAL}`);
+            return;
+        }
+
+        if (!await this.checkCooldown()) {
+            showErrorMessage('You must wait for the cooldown to end before stealing again');
+            return;
+        }
+
+        try {
+            await db.runTransaction(async (transaction) => {
+                const [victimDoc, thiefDoc] = await Promise.all([
+                    transaction.get(db.collection('users').doc(victimId)),
+                    transaction.get(db.collection('users').doc(auth.currentUser.uid))
+                ]);
+
+                const victimData = victimDoc.data();
+                const thiefData = thiefDoc.data();
+
+                if (victimData.funbucks < amount) {
+                    throw new Error('Target does not have enough FunBucks');
+                }
+
+                transaction.update(victimDoc.ref, {
+                    funbucks: firebase.firestore.FieldValue.increment(-amount)
+                });
+
+                transaction.update(thiefDoc.ref, {
+                    funbucks: firebase.firestore.FieldValue.increment(amount),
+                    lastTheft: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                transaction.set(db.collection('theftHistory').doc(), {
+                    userId: auth.currentUser.uid,
+                    username: thiefData.username,
+                    amount: amount,
+                    victimId: victimId,
+                    victimUsername: victimData.username,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            });
+
+            portfolio.balance += amount;
+            updatePortfolioDisplays();
+            showSuccessMessage(`Successfully stole ${formatCurrency(amount)}!`);
+            document.querySelector('.fixed')?.remove();
+
+        } catch (error) {
+            console.error('Error executing theft:', error);
+            showErrorMessage(error.message || 'Failed to steal');
+        }
+    }
+};
+
+
+const recentStealsDisplay = {
+    initialize() {
+        // Remove any existing container
+        const existingContainer = document.getElementById('steals-container');
+        if (existingContainer) {
+            existingContainer.remove();
+        }
+
+        // Create the feed container
+        const container = document.createElement('div');
+        container.id = 'steals-container';
+        container.className = 'fixed left-6 top-24 w-80 bg-gray-900 rounded-xl shadow-2xl border border-purple-500 z-50';
+        container.innerHTML = `
+            <div class="p-4 border-b border-gray-800 bg-gray-800 rounded-t-xl">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-lg font-bold text-red-400 flex items-center gap-2">
+                        <span>🦹‍♂️</span>
+                        <span>Recent Steals</span>
+                    </h2>
+                    <button id="refresh-steals" class="text-gray-400 hover:text-white transition-colors bg-gray-700 p-2 rounded-lg">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div id="steals-list" class="max-h-[400px] overflow-y-auto p-4 space-y-3 bg-gray-900"></div>
+        `;
+        document.body.appendChild(container);
+
+        // Add refresh handler with proper binding
+        document.getElementById('refresh-steals')?.addEventListener('click', () => {
+            const refreshBtn = document.getElementById('refresh-steals');
+            refreshBtn.classList.add('animate-spin');
+            this.loadRecentSteals().then(() => {
+                setTimeout(() => refreshBtn.classList.remove('animate-spin'), 1000);
+            });
+        });
+
+        // Add custom scrollbar styles
+        const style = document.createElement('style');
+        style.textContent = `
+            #steals-list::-webkit-scrollbar {
+                width: 6px;
+            }
+            #steals-list::-webkit-scrollbar-track {
+                background: rgba(31, 41, 55, 0.5);
+                border-radius: 3px;
+            }
+            #steals-list::-webkit-scrollbar-thumb {
+                background: rgba(147, 51, 234, 0.5);
+                border-radius: 3px;
+            }
+            @keyframes slide-in {
+                from {
+                    transform: translateX(-100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            .theft-item {
+                animation: slide-in 0.3s ease-out forwards;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initial load and auto-refresh
+        this.loadRecentSteals();
+        // Set up auto-refresh interval
+        if (this.refreshInterval) {
+            clearInterval(this.refreshInterval);
+        }
+        this.refreshInterval = setInterval(() => this.loadRecentSteals(), 30000);
+    },
+
+    async loadRecentSteals() {
+        try {
+            const stealsList = document.getElementById('steals-list');
+            if (!stealsList) return;
+
+            const snapshot = await db.collection('theftHistory')
+                .orderBy('lastTheft', 'desc')
+                .limit(20)
+                .get();
+
+            if (snapshot.empty) {
+                stealsList.innerHTML = `
+                    <div class="text-center text-gray-400 py-4">
+                        No steals yet... Be the first! 😈
+                    </div>
+                `;
+                return;
+            }
+
+            const steals = await Promise.all(snapshot.docs.map(async (doc) => {
+                const data = doc.data();
+                const thiefDoc = await db.collection('users').doc(data.userId).get();
+                const thiefData = thiefDoc.data();
+                
+                return `
+                    <div class="theft-item bg-gray-800 p-3 rounded-lg border border-purple-500/30 
+                                hover:border-purple-500 transition-all">
+                        <div class="flex items-center gap-3">
+                            <img src="${thiefData?.profilePicture || DEFAULT_PROFILE_PIC}" 
+                                 class="w-8 h-8 rounded-full border border-purple-500/50"
+                                 onerror="this.src='${DEFAULT_PROFILE_PIC}'">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-1 flex-wrap">
+                                    <span class="text-red-400 font-medium">${thiefData?.username || 'Unknown User'}</span>
+                                    <span class="text-gray-400">stole</span>
+                                    <span class="text-green-400 font-medium">${formatCurrency(data.amount)}</span>
+                                </div>
+                                <div class="text-sm">
+                                    <span class="text-gray-400">from</span>
+                                    <span class="text-blue-400 font-medium">${data.victimUsername}</span>
+                                </div>
+                                <div class="text-xs text-gray-500 mt-1">
+                                    ${formatTimeAgo(data.lastTheft)}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }));
+
+            stealsList.innerHTML = steals.join('');
+
+        } catch (error) {
+            console.error('Error loading recent steals:', error);
+            const stealsList = document.getElementById('steals-list');
+            if (stealsList) {
+                stealsList.innerHTML = `
+                    <div class="text-center text-red-400 py-4">
+                        Error loading steals 😢
+                    </div>
+                `;
+            }
+        }
+    },
+
+    async addNewSteal(theftData) {
+        const stealsList = document.getElementById('steals-list');
+        if (!stealsList) return;
+
+        const newStealElement = document.createElement('div');
+        newStealElement.className = 'theft-item bg-gray-800 p-3 rounded-lg border border-purple-500/30 hover:border-purple-500 transition-all';
+        newStealElement.innerHTML = `
+            <div class="flex items-center gap-3">
+                <img src="${currentUser.profilePicture || DEFAULT_PROFILE_PIC}" 
+                     class="w-8 h-8 rounded-full border border-purple-500/50"
+                     onerror="this.src='${DEFAULT_PROFILE_PIC}'">
+                <div class="flex-1">
+                    <div class="flex items-center gap-1 flex-wrap">
+                        <span class="text-red-400 font-medium">${currentUser.username}</span>
+                        <span class="text-gray-400">stole</span>
+                        <span class="text-green-400 font-medium">${formatCurrency(theftData.amount)}</span>
+                    </div>
+                    <div class="text-sm">
+                        <span class="text-gray-400">from</span>
+                        <span class="text-blue-400 font-medium">${theftData.victimUsername}</span>
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1">
+                        just now
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Add to the top of the list with animation
+        if (stealsList.firstChild) {
+            stealsList.insertBefore(newStealElement, stealsList.firstChild);
+        } else {
+            stealsList.appendChild(newStealElement);
+        }
+
+        // Remove oldest if more than 20
+        const items = stealsList.querySelectorAll('.theft-item');
+        if (items.length > 20) {
+            items[items.length - 1].remove();
+        }
+    }
+};
+
+
+const chatSystem = {
+    badWords: [
+        'gamble', 'bet', 'stake', 'polymarket'
+    ],
+
+    initialize() {
+        // Replace lottery tab content
+        const lotteryTab = document.getElementById('lottery-tab');
+        if (lotteryTab) {
+            lotteryTab.innerHTML = `
+                <div class="market-card p-6 rounded-lg">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-blue-300">Chat Room</h2>
+                        <div id="chat-online-count" class="text-green-400">
+                            <span class="inline-block w-2 h-2 bg-green-400 rounded-full mr-2"></span>
+                            <span>0 online</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                        <div id="chat-messages" class="h-[500px] overflow-y-auto space-y-4 mb-4 p-2">
+                            <div class="text-center text-gray-400">
+                                Loading messages...
+                            </div>
+                        </div>
+
+                        <div class="flex gap-2">
+                            <input type="text" 
+                                   id="chat-input" 
+                                   placeholder="Type your message..." 
+                                   maxlength="200"
+                                   class="flex-1 p-3 rounded-lg bg-gray-700 border border-gray-600 text-white">
+                            <button id="send-chat" 
+                                    class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                Send
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Add custom scrollbar styles
+            const style = document.createElement('style');
+            style.textContent = `
+                #chat-messages::-webkit-scrollbar {
+                    width: 6px;
+                }
+                #chat-messages::-webkit-scrollbar-track {
+                    background: rgba(31, 41, 55, 0.5);
+                    border-radius: 3px;
+                }
+                #chat-messages::-webkit-scrollbar-thumb {
+                    background: rgba(59, 130, 246, 0.5);
+                    border-radius: 3px;
+                }
+                @keyframes slide-in {
+                    from { transform: translateX(-20px); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                .chat-message {
+                    animation: slide-in 0.3s ease-out forwards;
+                }
+            `;
+            document.head.appendChild(style);
+
+            this.setupEventListeners();
+            this.loadMessages();
+            this.startOnlineCount();
+        }
+    },
+
+    censorMessage(message) {
+        let censored = message;
+        this.badWords.forEach(word => {
+            const regex = new RegExp(word, 'gi');
+            censored = censored.replace(regex, '*'.repeat(word.length));
+        });
+        return censored;
+    },
+
+    setupEventListeners() {
+        const input = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-chat');
+
+        const sendMessage = async () => {
+            if (!input.value.trim() || !auth.currentUser) return;
+
+            try {
+                const message = this.censorMessage(input.value.trim());
+                
+                await db.collection('chat').add({
+                    userId: auth.currentUser.uid,
+                    username: currentUser.username,
+                    profilePicture: currentUser.profilePicture || DEFAULT_PROFILE_PIC,
+                    message: message,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                input.value = '';
+                input.focus();
+
+            } catch (error) {
+                console.error('Error sending message:', error);
+                showErrorMessage('Failed to send message');
+            }
+        };
+
+        input?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        sendBtn?.addEventListener('click', sendMessage);
+    },
+
+    async loadMessages() {
+        const messagesDiv = document.getElementById('chat-messages');
+        if (!messagesDiv) return;
+
+        try {
+            // Set up real-time listener
+            db.collection('chat')
+                .orderBy('timestamp', 'desc')
+                .limit(100)
+                .onSnapshot((snapshot) => {
+                    const changes = snapshot.docChanges();
+                    
+                    changes.reverse().forEach((change) => {
+                        if (change.type === 'added') {
+                            const message = change.doc.data();
+                            this.addMessageToDisplay(message);
+                        }
+                    });
+
+                    // Clear loading message if present
+                    const loadingMsg = messagesDiv.querySelector('.text-gray-400');
+                    if (loadingMsg) {
+                        loadingMsg.remove();
+                    }
+                });
+
+        } catch (error) {
+            console.error('Error loading messages:', error);
+            messagesDiv.innerHTML = `
+                <div class="text-center text-red-400">
+                    Error loading messages
+                </div>
+            `;
+        }
+    },
+
+    addMessageToDisplay(message) {
+        const messagesDiv = document.getElementById('chat-messages');
+        if (!messagesDiv) return;
+
+        const messageElement = document.createElement('div');
+        messageElement.className = 'chat-message bg-gray-700 rounded-lg p-3';
+        
+        messageElement.innerHTML = `
+            <div class="flex items-center gap-3">
+                <img src="${message.profilePicture || DEFAULT_PROFILE_PIC}" 
+                     class="w-8 h-8 rounded-full border border-blue-500/50"
+                     onerror="this.src='${DEFAULT_PROFILE_PIC}'">
+                <div class="flex-1">
+                    <div class="flex items-center gap-2">
+                        <span class="font-medium text-blue-300">${message.username}</span>
+                        <span class="text-xs text-gray-400">
+                            ${message.timestamp ? formatTimeAgo(message.timestamp) : 'just now'}
+                        </span>
+                    </div>
+                    <div class="text-white break-words">
+                        ${message.message}
+                    </div>
+                </div>
+            </div>
+        `;
+
+        messagesDiv.appendChild(messageElement);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    },
+
+    startOnlineCount() {
+        const countElement = document.getElementById('chat-online-count');
+        if (!countElement) return;
+
+        // Set up presence system
+        const presenceRef = db.collection('presence');
+        
+        // Update user's online status
+        if (auth.currentUser) {
+            const userPresenceRef = presenceRef.doc(auth.currentUser.uid);
+            userPresenceRef.set({
+                online: true,
+                lastSeen: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            // Remove presence when user disconnects
+            userPresenceRef.onDisconnect().delete();
+        }
+
+        // Listen for online users count
+        presenceRef.onSnapshot((snapshot) => {
+            const onlineCount = snapshot.size;
+            countElement.innerHTML = `
+                <span class="inline-block w-2 h-2 bg-green-400 rounded-full mr-2"></span>
+                <span>${onlineCount} online</span>
+            `;
+        });
+    }
+};
+
+// Initialize on tab click
+document.querySelector('[data-tab="lottery"]')?.addEventListener('click', () => {
+    setTimeout(() => chatSystem.initialize(), 0);
+});
+
+// Initialize if already on chat tab
+if (document.querySelector('[data-tab="lottery"]')?.classList.contains('selected')) {
+    chatSystem.initialize();
+}
+
+
+const originalAttemptTheft = theftSystem.attemptTheft;
+theftSystem.attemptTheft = async function() {
+    const victimId = document.getElementById('victim-search').dataset.selectedUser;
+    const amount = parseInt(document.getElementById('steal-amount').value);
+
+    if (!victimId) {
+        showErrorMessage('Please select a user to steal from');
+        return;
+    }
+
+    if (!amount || amount < 1 || amount > 500) {
+        showErrorMessage('Please enter an amount between 1 and 500');
+        return;
+    }
+
+    try {
+        // Simple update approach without transaction
+        const victimRef = db.collection('users').doc(victimId);
+        const thiefRef = db.collection('users').doc(auth.currentUser.uid);
+
+        const [victimDoc, thiefDoc] = await Promise.all([
+            victimRef.get(),
+            thiefRef.get()
+        ]);
+
+        const victimData = victimDoc.data();
+        const thiefData = thiefDoc.data();
+
+        // Check victim's balance
+        if (victimData.funbucks < amount) {
+            throw new Error('Target does not have enough FunBucks');
+        }
+
+        // Update balances
+        await Promise.all([
+            victimRef.update({
+                funbucks: firebase.firestore.FieldValue.increment(-amount)
+            }),
+            thiefRef.update({
+                funbucks: firebase.firestore.FieldValue.increment(amount),
+                lastTheft: firebase.firestore.FieldValue.serverTimestamp()
+            })
+        ]);
+
+        // Create theft history record
+        await db.collection('theftHistory').add({
+            userId: auth.currentUser.uid,
+            username: thiefData.username,
+            amount: amount,
+            victimId: victimId,
+            victimUsername: victimData.username,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        // Update local portfolio
+        portfolio.balance += amount;
+        updatePortfolioDisplays();
+        showSuccessMessage(`Successfully stole ${formatCurrency(amount)}!`);
+        document.querySelector('.fixed')?.remove();
+
+    } catch (error) {
+        console.error('Error executing theft:', error);
+        showErrorMessage(error.message || 'Failed to execute theft');
+    }
+};
 
 const DICE = {
     betAmount: 0,
@@ -4306,19 +4992,9 @@ function showPlinkoWin(amount, multiplier, landingPosition) {
     }, 1700);
 }
 function checkGameRequirements() {
-    const networth = calculateNetworth();
-    if (networth < 200) {
-        showErrorMessage('Minimum networth of 200 required to play');
-        document.body.insertAdjacentHTML('beforeend', `
-            <div class="game-requirements">
-                ⚠️ Minimum networth of 200 FunBucks required to play
-            </div>
-        `);
-        return false;
-    }
     return true;
 }
-
+document.body.style.background = 'linear-gradient(135deg, #1a1c2c 0%, #202746 100%)';
 
 const tipSystem = {
     async showTipModal() {
@@ -5069,31 +5745,232 @@ function showRainModal() {
     document.body.appendChild(modal);
 }
 function addSocialButtons() {
-    const buttonContainer = document.createElement('div');
-    buttonContainer.className = 'fixed right-6 bottom-6 flex flex-col gap-3';
-    buttonContainer.style.zIndex = '50';
+    const buttonsContainer = document.createElement('div');
+    buttonsContainer.className = 'fixed bottom-4 left-4 flex gap-2 z-[50]';
 
-    // Tip Button
-    const tipButton = document.createElement('button');
-    tipButton.className = 'bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-full shadow-lg flex items-center gap-2 transition-all hover:-translate-y-1';
-    tipButton.innerHTML = `
-        <span>🎁</span>
-        <span>Send Tips</span>
+    // Steal button
+    const stealButton = document.createElement('button');
+    stealButton.className = 'game-requirements bg-red-600/90 hover:bg-red-700 transition-colors shadow-lg flex items-center gap-2';
+    stealButton.innerHTML = `
+        <span>🦹‍♂️</span>
+        <span>Steal FunBucks</span>
     `;
-    tipButton.onclick = () => tipSystem.showTipModal();
+    stealButton.onclick = () => showStealModal();
+    buttonsContainer.appendChild(stealButton);
 
-    // Rain Button
-    const rainButton = document.createElement('button');
-    rainButton.className = 'bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full shadow-lg flex items-center gap-2 transition-all hover:-translate-y-1';
-    rainButton.innerHTML = `
-        <span>🌧️</span>
-        <span>Make It Rain</span>
+    document.body.appendChild(buttonsContainer);
+}
+
+function showStealModal() {
+    if (!auth.currentUser) {
+        showErrorMessage('Please sign in to steal FunBucks');
+        return;
+    }
+
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[60]';
+    
+    modal.innerHTML = `
+        <div class="bg-gray-900 rounded-xl p-6 max-w-md w-full">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h3 class="text-xl font-bold text-red-400">Steal FunBucks</h3>
+                    <div id="steal-cooldown" class="text-sm text-gray-400">Loading steal limit...</div>
+                </div>
+                <button onclick="this.closest('.fixed').remove()" 
+                        class="text-gray-400 hover:text-white">×</button>
+            </div>
+
+            <!-- Top 3 Richest Users -->
+            <div class="mb-6">
+                <h4 class="text-sm font-medium text-gray-400 mb-2">Quick Steal Options</h4>
+                <div id="top-targets" class="space-y-2">
+                    Loading richest users...
+                </div>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="relative">
+                    <label class="block text-gray-400 mb-2">Or Search User</label>
+                    <input type="text" 
+                           id="victim-search"
+                           placeholder="Type username..."
+                           class="w-full p-3 rounded-lg bg-gray-800/50 border border-gray-700">
+                    <div id="victim-search-results" 
+                         class="absolute left-0 right-0 mt-1 bg-gray-800 rounded-lg border border-gray-700 max-h-48 overflow-y-auto hidden z-50">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-gray-400 mb-2">Amount (Max 500)</label>
+                    <input type="number" 
+                           id="steal-amount"
+                           min="1"
+                           max="500"
+                           value="100"
+                           class="w-full p-3 rounded-lg bg-gray-800/50 border border-gray-700">
+                </div>
+
+                <button onclick="theftSystem.attemptTheft()"
+                        class="w-full p-4 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors">
+                    Attempt Theft
+                </button>
+            </div>
+        </div>
     `;
-    rainButton.onclick = () => rainSystem.showRainModal();
 
-    buttonContainer.appendChild(rainButton);
-    buttonContainer.appendChild(tipButton);
-    document.body.appendChild(buttonContainer);
+    document.body.appendChild(modal);
+    initializeVictimSearch();
+    loadTopTargets();
+    updateStealCooldown();
+    theftSystem.updateCooldownTimer();
+}
+async function loadTopTargets() {
+    const container = document.getElementById('top-targets');
+    if (!container) return;
+
+    try {
+        const snapshot = await db.collection('users')
+            .orderBy('funbucks', 'desc')
+            .limit(3)
+            .get();
+
+        container.innerHTML = snapshot.docs
+            .filter(doc => doc.id !== auth.currentUser.uid)
+            .map(doc => {
+                const userData = doc.data();
+                return `
+                    <div class="bg-gray-800/50 p-3 rounded-lg border border-gray-700 hover:border-red-500 transition-colors">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <img src="${userData.profilePicture || 'https://polymarket.com/_next/image?url=https%3A%2F%2Fpolymarket-upload.s3.us-east-2.amazonaws.com%2F31669764_829bfb7d-c27d-4c9a-8b78-dd9135282938_1730892972459.png&w=256&q=100'}" 
+                                     class="w-8 h-8 rounded-full">
+                                <div>
+                                    <div class="text-white">${userData.username}</div>
+                                    <div class="text-sm text-green-400">${formatCurrency(userData.funbucks)}</div>
+                                </div>
+                            </div>
+                            <button onclick="theftSystem.quickSteal('${doc.id}', ${Math.min(500, userData.funbucks)})"
+                                    class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm">
+                                Quick Steal
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+    } catch (error) {
+        console.error('Error loading top targets:', error);
+        container.innerHTML = '<div class="text-red-400 text-center">Error loading targets</div>';
+    }
+}
+
+function initializeVictimSearch() {
+    const searchInput = document.getElementById('victim-search');
+    const resultsDiv = document.getElementById('victim-search-results');
+    if (!searchInput || !resultsDiv) return;
+
+    searchInput.addEventListener('input', async () => {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        if (searchTerm.length < 2) {
+            resultsDiv.classList.add('hidden');
+            return;
+        }
+
+        try {
+            const snapshot = await db.collection('users').get();
+            const matches = snapshot.docs.filter(doc => {
+                const userData = doc.data();
+                return doc.id !== auth.currentUser.uid &&
+                       userData.username.toLowerCase().includes(searchTerm);
+            }).slice(0, 5);
+
+            if (matches.length === 0) {
+                resultsDiv.innerHTML = `
+                    <div class="p-3 text-gray-400 text-center">No users found</div>
+                `;
+            } else {
+                resultsDiv.innerHTML = matches.map(doc => {
+                    const userData = doc.data();
+                    return `
+                        <div class="p-3 hover:bg-gray-700 cursor-pointer flex items-center gap-3 user-result"
+                             data-user-id="${doc.id}"
+                             data-username="${userData.username}">
+                            <img src="${userData.profilePicture || 'https://polymarket.com/_next/image?url=https%3A%2F%2Fpolymarket-upload.s3.us-east-2.amazonaws.com%2F31669764_829bfb7d-c27d-4c9a-8b78-dd9135282938_1730892972459.png&w=256&q=100'}" 
+                                 class="w-8 h-8 rounded-full">
+                            <div>
+                                <div class="text-white">${userData.username}</div>
+                                <div class="text-sm text-green-400">${formatCurrency(userData.funbucks)}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            resultsDiv.classList.remove('hidden');
+
+            document.querySelectorAll('.user-result').forEach(el => {
+                el.addEventListener('click', () => {
+                    searchInput.value = el.dataset.username;
+                    searchInput.dataset.selectedUser = el.dataset.userId;
+                    resultsDiv.classList.add('hidden');
+                });
+            });
+
+        } catch (error) {
+            console.error('Error searching users:', error);
+            resultsDiv.innerHTML = `
+                <div class="p-3 text-red-400 text-center">Error searching users</div>
+            `;
+        }
+    });
+
+    // Hide results when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!searchInput.contains(e.target) && !resultsDiv.contains(e.target)) {
+            resultsDiv.classList.add('hidden');
+        }
+    });
+}
+function updateStealCooldown() {
+    const cooldownDiv = document.getElementById('steal-cooldown');
+    if (!cooldownDiv) return;
+
+    // Get user's last theft time
+    db.collection('users').doc(auth.currentUser.uid).get().then(doc => {
+        const userData = doc.data();
+        const lastTheft = userData.lastTheft?.toDate();
+        
+        if (!lastTheft) {
+            cooldownDiv.textContent = 'You can steal up to 500 FunBucks';
+            return;
+        }
+
+        const cooldownEnd = lastTheft.getTime() + (30 * 60 * 1000);
+        const timeLeft = cooldownEnd - Date.now();
+
+        if (timeLeft <= 0) {
+            cooldownDiv.textContent = 'You can steal up to 500 FunBucks';
+        } else {
+            const minutes = Math.ceil(timeLeft / 60000);
+            cooldownDiv.textContent = `Cooldown: ${minutes} minutes until next steal`;
+        }
+    }).catch(error => {
+        console.error('Error checking cooldown:', error);
+        cooldownDiv.textContent = 'Error checking steal cooldown';
+    });
+}
+theftSystem.quickSteal = async function(victimId, amount) {
+    this.attemptTheft(victimId, Math.min(500, amount));
+};
+function selectVictim(userId, username) {
+    const searchInput = document.getElementById('victim-search');
+    searchInput.value = username;
+    searchInput.dataset.selectedUser = userId;
+    
+    const resultsContainer = searchInput.parentNode.querySelector('div');
+    if (resultsContainer) {
+        resultsContainer.classList.add('hidden');
+    }
 }
 
 document.addEventListener('DOMContentLoaded', addRainButton);
@@ -5382,23 +6259,28 @@ async function initializeUser(result, referralCode) {
 
     return userDoc.data();
 }
+
 auth.onAuthStateChanged(async (user) => {
     try {
         if (user) {
+            theftSystem.initialize();
+            
             const urlParams = new URLSearchParams(window.location.search);
             const referralCode = urlParams.get('ref');
             
             if (referralCode) {
                 localStorage.setItem('pendingReferral', referralCode);
             }
+
             const userDoc = await db.collection('users').doc(user.uid).get();
             const userData = userDoc.data();
-            console.log('Fetched user data:', userDoc.data());
-            if (userData.banned) {
+
+            if (userData?.banned) {
                 await auth.signOut();
                 showErrorMessage('Your account has been banned');
                 return;
             }
+
             if (!userDoc.exists) {
                 const initialData = {
                     username: user.displayName,
@@ -5410,12 +6292,12 @@ auth.onAuthStateChanged(async (user) => {
                         value: 500
                     }],
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    isAdmin: false
+                    isAdmin: false,
+                    referralCode: generateReferralCode(),
+                    referredBy: null
                 };
                 
-                console.log('Creating new user with data:', initialData);
                 await db.collection('users').doc(user.uid).set(initialData);
-                
                 currentUser = { uid: user.uid, ...initialData };
                 portfolio = {
                     balance: 500,
@@ -5424,8 +6306,6 @@ auth.onAuthStateChanged(async (user) => {
                 };
             } else {
                 const userData = userDoc.data();
-                console.log('Using existing user data:', userData);
-                
                 currentUser = { 
                     uid: user.uid, 
                     ...userData,
@@ -5439,20 +6319,12 @@ auth.onAuthStateChanged(async (user) => {
                     bets: userData.bets || [],
                     history: userData.history || []
                 };
-
-                if (userData.username !== user.displayName) {
-                    await db.collection('users').doc(user.uid).update({
-                        username: user.displayName
-                    });
-                }
             }
-            
-            console.log('Final state:', { currentUser, portfolio });
             
             document.getElementById('auth-container').classList.add('hidden');
             document.getElementById('app-container').classList.remove('hidden');
             document.getElementById('username-display').textContent = currentUser.username;
-            
+
             const adminButton = document.getElementById('admin-panel-btn');
             if (adminButton) {
                 if (currentUser.isAdmin === true) {
@@ -5462,14 +6334,13 @@ auth.onAuthStateChanged(async (user) => {
                     adminButton.classList.add('hidden');
                 }
             }
-            
+
             await getMarkets();
             await updateMarkets();
             await updatePortfolioDisplays();
             await updateRecentActivity();
+
         } else {
-            console.log('User signed out');
-            
             currentUser = null;
             markets = [];
             portfolio = {
@@ -5485,8 +6356,6 @@ auth.onAuthStateChanged(async (user) => {
         console.error('Auth state change error:', error);
         showErrorMessage('Error loading user data');
     }
-    
-    console.log('==== AUTH STATE CHANGE END ====');
 });
 
 function initPlinko() {
@@ -8202,10 +9071,6 @@ function escapeHtml(unsafe) {
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
 }
-document.querySelector('[data-tab="lottery"]')?.addEventListener('click', () => {
-    lotterySystem.initialize();
-});
-
 document.getElementById('logout-button')?.addEventListener('click', () => {
     lotterySystem.cleanup();
 });
@@ -10772,6 +11637,7 @@ async function resetMarketHistory(marketId) {
         alert('Error resetting market history');
     }
 }
+
 async function updateMarkets(force = false) {
     if (this.updating && !force) return;
     this.updating = true;
@@ -10784,7 +11650,8 @@ async function updateMarkets(force = false) {
             if (!allMarkets.length) return;
         }
 
-        ['markets-container', 'asb-markets', 'sports-markets'].forEach(containerId => {
+        const containers = ['markets-container', 'asb-markets', 'sports-markets'];
+        containers.forEach(containerId => {
             const container = document.getElementById(containerId);
             if (!container || container.closest('.tab-content').classList.contains('hidden')) return;
 
@@ -11766,6 +12633,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 document.addEventListener('DOMContentLoaded', () => {
+    recentStealsDisplay.initialize();
+    theftSystem.initialize();
+    createClosureAnnouncement();
+    const activityPanel = document.getElementById('activity-panel');
+    if (activityPanel) {
+        activityPanel.remove();
+    }
     const gameContainers = [
         'mines-container',
         'plinko-container',
@@ -12660,160 +13534,30 @@ function showAllActivity(type) {
     document.body.appendChild(modal);
 }
 
-const marketKingOfHill = {
-    countdown: null,
-
-    async initialize() {
-        const container = document.getElementById('market-king');
-        if (container) {
-            container.innerHTML = this.renderLoading();
-        }
-        
-        await this.updateKing();
-        this.startCountdown();
-        setInterval(() => this.updateKing(), 60000);
-    },
-
-    startCountdown() {
-        if (this.countdown) clearInterval(this.countdown);
-        
-        this.countdown = setInterval(() => {
-            const countdownEl = document.querySelector('#market-king .countdown');
-            if (!countdownEl) return;
-
-            const now = new Date();
-            const nextReset = new Date(now);
-            nextReset.setHours(nextReset.getHours() + 2);
-            nextReset.setMinutes(0);
-            nextReset.setSeconds(0);
-            nextReset.setMilliseconds(0);
-
-            const diff = nextReset - now;
-            const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const secs = Math.floor((diff % (1000 * 60)) / 1000);
-
-            countdownEl.textContent = `${mins}m ${secs}s`;
-        }, 1000);
-    },
-
-    renderLoading() {
-        return `
-            <div class="bg-gray-800/50 p-6 rounded-lg border border-gray-700 animate-pulse">
-                <div class="flex items-center gap-4">
-                    <div class="w-20 h-20 bg-gray-700 rounded-lg"></div>
-                    <div class="flex-1">
-                        <div class="h-6 bg-gray-700 rounded w-1/3 mb-2"></div>
-                        <div class="h-4 bg-gray-700 rounded w-1/2"></div>
+function createClosureAnnouncement() {
+    const container = document.getElementById('market-king');
+    if (container) {
+        container.innerHTML = `
+            <div class="bg-gradient-to-r from-purple-900 to-blue-900 p-6 rounded-lg border-2 border-blue-400 shadow-xl">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold text-blue-300 mb-4">🎓 Important Announcement</h2>
+                    <div class="text-xl text-white mb-4">
+                        samohi.fun will be closing after school on Friday until the 2025 school year.
                     </div>
-                </div>
-            </div>
-        `;
-    },
-
-    renderKing(market, volume) {
-        const dethroneAmount = volume * 1.1;
-        
-        return `
-            <div class="bg-gray-800/50 p-6 rounded-lg border border-yellow-600">
-                <div class="flex items-center gap-4 mb-4">
-                    <div class="relative">
-                        <img src="${market.image}" 
-                             class="w-20 h-20 rounded-lg object-cover border-4 border-yellow-400"
-                             onerror="this.src='=https://i.ibb.co/4ZxPbNW/TCcB5yZ.png'">
-                        <div class="absolute -top-2 -right-2 bg-yellow-400 rounded-full p-1">
-                            👑
-                        </div>
+                    <div class="text-lg text-blue-200">
+                        All betting limits have been removed. Trade freely and enjoy the final day!
                     </div>
-                    <div>
-                        <h3 class="text-xl font-bold text-yellow-400">Market King</h3>
-                        <div class="text-lg font-bold text-white">${market.title}</div>
-                        <div class="text-sm text-gray-400">
-                            2h Volume: $${volume.toFixed(2)}
-                        </div>
+                    <div class="text-lg text-blue-200">
+                        The user with the most networth by the end of the day will win a prize for next year!
                     </div>
-                </div>
-
-                <div class="bg-gray-900/50 p-4 rounded-lg">
-                    <div class="text-sm text-gray-400 mb-2">Crown Resets In:</div>
-                    <div class="countdown text-lg font-mono text-yellow-400 mb-2">
-                        Calculating...
+                    <div class="text-lg text-blue-200">
+                        All suggested bets will be added next semester!
                     </div>
-                    <div class="text-sm text-gray-400">To Dethrone:</div>
-                    <div class="text-lg font-bold text-white">
-                        $${dethroneAmount.toFixed(2)} in trading volume
-                    </div>
-                </div>
-            </div>
-        `;
-    },
-
-    async updateKing() {
-        const container = document.getElementById('market-king');
-        if (!container) return;
-
-        try {
-            const twoHoursAgo = Date.now() - (2 * 60 * 60 * 1000);
-            
-            const betsSnapshot = await db.collection('bets')
-                .where('timestamp', '>', twoHoursAgo)
-                .get();
-
-            const volumes = {};
-            betsSnapshot.docs.forEach(doc => {
-                const bet = doc.data();
-                volumes[bet.marketId] = (volumes[bet.marketId] || 0) + bet.amount;
-            });
-
-            let kingMarketId = null;
-            let maxVolume = 0;
-            Object.entries(volumes).forEach(([marketId, volume]) => {
-                if (volume > maxVolume) {
-                    kingMarketId = marketId;
-                    maxVolume = volume;
-                }
-            });
-
-            if (!kingMarketId || !maxVolume) {
-                container.innerHTML = this.renderNoKing();
-                return;
-            }
-
-            const market = markets.find(m => m.id === kingMarketId);
-            if (!market) {
-                container.innerHTML = this.renderNoKing();
-                return;
-            }
-
-            container.innerHTML = this.renderKing(market, maxVolume);
-            this.startCountdown();
-
-        } catch (error) {
-            console.error('Error updating market king:', error);
-            container.innerHTML = this.renderError();
-        }
-    },
-    renderNoKing() {
-        return `
-            <div class="bg-gray-800/50 p-6 rounded-lg border border-gray-700">
-                <div class="text-gray-400 text-center">
-                    <div class="text-2xl mb-2">👑</div>
-                    No trading activity in the last 2 hours
-                </div>
-            </div>
-        `;
-    },
-
-    renderError() {
-        return `
-            <div class="bg-gray-800/50 p-6 rounded-lg border border-red-900">
-                <div class="text-red-400 text-center">
-                    <div class="text-2xl mb-2">⚠️</div>
-                    Error loading Market King
                 </div>
             </div>
         `;
     }
-};
+}
 
 async function recordSell(marketId, position, amount, price) {
     try {
