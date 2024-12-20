@@ -4075,13 +4075,13 @@ const recentStealsDisplay = {
         <div class="flex items-center justify-between">
             <h2 class="text-lg font-bold text-purple-300">Recent Steals</h2>
             <div class="flex gap-2">
-                <button id="steals-refresh" class="text-gray-400 hover:text-white transition-colors">
+                <button onclick="refreshSteals()" class="text-gray-400 hover:text-white transition-colors">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                               d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                     </svg>
                 </button>
-                <button id="steals-minimize" class="text-gray-400 hover:text-white transition-colors">
+                <button onclick="toggleSteals()" class="text-gray-400 hover:text-white transition-colors">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                     </svg>
@@ -4093,8 +4093,10 @@ const recentStealsDisplay = {
                 <h3 class="text-sm font-semibold text-yellow-400 mb-2">🏆 Dethrone the Top 3 Richest Users</h3>
                 <div id="top-users-list" class="space-y-2">Loading...</div>
             </div>
-    <div id="steals-list" class="overflow-hidden transition-all duration-300">
-        <!-- Steals will be populated here dynamically -->
+    <div id="steals-content" class="overflow-hidden transition-all duration-300" style="max-height: 600px;">
+        <div id="steals-list" class="p-4 space-y-2 max-h-[500px] overflow-y-auto custom-scrollbar">
+            <!-- Steals will be populated here -->
+        </div>
     </div>
             
            
@@ -4542,6 +4544,28 @@ theftSystem.attemptTheft = async function() {
     }
     return result;
 };
+let isStealsPanelMinimized = false;
+
+function toggleSteals() {
+    const content = document.getElementById('steals-content');
+    const button = document.querySelector('#steals-container button:last-child svg');
+    isStealsPanelMinimized = !isStealsPanelMinimized;
+    
+    if (isStealsPanelMinimized) {
+        content.style.maxHeight = '0';
+        button.style.transform = 'rotate(180deg)';
+    } else {
+        content.style.maxHeight = '600px';
+        button.style.transform = '';
+    }
+}
+
+async function refreshSteals() {
+    const refreshBtn = document.querySelector('#steals-container button:first-child');
+    refreshBtn.classList.add('animate-spin');
+    await recentStealsDisplay.loadRecentSteals();
+    setTimeout(() => refreshBtn.classList.remove('animate-spin'), 1000);
+}
 
 const DICE = {
     betAmount: 0,
