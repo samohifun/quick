@@ -3711,7 +3711,7 @@ function closeLimbo() {
 
 const theftSystem = {
     MAX_STEAL_AMOUNT: 500,
-    COOLDOWN_MINUTES: 9,
+    COOLDOWN_MINUTES: 25,
 
     async initialize() {
         if (!auth.currentUser) return;
@@ -4119,68 +4119,76 @@ const recentStealsDisplay = {
     },
 
     async loadRecentSteals() {
-        try {
-            const stealsList = document.getElementById('steals-list');
-            if (!stealsList) return;
+    try {
+        const stealsList = document.getElementById('steals-list');
+        if (!stealsList) return;
 
-            const snapshot = await db.collection('theftHistory')
-                .orderBy('lastTheft', 'desc')
-                .limit(20)
-                .get();
+        const snapshot = await db.collection('theftHistory')
+            .orderBy('lastTheft', 'desc')
+            .get();
 
-            if (snapshot.empty) {
-                stealsList.innerHTML = `
-                    <div class="text-center text-gray-400 py-4">
-                        No steals yet... Be the first! 😈
-                    </div>
-                `;
-                return;
-            }
+        if (snapshot.empty) {
+            stealsList.innerHTML = `
+                <div class="text-center text-gray-400 py-4">
+                    No steals yet... Be the first! 😈
+                </div>
+            `;
+            return;
+        }
 
-            const steals = await Promise.all(snapshot.docs.map(async (doc) => {
-                const data = doc.data();
-                const thiefDoc = await db.collection('users').doc(data.userId).get();
-                const thiefData = thiefDoc.data();
-                
-                return `
-                    <div class="theft-item bg-gray-800 p-3 rounded border border-purple-500/30 hover:border-purple-500 transition-all">
-                        <div class="flex items-center gap-3">
-                            <img src="${thiefData?.profilePicture || DEFAULT_PROFILE_PIC}" 
-                                 class="w-8 h-8 rounded-full border border-purple-500/50"
-                                 onerror="this.src='${DEFAULT_PROFILE_PIC}'">
-                            <div class="flex-1">
-                                <div class="flex items-center gap-1 flex-wrap">
-                                    <span class="text-red-400 font-medium">${thiefData?.username || 'Unknown User'}</span>
-                                    <span class="text-gray-400">stole</span>
-                                    <span class="text-green-400 font-medium">${formatCurrency(data.amount)}</span>
-                                </div>
-                                <div class="text-sm">
-                                    <span class="text-gray-400">from</span>
-                                    <span class="text-blue-400 font-medium">${data.victimUsername}</span>
-                                </div>
-                                <div class="text-xs text-gray-500 mt-1">
-                                    ${formatTimeAgo(data.lastTheft)}
+        const steals = await Promise.all(
+            snapshot.docs
+                .sort((a, b) => {
+                    const aTime = a.data().lastTheft?.seconds || 0;
+                    const bTime = b.data().lastTheft?.seconds || 0;
+                    return bTime - aTime;
+                })
+                .slice(0, 50)  // Limit to 50 most recent steals to prevent performance issues
+                .map(async (doc) => {
+                    const data = doc.data();
+                    const thiefDoc = await db.collection('users').doc(data.userId).get();
+                    const thiefData = thiefDoc.data();
+                    
+                    return `
+                        <div class="theft-item bg-gray-800 p-3 rounded border border-purple-500/30 hover:border-purple-500 transition-all">
+                            <div class="flex items-center gap-3">
+                                <img src="${thiefData?.profilePicture || DEFAULT_PROFILE_PIC}" 
+                                     class="w-8 h-8 rounded-full border border-purple-500/50"
+                                     onerror="this.src='${DEFAULT_PROFILE_PIC}'">
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-1 flex-wrap">
+                                        <span class="text-red-400 font-medium">${thiefData?.username || 'Unknown User'}</span>
+                                        <span class="text-gray-400">stole</span>
+                                        <span class="text-green-400 font-medium">${formatCurrency(data.amount)}</span>
+                                    </div>
+                                    <div class="text-sm">
+                                        <span class="text-gray-400">from</span>
+                                        <span class="text-blue-400 font-medium">${data.victimUsername}</span>
+                                    </div>
+                                    <div class="text-xs text-gray-500 mt-1">
+                                        ${formatTimeAgo(data.lastTheft)}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                `;
-            }));
+                    `;
+                })
+        );
 
-            stealsList.innerHTML = steals.join('');
+        stealsList.innerHTML = steals.join('');
 
-        } catch (error) {
-            console.error('Error loading recent steals:', error);
-            const stealsList = document.getElementById('steals-list');
-            if (stealsList) {
-                stealsList.innerHTML = `
-                    <div class="text-center text-red-400 py-4">
-                        Error loading steals 😢
-                    </div>
-                `;
-            }
+    } catch (error) {
+        console.error('Error loading recent steals:', error);
+        const stealsList = document.getElementById('steals-list');
+        if (stealsList) {
+            stealsList.innerHTML = `
+                <div class="text-center text-red-400 py-4">
+                    Error loading steals 😢
+                </div>
+            `;
         }
-    },
+    }
+},
 
     async addNewSteal(theftData) {
         const stealsList = document.getElementById('steals-list');
