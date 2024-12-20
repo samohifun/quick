@@ -1044,13 +1044,13 @@
         <div class="flex items-center justify-between">
             <h2 class="text-lg font-bold text-blue-300">Live Activity</h2>
             <div class="flex gap-2">
-                <button id="activity-refresh" class="text-gray-400 hover:text-white transition-colors">
+                <button onclick="refreshActivity()" class="text-gray-400 hover:text-white transition-colors">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                               d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                     </svg>
                 </button>
-                <button id="activity-minimize" class="text-gray-400 hover:text-white transition-colors">
+                <button onclick="toggleActivityPanel()" class="text-gray-400 hover:text-white transition-colors">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                     </svg>
@@ -4036,7 +4036,28 @@ const theftSystem = {
         }, 2000);
     }
 };
+let isActivityPanelMinimized = false;
 
+function toggleActivityPanel() {
+    const content = document.getElementById('activity-content');
+    const button = document.querySelector('#activity-panel button:last-child svg');
+    isActivityPanelMinimized = !isActivityPanelMinimized;
+    
+    if (isActivityPanelMinimized) {
+        content.style.maxHeight = '0';
+        button.style.transform = 'rotate(180deg)';
+    } else {
+        content.style.maxHeight = '600px';
+        button.style.transform = '';
+    }
+}
+
+async function refreshActivity() {
+    const refreshBtn = document.querySelector('#activity-panel button:first-child');
+    refreshBtn.classList.add('animate-spin');
+    await updateRecentActivity();
+    setTimeout(() => refreshBtn.classList.remove('animate-spin'), 1000);
+}
 
 const recentStealsDisplay = {
     async initialize() {
